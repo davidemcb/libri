@@ -19,7 +19,7 @@ window.SITO = {
   amazon: {
     duauCartaceo: "",                                  // Da uomo a uomo — cartaceo (dopo la pubblicazione su KDP)
     duauEbook:    "",                                  // Da uomo a uomo — ebook Kindle
-    pacCartaceo:  "https://www.amazon.it/dp/B0GL6LS5ZP", // Prenditi a carezze — cartaceo (edizione 6x9, in sostituzione)
+    pacCartaceo:  "https://amazon.com/dp/B0HHC7238K",    // Prenditi a carezze — cartaceo (5"×8")
     pacEbook:     "https://www.amazon.it/dp/B0GL769877", // Prenditi a carezze — ebook Kindle
     svCartaceo:   "",                                  // Senza veli — non ancora pubblicato
     svEbook:      ""
