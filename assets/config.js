@@ -37,13 +37,14 @@ window.SITO = {
      Finché è vuoto il modulo avvisa che non è collegato:
      è voluto, così te ne accorgi subito.
   ---------------------------------------------------------- */
-  modulo: "",
+  modulo: "https://eba0d493.sibforms.com/serve/MUIFAL2YZjwSQMAeB_ot9i7FXoeZ9HknpV7PlPV7R1hU8FnRd0gEMilqWJ3ho7y0KGerf3divJaTXaDgrgLQ6dmSIHGgbLNHCqApvL_qvVeODGLT2ngzpL40lY2W-wA88n6AobpNZHTr0iHV35-Cb_gziXKDNhI5O1zMZ2peWVPNiM83XYtUQptFJ00HDHB0GfLH6_PBCfPs7ZS3jA==",
   campoEmail: "EMAIL",
 
   // Campi nascosti che alcuni servizi richiedono (lasciali così per Brevo).
   campiExtra: {
     email_address_check: "",
-    locale: "it"
+    locale: "it",
+    html_type: "simple"
   },
 
   /* ---------- 3. PUBBLICITÀ E MISURAZIONE ------------------
