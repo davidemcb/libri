@@ -1,0 +1,361 @@
+/* ============================================================
+   Palette chiara e calda (31/08/2026, su richiesta di Davide:
+   «tutto è cupo» — via il nero). I toni vengono dalla copertina
+   di "Prenditi a carezze": sabbia + terracotta, con il verde
+   salvia delle copertine come accento.
+   Due superfici, entrambe chiare: CARTA (a) e SABBIA (b).
+   Il sito si impegna su un solo tema, luminoso, in ogni caso.
+   ============================================================ */
+:root{
+  --a-bg:#FBF6EC;
+  --a-raise:#F3EADA;
+  --a-text:#3A3128;
+  --a-muted:#82715F;
+  --a-line:#E5D9C2;
+  --a-accent:#2C6C68;
+
+  --b-bg:#F2E7D0;
+  --b-raise:#EADCBE;
+  --b-text:#3A3128;
+  --b-muted:#82715F;
+  --b-line:#DCCCA9;
+  --b-accent:#2C6C68;
+
+  --terra:#C0684B;          /* terracotta: il calore */
+
+  --measure:34rem;
+  --step:clamp(3.5rem,7vw,6.5rem);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--a-bg);
+  color:var(--a-text);
+  font-family:"EB Garamond",Palatino,"Palatino Linotype",Georgia,serif;
+  font-size:clamp(1.06rem,.55vw + .95rem,1.18rem);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-weight:500;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+
+.wrap{width:min(100% - 2.5rem,62rem);margin-inline:auto}
+.col{max-width:var(--measure)}
+
+/* ---------- etichette e utility: Archivo, la voce pratica ---------- */
+.lbl{
+  font-family:Archivo,system-ui,sans-serif;
+  font-size:.68rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--a-muted);
+}
+.b .lbl{color:var(--b-muted)}
+.ui{font-family:Archivo,system-ui,sans-serif}
+
+/* ---------- superfici ---------- */
+section{padding-block:var(--step)}
+.b{background:var(--b-bg);color:var(--b-text)}
+.b .muted{color:var(--b-muted)}
+.muted{color:var(--a-muted)}
+
+/* ---------- la soglia: due tratti su un terreno comune ----------
+   È l'unico ornamento della copertina: due uomini, uno accanto
+   all'altro, sopra una linea condivisa. Qui separa le sezioni. */
+.soglia{display:block;margin:0 auto;width:44px;height:38px;overflow:visible}
+.soglia .t1{stroke:var(--a-accent)}
+.soglia .t2{stroke:var(--a-text);opacity:.55}
+.soglia .terreno{stroke:var(--a-muted);opacity:.5}
+.b .soglia .t1{stroke:var(--b-accent)}
+.b .soglia .t2{stroke:var(--b-text);opacity:.6}
+.b .soglia .terreno{stroke:var(--b-muted);opacity:.45}
+
+/* ---------- testata ---------- */
+header{
+  position:sticky;top:0;z-index:50;
+  background:var(--a-bg);color:var(--a-text);
+  border-bottom:1px solid var(--a-line);
+}
+.bar{display:flex;align-items:center;gap:1.5rem;min-height:60px;flex-wrap:wrap}
+.marchio{
+  font-size:.8rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;
+  font-family:Archivo,system-ui,sans-serif;text-decoration:none;white-space:nowrap;
+}
+nav{display:flex;gap:1.4rem;margin-left:auto;flex-wrap:wrap}
+nav a{
+  font-family:Archivo,system-ui,sans-serif;font-size:.78rem;letter-spacing:.06em;
+  text-decoration:none;color:var(--a-muted);padding:.35rem 0;border-bottom:1px solid transparent;
+}
+nav a:hover{color:var(--a-text)}
+nav a[aria-current="page"]{color:var(--a-text);border-bottom-color:var(--a-accent)}
+:where(a,button,input):focus-visible{outline:2px solid #6FA39D;outline-offset:3px;border-radius:2px}
+
+/* ---------- bottoni ---------- */
+.btn{
+  font-family:Archivo,system-ui,sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.04em;
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.85rem 1.5rem;text-decoration:none;border:1px solid transparent;cursor:pointer;
+  transition:background .18s ease,color .18s ease,border-color .18s ease;
+}
+.btn-pieno{background:var(--terra);color:#FBF6EC;border-color:var(--terra)}
+.btn-pieno:hover{background:#A85539;border-color:#A85539}
+.btn-vuoto{background:transparent;color:var(--b-text);border-color:var(--b-line)}
+.btn-vuoto:hover{border-color:var(--b-muted)}
+.a-surface .btn-pieno{background:var(--terra);color:#FBF6EC;border-color:var(--terra)}
+.a-surface .btn-vuoto{color:var(--a-text);border-color:var(--a-line)}
+.a-surface .btn-vuoto:hover{border-color:var(--a-muted)}
+.btn .prezzo{opacity:.72;font-variant-numeric:tabular-nums}
+
+/* ---------- versi: il libro è scritto a capo, il sito lo rispetta ---------- */
+.versi{font-size:1.22em;line-height:1.62}
+.versi p{margin-bottom:1.1em}
+.versi p:last-child{margin-bottom:0}
+
+/* ---------- copertina ---------- */
+.cover{
+  display:block;width:100%;height:auto;
+  box-shadow:0 2px 6px rgba(90,70,50,.14),0 20px 44px -18px rgba(90,70,50,.28);
+}
+
+/* ---------- apertura ---------- */
+.apertura{padding-block:clamp(3rem,9vw,6rem) var(--step)}
+.apertura-griglia{display:grid;gap:clamp(2.5rem,5vw,4.5rem);align-items:center;grid-template-columns:1fr}
+@media(min-width:860px){.apertura-griglia{grid-template-columns:1.15fr .85fr}}
+.epigrafe{font-style:italic;color:var(--b-muted);font-size:1.05rem;line-height:1.6}
+.titolone{
+  font-size:clamp(2.9rem,8vw,4.6rem);line-height:1.02;letter-spacing:.04em;
+  text-transform:uppercase;margin:1.4rem 0 0;
+}
+.sottotitolo{font-style:italic;color:var(--b-muted);font-size:1.15rem;margin-top:.9rem}
+.domanda{
+  font-size:clamp(1.5rem,3.2vw,2rem);line-height:1.35;margin-top:2.6rem;
+  padding-left:1.3rem;border-left:2px solid var(--b-accent);
+}
+.azioni{display:flex;gap:.85rem;flex-wrap:wrap;margin-top:2.4rem}
+.sotto-azioni{font-family:Archivo,system-ui,sans-serif;font-size:.75rem;color:var(--b-muted);margin-top:1.1rem;letter-spacing:.02em}
+
+/* ---------- intestazioni di sezione ---------- */
+.sez-testa{margin-bottom:2.8rem}
+.sez-testa h2{font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.2;margin-top:.7rem}
+.sez-testa .lbl+h2{margin-top:.6rem}
+
+/* ---------- il patto ---------- */
+.patto{font-size:clamp(1.45rem,3.4vw,2.05rem);line-height:1.45;font-style:italic}
+.patto span{display:block}
+.patto .chiusa{font-style:normal;color:var(--a-accent)}
+.b .patto .chiusa{color:var(--b-accent)}
+
+/* ---------- elenchi in colonne ---------- */
+.due{display:grid;gap:clamp(2rem,4vw,3.5rem);grid-template-columns:1fr}
+@media(min-width:760px){.due{grid-template-columns:1fr 1fr}}
+.tre{display:grid;gap:2.4rem;grid-template-columns:1fr}
+@media(min-width:820px){.tre{grid-template-columns:repeat(3,1fr)}}
+.voce h3{font-size:1.22rem;margin-bottom:.6rem;line-height:1.3}
+.voce p{color:var(--a-muted);font-size:.98em}
+.b .voce p{color:var(--b-muted)}
+
+/* ---------- i diciassette luoghi ---------- */
+.luoghi{list-style:none;padding:0;margin:0;border-top:1px solid var(--a-line)}
+.luoghi li{
+  display:grid;grid-template-columns:2.6rem 1fr;gap:1rem;align-items:baseline;
+  padding:.85rem 0;border-bottom:1px solid var(--a-line);
+}
+.luoghi .n{font-family:Archivo,system-ui,sans-serif;font-size:.7rem;color:var(--a-muted);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.luoghi .tit{font-size:1.08rem}
+.luoghi .sot{display:block;color:var(--a-muted);font-style:italic;font-size:.95rem}
+.b .luoghi{border-color:var(--b-line)}
+.b .luoghi li{border-color:var(--b-line)}
+.b .luoghi .n,.b .luoghi .sot{color:var(--b-muted)}
+
+/* ---------- franchezza: due colonne, sì e no ---------- */
+.franchezza{border-top:1px solid var(--a-line);padding-top:2rem}
+.franchezza ul{list-style:none;padding:0;margin:1.2rem 0 0;display:grid;gap:.9rem}
+.franchezza li{display:grid;grid-template-columns:1.5rem 1fr;gap:.4rem;align-items:start}
+.segno{font-family:Archivo,system-ui,sans-serif;font-size:.9rem;line-height:1.6}
+.si .segno{color:var(--a-accent)}
+.no .segno{color:var(--a-muted)}
+
+/* ---------- formati ---------- */
+.formati{display:grid;gap:1.5rem;grid-template-columns:1fr}
+@media(min-width:760px){.formati{grid-template-columns:repeat(3,1fr)}}
+.formato{
+  border:1px solid var(--a-line);padding:1.7rem 1.5rem;display:flex;flex-direction:column;gap:.55rem;
+  background:var(--a-raise);
+}
+.formato .nome{font-family:Archivo,system-ui,sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--a-muted)}
+.formato .cifra{font-size:2.1rem;line-height:1;font-variant-numeric:tabular-nums;margin-top:.3rem}
+.formato .dett{color:var(--a-muted);font-size:.94rem;line-height:1.55}
+.formato .btn{margin-top:auto;justify-content:center}
+.formato.atteso{opacity:.72}
+.formato.atteso .cifra{font-size:1.35rem;font-style:italic;color:var(--a-muted)}
+
+/* ---------- capitolo gratuito ---------- */
+.modulo{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.8rem}
+.modulo input{
+  flex:1 1 16rem;background:#FFFDF7;border:1px solid var(--b-line);color:var(--b-text);
+  padding:.85rem 1rem;font-family:Archivo,system-ui,sans-serif;font-size:.9rem;
+}
+.modulo input::placeholder{color:var(--a-muted)}
+.esito{margin-top:1rem;color:var(--b-accent);font-family:Archivo,system-ui,sans-serif;font-size:.82rem;display:none}
+.esito.visibile{display:block}
+.privacy{font-family:Archivo,system-ui,sans-serif;font-size:.72rem;color:var(--b-muted);margin-top:1rem;line-height:1.6}
+
+/* ---------- frase del giorno ---------- */
+.frase{text-align:center;max-width:36rem;margin-inline:auto}
+.frase blockquote{margin:1.4rem 0 0;font-size:clamp(1.3rem,3vw,1.75rem);line-height:1.42;font-style:italic}
+.frase cite{display:block;margin-top:1rem;font-family:Archivo,system-ui,sans-serif;font-style:normal;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--a-muted)}
+.b .frase cite{color:var(--b-muted)}
+
+/* ---------- vuoto onesto: le recensioni non ci sono ancora ---------- */
+.attesa{border:1px dashed var(--a-line);padding:2.2rem 1.8rem;text-align:center;color:var(--a-muted)}
+.attesa p{max-width:30rem;margin-inline:auto}
+
+/* ---------- i libri del progetto ---------- */
+.libri{display:grid;gap:clamp(2.5rem,5vw,4rem);grid-template-columns:1fr}
+@media(min-width:720px){.libri{grid-template-columns:repeat(3,1fr)}}
+.libro img{width:100%;max-width:210px;height:auto;box-shadow:0 2px 5px rgba(90,70,50,.12),0 14px 30px -14px rgba(90,70,50,.24)}
+.libro h3{font-size:1.3rem;margin:1.3rem 0 .35rem}
+.stato{
+  font-family:Archivo,system-ui,sans-serif;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  display:inline-block;padding:.28rem .6rem;border:1px solid currentColor;margin-bottom:.9rem;
+}
+.stato.pronto{color:var(--a-accent)}
+.stato.lavori{color:var(--a-muted)}
+.b .stato.pronto{color:var(--b-accent)}
+.b .stato.lavori{color:var(--b-muted)}
+
+/* ---------- arco del progetto ---------- */
+.arco{list-style:none;padding:0;margin:2.2rem 0 0;display:grid;gap:0}
+.arco li{
+  display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:start;
+  padding-bottom:2rem;position:relative;
+}
+.arco .punto{
+  width:9px;height:9px;border-radius:50%;background:var(--b-accent);margin-top:.62rem;position:relative;z-index:1;
+}
+.arco li:not(:last-child)::before{
+  content:"";position:absolute;left:4px;top:1.1rem;bottom:-.3rem;width:1px;background:var(--b-line);
+}
+.arco h3{font-size:1.12rem;margin-bottom:.3rem}
+.arco p{color:var(--b-muted);font-size:.98em}
+
+/* ---------- scheda tecnica ---------- */
+.scheda{width:100%;border-collapse:collapse;font-size:.98em}
+.scheda th,.scheda td{text-align:left;padding:.7rem 0;border-bottom:1px solid var(--a-line);vertical-align:top}
+.scheda th{
+  font-family:Archivo,system-ui,sans-serif;font-weight:500;font-size:.72rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--a-muted);width:11rem;padding-right:1.5rem;
+}
+.scheda td{font-variant-numeric:tabular-nums}
+
+/* ---------- citazioni sparse ---------- */
+.citazioni{display:grid;gap:1.6rem;grid-template-columns:1fr}
+@media(min-width:700px){.citazioni{grid-template-columns:1fr 1fr}}
+.cit{border-left:2px solid var(--a-line);padding:.2rem 0 .2rem 1.3rem;font-style:italic;font-size:1.08rem;line-height:1.5}
+.cit span{display:block;font-style:normal;font-family:Archivo,system-ui,sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a-muted);margin-top:.6rem}
+.b .cit{border-color:var(--b-line)}
+.b .cit span{color:var(--b-muted)}
+
+/* ---------- da completare: slot onesti ---------- */
+.slot{
+  border-bottom:1px dashed var(--a-accent);color:var(--a-muted);font-style:italic;
+}
+
+/* ---------- piè di pagina ---------- */
+footer{background:var(--b-bg);color:var(--b-text);border-top:1px solid var(--b-line);padding-block:clamp(3rem,6vw,4.5rem) 2.5rem}
+.firma{font-size:clamp(1.35rem,3vw,1.8rem);font-style:italic;color:var(--b-text)}
+.piede{display:grid;gap:2.5rem;grid-template-columns:1fr;margin-top:3rem;padding-top:2.2rem;border-top:1px solid var(--b-line)}
+@media(min-width:760px){.piede{grid-template-columns:2fr 1fr 1fr}}
+.piede h4{font-family:Archivo,system-ui,sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--b-muted);margin:0 0 1rem}
+.piede ul{list-style:none;padding:0;margin:0;display:grid;gap:.6rem}
+.piede a{color:var(--b-muted);text-decoration:none;font-size:.95rem}
+.piede a:hover{color:var(--b-text)}
+.legale{margin-top:2.5rem;font-family:Archivo,system-ui,sans-serif;font-size:.72rem;color:var(--b-muted);line-height:1.7}
+
+/* ---------- viste ---------- */
+.vista{display:none}
+.vista.attiva{display:block}
+
+/* ---------- entrata dei versi ---------- */
+@media(prefers-reduced-motion:no-preference){
+  .riga{opacity:0;transform:translateY(8px);animation:sale .9s ease forwards}
+  @keyframes sale{to{opacity:1;transform:none}}
+}
+.a-surface{background:var(--a-bg)}
+
+/* ============================================================
+   AGGIUNTE PER IL SITO A PIÙ PAGINE (31/08/2026)
+   Il foglio sopra viene dalla pagina singola di "Da uomo a uomo".
+   Qui sotto solo quello che serve al sito del progetto: moduli
+   sulla carta, banda del percorso, avviso cookie, schede libro.
+   ============================================================ */
+
+/* le viste non servono più: ogni pagina è un file */
+.vista{display:block}
+
+/* ---------- modulo email anche sulla superficie chiara ---------- */
+.a-surface .modulo input{border-color:var(--a-line);color:var(--a-text)}
+.a-surface .modulo input::placeholder{color:var(--a-muted)}
+.a-surface .esito{color:var(--a-accent)}
+.a-surface .privacy{color:var(--a-muted)}
+.modulo.colonna{flex-direction:column;align-items:stretch}
+.modulo.colonna .btn{justify-content:center}
+.consenso{
+  display:grid;grid-template-columns:1.1rem 1fr;gap:.7rem;align-items:start;
+  font-family:Archivo,system-ui,sans-serif;font-size:.78rem;line-height:1.6;
+  margin-top:1.1rem;color:var(--b-muted);
+}
+.a-surface .consenso{color:var(--a-muted)}
+.consenso input{margin:.25rem 0 0;accent-color:var(--b-accent)}
+.consenso a{color:inherit}
+.errore{
+  margin-top:1rem;font-family:Archivo,system-ui,sans-serif;font-size:.8rem;
+  color:#C86B5A;display:none;
+}
+.errore.visibile{display:block}
+
+/* ---------- i sette giorni del percorso ---------- */
+.giorni{list-style:none;padding:0;margin:0;display:grid;gap:0;border-top:1px solid var(--b-line)}
+.giorni li{
+  display:grid;grid-template-columns:4.5rem 1fr;gap:1rem;align-items:baseline;
+  padding:1rem 0;border-bottom:1px solid var(--b-line);
+}
+.giorni .g{font-family:Archivo,system-ui,sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--b-muted)}
+.giorni .parte{font-size:1.1rem}
+.giorni .parte span{display:block;color:var(--b-muted);font-style:italic;font-size:.95rem}
+.a-surface .giorni,.a-surface .giorni li{border-color:var(--a-line)}
+.a-surface .giorni .g,.a-surface .giorni .parte span{color:var(--a-muted)}
+
+/* ---------- schede libro in riga (home) ---------- */
+.libro .prezzo-riga{
+  font-family:Archivo,system-ui,sans-serif;font-size:.78rem;color:var(--a-muted);
+  letter-spacing:.02em;margin-top:.8rem;
+}
+.b .libro .prezzo-riga{color:var(--b-muted)}
+
+/* ---------- avviso cookie (compare solo se c'è un pixel) ---------- */
+#avviso-cookie{
+  position:fixed;left:0;right:0;bottom:0;z-index:100;display:none;
+  background:#FFFDF7;color:var(--a-text);border-top:1px solid var(--a-line);box-shadow:0 -8px 24px rgba(90,70,50,.10);
+  padding:1.1rem 0;
+}
+#avviso-cookie.visibile{display:block}
+.cookie-riga{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.cookie-riga p{font-family:Archivo,system-ui,sans-serif;font-size:.8rem;line-height:1.6;color:var(--a-muted);flex:1 1 22rem;margin:0}
+.cookie-riga a{color:var(--a-text)}
+.cookie-riga .btn{padding:.6rem 1.1rem;font-size:.76rem}
+
+/* ---------- pagine di testo (privacy, grazie) ---------- */
+.testo{max-width:var(--measure)}
+.testo h2{font-size:1.35rem;margin-top:2.6rem;margin-bottom:.8rem}
+.testo h3{font-size:1.08rem;margin-top:1.8rem;margin-bottom:.5rem}
+.testo p,.testo li{color:var(--a-text)}
+.testo ul{padding-left:1.1rem;display:grid;gap:.5rem;margin:.8rem 0 0}
+.testo .muted{color:var(--a-muted)}
+
+/* ---------- il trittico: le tre copertine insieme, in apertura ---------- */
+.trittico{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;align-items:end}
+.trittico a{display:block;transition:transform .25s ease}
+.trittico a:hover{transform:translateY(-6px)}
+.trittico a:nth-child(2){margin-bottom:1.6rem}   /* la centrale un filo più su */
