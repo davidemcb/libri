@@ -17,12 +17,12 @@ window.SITO = {
      Formato: https://www.amazon.it/dp/CODICE-ASIN
   ---------------------------------------------------------- */
   amazon: {
-    duauCartaceo: "",                                  // Da uomo a uomo — cartaceo (dopo la pubblicazione su KDP)
-    duauEbook:    "",                                  // Da uomo a uomo — ebook Kindle
-    pacCartaceo:  "https://amazon.com/dp/B0HHC7238K",    // Prenditi a carezze — cartaceo (5"×8")
+    duauCartaceo: "https://www.amazon.it/dp/B0HHC3W8MX", // Da uomo a uomo — cartaceo (14,90 €)
+    duauEbook:    "https://www.amazon.it/dp/B0HHC4PXBR", // Da uomo a uomo — ebook Kindle
+    pacCartaceo:  "https://www.amazon.it/dp/B0HHC7238K", // Prenditi a carezze — cartaceo (5"×8")
     pacEbook:     "https://www.amazon.it/dp/B0GL769877", // Prenditi a carezze — ebook Kindle
-    svCartaceo:   "",                                  // Senza veli — non ancora pubblicato
-    svEbook:      ""
+    svCartaceo:   "",                                  // Senza veli — cartaceo non ancora pubblicato
+    svEbook:      "https://www.amazon.it/dp/B0HHC8Y46W"  // Senza veli — ebook Kindle
   },
 
   /* ---------- 2. IL MODULO EMAIL ---------------------------
