@@ -64,7 +64,7 @@ window.SITO = {
   /* ---------- 4. CONTATTI ----------------------------------
      Compaiono in fondo alle pagine e nella privacy.
   ---------------------------------------------------------- */
-  emailPubblica: "infokinesiologia@gmail.com",
+  emailPubblica: "davidescuderi1981@gmail.com",
   instagram: "",            // es. "https://www.instagram.com/..."
   titolare: "Davide Scuderi" // titolare del trattamento, per la privacy
 };
