@@ -59,7 +59,7 @@ window.SITO = {
      pixelMeta: l'ID del pixel Meta (solo il numero).
   ---------------------------------------------------------- */
   googleAds: "",
-  pixelMeta: "",
+  pixelMeta: "1329668879245300",
 
   /* ---------- 4. CONTATTI ----------------------------------
      Compaiono in fondo alle pagine e nella privacy.
