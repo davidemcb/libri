@@ -58,7 +58,7 @@ window.SITO = {
      Lo trovi in Google Ads > Strumenti > Gestione tag / Conversioni.
      pixelMeta: l'ID del pixel Meta (solo il numero).
   ---------------------------------------------------------- */
-  googleAds: "",
+  googleAds: "AW-969285863",
   pixelMeta: "1329668879245300",
 
   /* ---------- 4. CONTATTI ----------------------------------
