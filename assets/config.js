@@ -74,6 +74,12 @@ window.SITO = {
   googleAds: "AW-969285863",
   pixelMeta: "1329668879245300",
 
+  /* googleAdsConversione: l'etichetta dell'azione di conversione
+     "Iscrizione percorso" creata in Google Ads → Obiettivi →
+     Conversioni; finché è vuota non parte nulla.
+     Formato: "AW-969285863/ETICHETTA" */
+  googleAdsConversione: "",
+
   /* ---------- 4. CONTATTI ----------------------------------
      Compaiono in fondo alle pagine e nella privacy.
   ---------------------------------------------------------- */

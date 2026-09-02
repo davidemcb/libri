@@ -106,6 +106,27 @@
   ---------------------------------------------------------- */
   var MAPPA_UTM = { UTM_SOURCE:"utm_source", UTM_CAMPAIGN:"utm_campaign", UTM_CONTENUTO:"utm_content" };
 
+  /* ---------- 2a. EVENTI DI CONVERSIONE --------------------
+     Dopo un'iscrizione riuscita, se il consenso ai cookie di
+     misurazione è già stato dato (quindi Meta/Google sono già
+     accesi), avvisa i due: Lead per Meta, conversion per Google
+     Ads (solo se in config.js è compilata l'etichetta). Non
+     tocca il redirect: fbq/gtag mettono l'evento in coda e
+     tornano subito, il redirect segue il suo tempo (500 ms) già
+     previsto da vaiAlGrazie, quindi il ritardo aggiunto è ~0 ms.
+  ---------------------------------------------------------- */
+  function segnalaConversione(origine){
+    var consenso = null;
+    try { consenso = localStorage.getItem("consenso-misurazione"); } catch(e){}
+    if(consenso !== "si") return;
+    if(window.fbq){
+      window.fbq("track", "Lead", { content_name: origine || "sito" });
+    }
+    if(window.gtag && C.googleAdsConversione){
+      window.gtag("event", "conversion", { send_to: C.googleAdsConversione });
+    }
+  }
+
   document.querySelectorAll("form[data-modulo]").forEach(function(f){
     var esito   = f.parentNode.querySelector(".esito");
     var errore  = f.parentNode.querySelector(".errore");
@@ -167,6 +188,7 @@
 
     function vaiAlGrazie(){
       if(esito) esito.classList.add("visibile");
+      segnalaConversione(origine);
       var base = location.pathname.replace(/[^\/]*$/, "");
       setTimeout(function(){
         location.href = base + "grazie.html?da=" + encodeURIComponent(origine || "sito");
@@ -268,10 +290,11 @@
   });
 
   /* ---------- 4b. GRAZIE.HTML: LA VARIANTE GIUSTA -----------
-     Tre blocchi nascosti in HTML (#grazie-percorso, #grazie-capitolo,
-     #grazie-avviso). Sceglie quello giusto dal parametro ?da=:
+     Quattro blocchi nascosti in HTML (#grazie-percorso, #grazie-capitolo,
+     #grazie-avviso, #grazie-pagine). Sceglie quello giusto dal parametro ?da=:
      - "avviso-senza-veli"                        → grazie-avviso
      - "capitolo", "capitolo-*", "estratto-carezze" → grazie-capitolo
+     - "pagine"                                    → grazie-pagine
      - qualsiasi altro valore, o nessun parametro   → grazie-percorso
        (è il caso più frequente, ed è il testo che c'era prima delle varianti)
   ---------------------------------------------------------- */
@@ -279,15 +302,17 @@
     var percorsoEl = document.getElementById("grazie-percorso");
     var capitoloEl = document.getElementById("grazie-capitolo");
     var avvisoEl   = document.getElementById("grazie-avviso");
-    if(!percorsoEl && !capitoloEl && !avvisoEl) return;   // non è grazie.html
+    var pagineEl   = document.getElementById("grazie-pagine");
+    if(!percorsoEl && !capitoloEl && !avvisoEl && !pagineEl) return;   // non è grazie.html
 
     var da = new URLSearchParams(location.search).get("da") || "";
     var mostra;
     if(da === "avviso-senza-veli") mostra = avvisoEl;
     else if(da === "capitolo" || da.indexOf("capitolo-") === 0 || da === "estratto-carezze") mostra = capitoloEl;
+    else if(da === "pagine") mostra = pagineEl;
     else mostra = percorsoEl;   // manca il parametro, o non è riconosciuto
 
-    [percorsoEl, capitoloEl, avvisoEl].forEach(function(el){
+    [percorsoEl, capitoloEl, avvisoEl, pagineEl].forEach(function(el){
       if(!el) return;
       if(el === mostra) el.removeAttribute("hidden");
       else el.setAttribute("hidden", "");
