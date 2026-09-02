@@ -1,11 +1,11 @@
 {
- "generato": "2026-09-02 23:01",
+ "generato": "2026-09-02 23:08",
  "pratiche": [
   {
    "corpo": "cuore",
    "titolo": "Una sola mano sul petto",
    "durata": 78,
-   "audio": null,
+   "audio": "cuore.mp3",
    "copione": [
     "Adesso.",
     "Non dopo.",
@@ -53,7 +53,7 @@
    "corpo": "gola",
    "titolo": "Il nodo, senza mandarlo giù",
    "durata": 75,
-   "audio": null,
+   "audio": "gola.mp3",
    "copione": [
     "Fermati dove sei.",
     "",
@@ -468,7 +468,7 @@
    "corpo": "vuoto",
    "titolo": "Se non senti niente",
    "durata": 78,
-   "audio": null,
+   "audio": "vuoto.mp3",
    "copione": [
     "Fermati dove sei.",
     "",
