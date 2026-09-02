@@ -441,7 +441,7 @@
     if (!pr) return nonTrovato();
     return '<section class="sez"><div class="testata"><p class="lbl">Un minuto col corpo · ' + esc(voceCorpo(pr.corpo)) + '</p><h1>' + esc(pr.titolo) + '</h1>' +
       '<p class="sotto">' + (pr.durata ? "Circa " + Math.round(pr.durata / 10) * 10 + " secondi. " : "") + 'Mettiti come sei. Non serve altro.</p></div>' +
-      (pr.audio ? '<div class="voce"><p class="lbl" style="margin-bottom:.6rem">La voce di Davide</p><audio controls preload="none" src="audio/' + esc(pr.audio) + '"></audio></div>' : '<p class="muted piccolo">La voce di Davide per questa pratica arriva a breve: intanto, leggila piano.</p>') +
+      (pr.audio ? '<div class="voce"><p class="lbl" style="margin-bottom:.6rem">La voce di Davide</p><audio controls preload="none" src="audio/' + esc(pr.audio) + '?v=' + encodeURIComponent(dati.generato || "") + '"></audio></div>' : '<p class="muted piccolo">La voce di Davide per questa pratica arriva a breve: intanto, leggila piano.</p>') +
       '<div class="copione">' + blocchiPratica(pr).map(function(b){ return '<p class="versi">' + versi(b) + '</p>'; }).join("") + '</div>' +
       '<p class="muted piccolo">È un ascolto, non una cura. Un dolore vero si porta dal medico.</p>' +
       '<div class="azioni"><a class="btn btn-linea" href="#pratica">Un altro punto del corpo</a></div></section>' + piede();
