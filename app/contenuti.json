@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 23:15",
+ "generato": "2026-09-02 23:58",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -373,7 +373,7 @@
    "corpo": "stanchezza",
    "titolo": "Lascia che qualcosa regga te",
    "durata": 76,
-   "audio": null,
+   "audio": "stanchezza.mp3",
    "copione": [
     "Siediti.",
     "Se puoi, appoggia la schiena.",
