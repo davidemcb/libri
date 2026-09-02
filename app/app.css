@@ -160,3 +160,9 @@ textarea{
 .copione{display:grid;gap:.15rem;font-size:clamp(1.22rem,4vw,1.5rem);line-height:1.55}
 .copione .pausa{display:block;height:1.4rem}
 audio{margin-block:.3rem}
+
+/* ---------- un minuto col corpo ---------- */
+.invito{background:var(--sabbia);border:1px solid var(--sabbia-line);padding:1.3rem 1.3rem 1.2rem;border-radius:3px}
+.voce audio{width:100%;display:block}
+.copione{display:grid;gap:1.3rem}
+.copione .versi{font-size:clamp(1.18rem,3.8vw,1.42rem);line-height:1.6}

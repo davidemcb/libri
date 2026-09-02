@@ -168,7 +168,7 @@
       cartaPost(s, n, {etichetta:"La riga di oggi", linkPagina:true}) +
       '</section>' +
       '<section class="sez"><p class="prosa muted piccolo">Una riga al giorno, una pagina a settimana. Niente da fare, niente da imparare: se una riga ti somiglia, passala a chi ne ha bisogno.</p></section>' +
-      piede();
+      invitoPratica(null) + piede();
   }
 
   function vistaSettimana(inizio){
@@ -328,6 +328,7 @@
     }
     var e = esiti[0], altra = esiti[1];
     var h = paginaTrovata(e.pagina, "Ho aperto questa pagina perché hai toccato " + e.perche.join(", ") + ".") + invitoPratica(e.pagina, corpo);
+    h += invitoPratica(praticaPer(corpo, e.pagina));
     h += '<section class="sez somiglia" data-altra="' + (altra ? altra.pagina.id : "") + '"><p class="lbl">Ti somigliava?</p><div class="azioni"><button class="btn btn-vuoto" type="button" data-somiglia="si">Sì</button><button class="btn btn-vuoto" type="button" data-somiglia="no">No</button></div><p class="muted piccolo" data-esito></p></section>';
     if (altra) h += '<section class="sez"><p class="lbl">Un\'altra pagina che potrebbe essere tua</p><div class="altra"><a href="#pagina/' + altra.pagina.id + '?da=' + esc(situazione) + '"><p class="titolo">' + esc(altra.pagina.voce) + '</p><p class="muted piccolo">«' + esc(libroDi(altra.pagina).titolo) + '», ' + esc(capBreve(altra.pagina)) + ' · ' + esc(altra.perche.join(", ")) + '</p></a></div></section>';
     h += '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#trova">Ricomincia</a></div></section>' + piede();
@@ -345,6 +346,13 @@
       '</section>' + blocco3(pg);
   }
 
+  function blocchiPratica(pr){   // il copione è una lista di righe; la riga vuota è la pausa lunga
+    if (pr.blocchi) return pr.blocchi;
+    var out = [], cur = [];
+    (pr.copione || []).forEach(function(r){ if (r.trim()) cur.push(r); else if (cur.length) { out.push(cur); cur = []; } });
+    if (cur.length) out.push(cur);
+    return out;
+  }
   function trovaPratica(chiave){
     for (var i = 0; i < (dati.pratiche || []).length; i++) if (dati.pratiche[i].corpo === chiave) return dati.pratiche[i];
     return null;
@@ -398,6 +406,47 @@
     location.hash = "#trova/" + sit.value + "/" + corpo.join(",") + (chi ? "/" + chi.value : "");
   });
 
+  /* ---------- un minuto col corpo ---------- */
+  function blocchiPratica(pr){   // il copione è una lista di righe; la riga vuota è la pausa lunga
+    if (pr.blocchi) return pr.blocchi;
+    var out = [], cur = [];
+    (pr.copione || []).forEach(function(r){ if (r.trim()) cur.push(r); else if (cur.length) { out.push(cur); cur = []; } });
+    if (cur.length) out.push(cur);
+    return out;
+  }
+  function trovaPratica(chiave){
+    for (var i = 0; i < (dati.pratiche || []).length; i++) if (dati.pratiche[i].corpo === chiave) return dati.pratiche[i];
+    return null;
+  }
+  function praticaPer(segniToccati, pg){   // prima il segno toccato dalla persona, poi quelli della pagina
+    var liste = [segniToccati || [], (pg && pg.corpo) || []];
+    for (var l = 0; l < liste.length; l++) for (var i = 0; i < liste[l].length; i++) { var pr = trovaPratica(liste[l][i]); if (pr) return pr; }
+    return null;
+  }
+  function invitoPratica(pr){
+    if (!dati.pratiche || !dati.pratiche.length) return "";
+    return '<section class="sez invito"><p class="lbl">Se vuoi, un minuto col corpo</p>' +
+      (pr ? '<p>Una mano dove senti la cosa, e un minuto di ascolto. Con la voce di Davide, o leggendo.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica/' + esc(pr.corpo) + '">' + esc(pr.titolo) + '</a></div>'
+          : '<p>Una mano dove senti la cosa, e un minuto di ascolto.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica">Scegli dove la senti</a></div>') +
+      '</section>';
+  }
+  function vistaPratica(chiave){
+    if (!dati.pratiche || !dati.pratiche.length) return nonTrovato();
+    if (!chiave) {
+      return '<section class="sez"><div class="testata"><p class="lbl">Un minuto col corpo</p><h1>Dove la senti?</h1><p class="sotto">Una mano lì, e un minuto di ascolto. Non è una cura: è quello che il libro chiede di fare.</p></div><ul class="lista">' +
+        dati.pratiche.map(function(pr){ return '<li><a class="blocco" href="#pratica/' + esc(pr.corpo) + '"><p class="titolo">' + esc(voceCorpo(pr.corpo)) + '</p><p class="muted piccolo">' + esc(pr.titolo) + (pr.audio ? ' · con la voce di Davide' : '') + '</p></a></li>'; }).join("") +
+        '</ul></section>' + piede();
+    }
+    var pr = trovaPratica(chiave);
+    if (!pr) return nonTrovato();
+    return '<section class="sez"><div class="testata"><p class="lbl">Un minuto col corpo · ' + esc(voceCorpo(pr.corpo)) + '</p><h1>' + esc(pr.titolo) + '</h1>' +
+      '<p class="sotto">' + (pr.durata ? "Circa " + Math.round(pr.durata / 10) * 10 + " secondi. " : "") + 'Mettiti come sei. Non serve altro.</p></div>' +
+      (pr.audio ? '<div class="voce"><p class="lbl" style="margin-bottom:.6rem">La voce di Davide</p><audio controls preload="none" src="audio/' + esc(pr.audio) + '"></audio></div>' : '<p class="muted piccolo">La voce di Davide per questa pratica arriva a breve: intanto, leggila piano.</p>') +
+      '<div class="copione">' + blocchiPratica(pr).map(function(b){ return '<p class="versi">' + versi(b) + '</p>'; }).join("") + '</div>' +
+      '<p class="muted piccolo">È un ascolto, non una cura. Un dolore vero si porta dal medico.</p>' +
+      '<div class="azioni"><a class="btn btn-linea" href="#pratica">Un altro punto del corpo</a></div></section>' + piede();
+  }
+
   /* ---------- rotte ---------- */
   function mostra(){
     if (!dati) return;
@@ -410,6 +459,7 @@
       case "archivio": html = vistaArchivio(); break;
       case "trova": html = vistaTrova(h[1], h[2], h[3]); break;
       case "pagina": html = vistaPagina((h[1] || "").split("?")[0]); break;
+      case "pratica": html = vistaPratica(h[1]); break;
       case "pratica": html = vistaPratica(h[1]); break;
       case "libri": html = vistaLibri(); break;
       case "dimmi": html = vistaDimmi(); break;
