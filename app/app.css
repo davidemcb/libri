@@ -33,7 +33,8 @@ button{font:inherit;color:inherit}
   background:var(--bg);border-bottom:1px solid var(--line);
 }
 .marchio{font-family:Archivo,system-ui,sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
-.testa-sotto{margin-left:auto}
+.testa-sotto{margin-left:auto;white-space:nowrap;letter-spacing:.12em;font-size:.6rem}
+@media(max-width:430px){.testa-sotto{display:none}}
 .installa{
   margin-left:.6rem;border:1px solid var(--accent);background:transparent;color:var(--accent);
   font-size:.72rem;font-weight:600;letter-spacing:.08em;padding:.35rem .7rem;cursor:pointer;border-radius:2px;
@@ -94,7 +95,7 @@ button{font:inherit;color:inherit}
 .libro h3{font-size:1.4rem;line-height:1.2}
 .libro .azioni{margin-top:.8rem}
 .libro .btn{font-size:.76rem;padding:.65rem .9rem}
-.cover-piccola{width:5.2rem;box-shadow:0 8px 18px -10px rgba(58,49,40,.45)}
+.cover-piccola{width:5.2rem;height:auto;display:block;box-shadow:0 8px 18px -10px rgba(58,49,40,.45)}
 .regalo{display:grid;grid-template-columns:5.2rem 1fr;gap:1.1rem;align-items:start}
 
 /* modulo «dimmi tu» */
@@ -142,3 +143,14 @@ textarea{
 .chiudi{background:none;border:0;color:var(--muted);text-decoration:underline;justify-self:center;cursor:pointer;font-size:.8rem}
 [hidden]{display:none!important}
 .avviso{background:var(--raise);border-left:3px solid var(--accent);padding:.9rem 1rem;font-size:.98rem}
+
+/* ---------- trova la pagina ---------- */
+.scelte-lunghe label{font-family:"EB Garamond",Georgia,serif;font-size:1.05rem;letter-spacing:0;padding:.55rem 1rem;border-radius:999px}
+.scelte-lunghe label:has(input:checked){background:var(--terra);border-color:var(--terra);color:#FBF6EC}
+.perche{font-family:Archivo,system-ui,sans-serif;font-size:.78rem;color:var(--muted);line-height:1.6;border-left:3px solid var(--sabbia-line);padding:.4rem .9rem}
+.domanda-libro{background:var(--raise);padding:1.2rem 1.3rem;border-radius:3px}
+.domanda-libro .versi{font-size:1.12rem;line-height:1.55}
+.altra{display:grid;gap:.3rem;padding:1rem 0;border-top:1px solid var(--line)}
+.altra a{text-decoration:none}
+.altra .titolo{font-size:1.25rem}
+.pulisci{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;font-size:.8rem;cursor:pointer;font-family:Archivo,system-ui,sans-serif}

@@ -65,7 +65,7 @@
       '<em>Il corpo è il primo posto.</em><br>' +
       '<a href="' + esc(BASE_SITO) + '" target="_blank" rel="noopener">Il sito</a> · ' +
       '<a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Privacy</a> · ' +
-      '<a href="#installa">Metti l\'app sul telefono</a></p></section>';
+      '<a href="#archivio">Le settimane passate</a> · <a href="#installa">Metti l\'app sul telefono</a></p></section>';
   }
 
   /* ---------- condivisione ---------- */
@@ -106,13 +106,16 @@
     var b = ev.target.closest("[data-condividi]");
     if (!b) return;
     ev.preventDefault();
-    var s = trovaSettimana(b.getAttribute("data-inizio"));
+    var s = trovaSettimana(b.getAttribute("data-inizio")) || trovaPagina(b.getAttribute("data-id"));
     var tipo = b.getAttribute("data-condividi");
     if (tipo === "post") {
       var n = +b.getAttribute("data-n");
       condividi("Davide Scuderi", testoPost(s, n), urlPost(s, n));
     } else if (tipo === "pagina") {
       condividi(s.titolo + " — Davide Scuderi", "«" + s.riga + "»\n— Davide Scuderi, «" + libroDi(s).titolo + "», " + capBreve(s) + "\n\nLa pagina intera:", urlSettimana(s));
+    } else if (tipo === "trovata") {
+      var pg = trovaPagina(b.getAttribute("data-id"));
+      if (pg) condividi("Davide Scuderi", pg.pagina.slice(0, 6).join("\n") + (pg.pagina.length > 6 ? "\n[…]" : "") + "\n\n— Davide Scuderi, «" + libroDi(pg).titolo + "», " + capBreve(pg), URL_APP + "#pagina/" + pg.id);
     } else if (tipo === "capitolo") {
       condividi("Un capitolo per te",
         "Ti mando un capitolo di un libro. Leggilo con calma, senza obbligo di arrivare in fondo.\n«" + libroDi(s).titolo + "», di Davide Scuderi, " + capBreve(s) + ".",
@@ -151,7 +154,7 @@
       '<p>Si regala bene: molto bianco, righe corte, si apre a caso. Oppure mandagli solo questo capitolo, gratis, e lascia che sia lui a decidere.</p>' +
       '<div class="azioni">' +
       (L.cartaceo ? '<a class="btn btn-vuoto" href="' + esc(L.cartaceo) + '" target="_blank" rel="noopener">Regala il cartaceo</a>' : "") +
-      (s.capitolo_pdf ? '<button class="btn btn-vuoto" type="button" data-condividi="capitolo" data-inizio="' + s.inizio + '">Mandagli il capitolo, gratis</button>' : "") +
+      (s.capitolo_pdf ? '<button class="btn btn-vuoto" type="button" data-condividi="capitolo" data-inizio="' + (s.inizio || "") + '" data-id="' + (s.id || "") + '">Mandagli il capitolo, gratis</button>' : "") +
       '</div></div></section>';
     return h;
   }
@@ -278,6 +281,97 @@
     if (!standalone && /iPhone|iPad|iPod/.test(navigator.userAgent)) btnInstalla.hidden = false;   // su iPhone il bottone spiega come si fa
   })();
 
+  /* ---------- trova la pagina (quello che gira sotto) ----------
+     Ogni pagina porta le situazioni che racconta e i segni del corpo che nomina.
+     Punteggio: 3 se ha la situazione scelta (+1 se è la sua situazione principale),
+     +1 per ogni segno del corpo in comune. Nessun modello, nessuna rete: solo questo. */
+  function trovaPagina(id){
+    for (var i = 0; i < (dati.pagine || []).length; i++) if (dati.pagine[i].id === id) return dati.pagine[i];
+    return null;
+  }
+  function voceSituazione(k){ for (var i = 0; i < dati.situazioni.length; i++) if (dati.situazioni[i].chiave === k) return dati.situazioni[i].voce; return k; }
+  function voceCorpo(k){ for (var i = 0; i < dati.corpo.length; i++) if (dati.corpo[i].chiave === k) return dati.corpo[i].voce; return k; }
+  function cerca(situazione, corpo, perChi){
+    var esiti = [];
+    (dati.pagine || []).forEach(function(pg){
+      var punti = 0, perche = [];
+      if (perChi === "uomo" && pg.libro === "duau") { punti += 2; perche.push("«leggo da uomo»"); }
+      if (perChi === "donna" && pg.libro !== "duau") { punti += 2; perche.push("«leggo da donna»"); }
+      if (pg.situazioni.indexOf(situazione) >= 0) { punti += 3; perche.push("«" + voceSituazione(situazione) + "»"); if (pg.situazioni[0] === situazione) punti += 1; }
+      corpo.forEach(function(c){ if (pg.corpo.indexOf(c) >= 0) { punti += 1; perche.push("«" + voceCorpo(c) + "»"); } });
+      if (pg.situazioni.indexOf(situazione) >= 0) esiti.push({pagina:pg, punti:punti, perche:perche});
+    });
+    esiti.sort(function(a, b){ return b.punti - a.punti; });
+    return esiti;
+  }
+
+  function vistaTrova(situazione, corpoStr, perChi){
+    if (!dati.pagine || !dati.pagine.length) return '<section class="sez"><div class="testata"><p class="lbl">Trova la pagina</p><h1>Le pagine stanno arrivando.</h1><p class="sotto">Questa parte si accende appena le pagine dei tre libri sono pronte.</p></div></section>' + piede();
+    if (!situazione) {
+      return '<section class="sez"><div class="testata"><p class="lbl">Trova la pagina</p><h1>Cosa ti sta succedendo?</h1>' +
+        '<p class="sotto">Tocca una cosa. Non ti chiedo di spiegarla: i libri ne parlano già, e ti apro la pagina.</p></div>' +
+        '<form id="modulo-trova" class="sez"><div class="scelte scelte-lunghe">' +
+        dati.situazioni.map(function(x){ return '<label><input type="radio" name="situazione" value="' + esc(x.chiave) + '" required>' + esc(x.voce) + '</label>'; }).join("") + '</div>' +
+        '<div><p class="lbl" style="margin-bottom:.7rem">E il corpo, intanto, cosa fa? <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:400">(se vuoi)</span></p><div class="scelte">' +
+        dati.corpo.map(function(x){ return '<label><input type="checkbox" name="corpo" value="' + esc(x.chiave) + '">' + esc(x.voce) + '</label>'; }).join("") + '</div></div>' +
+        '<div><p class="lbl" style="margin-bottom:.7rem">Leggo da <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:400">(se vuoi)</span></p><div class="scelte">' +
+        '<label><input type="radio" name="perchi" value="uomo">Uomo</label><label><input type="radio" name="perchi" value="donna">Donna</label></div></div>' +
+        '<div class="azioni"><button class="btn btn-pieno" type="submit">Trova la pagina</button></div>' +
+        '<p class="muted piccolo">Non è un test e non c\'è una risposta giusta. Qui non resta niente di quello che tocchi.</p></form></section>' + piede();
+    }
+    var corpo = corpoStr ? corpoStr.split(",").filter(Boolean) : [];
+    var esiti = cerca(situazione, corpo, perChi);
+    if (!esiti.length) {
+      return '<section class="sez"><div class="testata"><p class="lbl">Trova la pagina</p><h1>Per questo non ho una pagina.</h1>' +
+        '<p class="sotto">Non voglio darti una frase per riempire il vuoto. Se vuoi, c\'è la pagina della settimana; e il WhatsApp di Davide legge tutto.</p></div>' +
+        '<div class="azioni"><a class="btn btn-vuoto" href="#settimana">La pagina della settimana</a><a class="btn btn-vuoto" href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">Scrivi a Davide</a><a class="btn btn-linea" href="#trova">Ricomincia</a></div></section>' + piede();
+    }
+    var e = esiti[0], altra = esiti[1];
+    var h = paginaTrovata(e.pagina, "Ho aperto questa pagina perché hai toccato " + e.perche.join(", ") + ".");
+    h += '<section class="sez somiglia" data-altra="' + (altra ? altra.pagina.id : "") + '"><p class="lbl">Ti somigliava?</p><div class="azioni"><button class="btn btn-vuoto" type="button" data-somiglia="si">Sì</button><button class="btn btn-vuoto" type="button" data-somiglia="no">No</button></div><p class="muted piccolo" data-esito></p></section>';
+    if (altra) h += '<section class="sez"><p class="lbl">Un\'altra pagina che potrebbe essere tua</p><div class="altra"><a href="#pagina/' + altra.pagina.id + '?da=' + esc(situazione) + '"><p class="titolo">' + esc(altra.pagina.voce) + '</p><p class="muted piccolo">«' + esc(libroDi(altra.pagina).titolo) + '», ' + esc(capBreve(altra.pagina)) + ' · ' + esc(altra.perche.join(", ")) + '</p></a></div></section>';
+    h += '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#trova">Ricomincia</a></div></section>' + piede();
+    return h;
+  }
+
+  function paginaTrovata(pg, perche){
+    var L = libroDi(pg);
+    return '<section class="sez"><div class="testata"><p class="lbl">La pagina per te</p><h1>' + esc(pg.voce) + '</h1>' +
+      '<p class="sotto">Da «' + esc(L.titolo) + '», capitolo ' + esc(pg.capitolo) + '.</p></div>' +
+      '<div class="pagina"><p class="versi">' + versi(pg.pagina) + '</p></div>' +
+      '<div class="domanda-libro"><p class="lbl" style="margin-bottom:.7rem">La domanda del libro</p><p class="versi">' + versi(pg.domanda) + '</p></div>' +
+      (perche ? '<p class="perche">' + esc(perche) + ' Nessuna intelligenza artificiale: le pagine portano scritto di cosa parlano, e io le confronto con quello che hai toccato.</p>' : "") +
+      '<div class="azioni"><button class="btn btn-pieno" type="button" data-condividi="trovata" data-id="' + esc(pg.id) + '">Passala a qualcuno</button></div>' +
+      '</section>' + blocco3(pg);
+  }
+
+  function vistaPagina(id){
+    var pg = trovaPagina(id);
+    if (!pg) return nonTrovato();
+    return paginaTrovata(pg, "") + '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#trova">Trova la tua pagina</a></div></section>' + piede();
+  }
+
+  vista.addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-somiglia]");
+    if (!b) return;
+    var sez = b.closest(".somiglia"), esito = sez.querySelector("[data-esito]"), altra = sez.getAttribute("data-altra");
+    sez.querySelectorAll("[data-somiglia]").forEach(function(x){ x.disabled = true; x.style.opacity = ".5"; });
+    if (b.getAttribute("data-somiglia") === "si") esito.textContent = "Allora è tua. Se ti va, passala a qualcuno a cui somiglia.";
+    else if (altra) esito.innerHTML = 'Allora non era quella. <a href="#pagina/' + esc(altra) + '">Prova l\'altra pagina</a>, oppure <a href="#trova">ricomincia</a>.';
+    else esito.innerHTML = 'Allora non era quella. <a href="#trova">Ricomincia</a>, oppure <a href="#dimmi">dimmi cosa cercavi</a>.';
+  });
+
+  vista.addEventListener("submit", function(ev){
+    var f = ev.target.closest("#modulo-trova");
+    if (!f) return;
+    ev.preventDefault();
+    var sit = f.querySelector('input[name="situazione"]:checked');
+    if (!sit) return;
+    var corpo = Array.prototype.map.call(f.querySelectorAll('input[name="corpo"]:checked'), function(i){ return i.value; });
+    var chi = f.querySelector('input[name="perchi"]:checked');
+    location.hash = "#trova/" + sit.value + "/" + corpo.join(",") + (chi ? "/" + chi.value : "");
+  });
+
   /* ---------- rotte ---------- */
   function mostra(){
     if (!dati) return;
@@ -288,6 +382,8 @@
       case "settimana": html = vistaSettimana(h[1]); break;
       case "post": html = vistaPost(h[1], h[2]); break;
       case "archivio": html = vistaArchivio(); break;
+      case "trova": html = vistaTrova(h[1], h[2], h[3]); break;
+      case "pagina": html = vistaPagina((h[1] || "").split("?")[0]); break;
       case "libri": html = vistaLibri(); break;
       case "dimmi": html = vistaDimmi(); break;
       case "installa": html = vistaInstalla(); break;
@@ -296,7 +392,7 @@
     vista.innerHTML = html;
     document.querySelectorAll(".barra a").forEach(function(a){
       var mia = a.getAttribute("data-sez");
-      var attiva = mia === sez || (mia === "settimana" && sez === "post");
+      var attiva = mia === sez || (mia === "settimana" && (sez === "post" || sez === "archivio")) || (mia === "trova" && sez === "pagina");
       if (attiva) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
     window.scrollTo(0, 0);

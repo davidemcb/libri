@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 20:16",
+ "generato": "2026-09-02 21:10",
  "settimane": [
   {
    "inizio": "2026-08-31",
@@ -249,6 +249,1376 @@
      ],
      "capitolo": null
     }
+   ]
+  }
+ ],
+ "situazioni": [
+  {
+   "chiave": "tradimento",
+   "voce": "Mi ha tradito"
+  },
+  {
+   "chiave": "sospetto",
+   "voce": "Controllo il telefono"
+  },
+  {
+   "chiave": "separazione",
+   "voce": "Ci siamo separati"
+  },
+  {
+   "chiave": "ex",
+   "voce": "La mia ex, ancora"
+  },
+  {
+   "chiave": "coppia-lunga",
+   "voce": "Insieme da anni, e…"
+  },
+  {
+   "chiave": "desiderio",
+   "voce": "Il desiderio è sparito"
+  },
+  {
+   "chiave": "figli",
+   "voce": "Mio figlio"
+  },
+  {
+   "chiave": "padre",
+   "voce": "Mio padre invecchia"
+  },
+  {
+   "chiave": "lutto",
+   "voce": "È morto qualcuno"
+  },
+  {
+   "chiave": "solitudine",
+   "voce": "Nessuno a cui dirlo"
+  },
+  {
+   "chiave": "paura",
+   "voce": "Ho paura e non lo dico"
+  },
+  {
+   "chiave": "rabbia",
+   "voce": "Mi arrabbio per niente"
+  },
+  {
+   "chiave": "reggere",
+   "voce": "Reggo tutto io"
+  },
+  {
+   "chiave": "fragilita",
+   "voce": "Non ce la faccio più"
+  },
+  {
+   "chiave": "malattia",
+   "voce": "Il corpo non risponde"
+  },
+  {
+   "chiave": "corpo-cambia",
+   "voce": "Non mi riconosco più"
+  },
+  {
+   "chiave": "lavoro",
+   "voce": "Il lavoro mi mangia"
+  },
+  {
+   "chiave": "fermarsi",
+   "voce": "Non riesco a fermarmi"
+  },
+  {
+   "chiave": "contatto",
+   "voce": "Non so più farmi toccare"
+  },
+  {
+   "chiave": "famiglia",
+   "voce": "Casa mia, da piccolo"
+  }
+ ],
+ "corpo": [
+  {
+   "chiave": "spalle",
+   "voce": "Le spalle alte"
+  },
+  {
+   "chiave": "mandibola",
+   "voce": "La mandibola stretta"
+  },
+  {
+   "chiave": "respiro",
+   "voce": "Il respiro corto"
+  },
+  {
+   "chiave": "sonno",
+   "voce": "Non dormo"
+  },
+  {
+   "chiave": "stomaco",
+   "voce": "Lo stomaco chiuso"
+  },
+  {
+   "chiave": "gola",
+   "voce": "Un nodo in gola"
+  },
+  {
+   "chiave": "stanchezza",
+   "voce": "Stanco anche da fermo"
+  },
+  {
+   "chiave": "mani",
+   "voce": "Le mani che non stanno ferme"
+  },
+  {
+   "chiave": "cuore",
+   "voce": "Il cuore che batte forte"
+  },
+  {
+   "chiave": "schiena",
+   "voce": "La schiena che tira"
+  },
+  {
+   "chiave": "vuoto",
+   "voce": "Non sento niente"
+  }
+ ],
+ "pagine": [
+  {
+   "id": "duau-ex",
+   "libro": "duau",
+   "capitolo": "9 — La relazione che resta",
+   "voce": "La incontro ancora",
+   "situazioni": [
+    "ex",
+    "separazione"
+   ],
+   "corpo": [
+    "respiro",
+    "stomaco",
+    "spalle"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Questa è una delle cose",
+    "più strane della separazione.",
+    "Il corpo non ragiona per contratti.",
+    "Non sa che avete deciso",
+    "di non essere più",
+    "una coppia.",
+    "Ricorda.",
+    "Ricorda il modo",
+    "in cui ti abbracciava.",
+    "La sua voce.",
+    "Il suo odore.",
+    "La distanza alla quale dormivate.",
+    "Il modo in cui ti guardava.",
+    "E quando la incontri",
+    "può riconoscerla",
+    "prima ancora",
+    "che tu abbia pensato",
+    "a qualcosa.",
+    "Può succedere in un secondo.",
+    "La vedi.",
+    "E il corpo cambia.",
+    "Il respiro.",
+    "Lo stomaco.",
+    "Le spalle.",
+    "La voce.",
+    "Un piccolo movimento",
+    "che non avevi programmato.",
+    "Poi ti ricordi: “Non stiamo più insieme.”",
+    "La testa arriva dopo."
+   ],
+   "domanda": [
+    "Puoi ricordare senza tornare.",
+    "Puoi avere nostalgia",
+    "senza voler ricominciare.",
+    "Puoi voler bene",
+    "senza appartenere."
+   ]
+  },
+  {
+   "id": "duau-famiglia",
+   "libro": "duau",
+   "capitolo": "3 — La famiglia d'origine",
+   "voce": "Da piccolo, a casa mia",
+   "situazioni": [
+    "famiglia",
+    "reggere"
+   ],
+   "corpo": [
+    "mandibola",
+    "respiro",
+    "spalle"
+   ],
+   "capitolo_pdf": "da-uomo-a-uomo-capitolo-padre.pdf",
+   "pagina": [
+    "Puoi essere amato",
+    "e imparare comunque",
+    "a non mostrare quello che senti.",
+    "Puoi essere protetto",
+    "e imparare comunque",
+    "a proteggere gli altri.",
+    "Puoi avere una famiglia",
+    "che ti vuole bene",
+    "e diventare comunque",
+    "un uomo che fa molta fatica",
+    "a chiedere aiuto.",
+    "Il corpo registra.",
+    "Non come un archivio",
+    "che conserva tutto in ordine.",
+    "Più come un’abitudine.",
+    "Una tensione che diventa normale.",
+    "Una mascella che stringi",
+    "senza accorgertene.",
+    "Il respiro che rimane alto.",
+    "Le spalle che lavorano",
+    "anche quando non serve.",
+    "Il bisogno di essere pronto.",
+    "Di capire prima.",
+    "Di intervenire.",
+    "Di non lasciarti andare troppo.",
+    "Perché lasciarsi andare",
+    "forse",
+    "non è mai sembrato",
+    "del tutto sicuro."
+   ],
+   "domanda": [
+    "Questa tensione è mia?",
+    "O l’ho imparata?",
+    "Questo bisogno di essere forte",
+    "mi serve ancora?",
+    "Oppure continuo a farlo",
+    "perché non conosco altro?"
+   ]
+  },
+  {
+   "id": "duau-figli",
+   "libro": "duau",
+   "capitolo": "11 — I figli",
+   "voce": "Vedo poco mio figlio",
+   "situazioni": [
+    "figli",
+    "separazione"
+   ],
+   "corpo": [],
+   "capitolo_pdf": "da-uomo-a-uomo-capitolo-figli.pdf",
+   "pagina": [
+    "Padri separati.",
+    "Padri lontani.",
+    "Padri che vorrebbero",
+    "esserci di più",
+    "e non possono.",
+    "Padri che si sentono",
+    "in colpa.",
+    "Padri che non sanno",
+    "come ricominciare.",
+    "La distanza",
+    "può essere",
+    "una delle forme",
+    "più dolorose",
+    "della paternità.",
+    "Perché puoi amare",
+    "qualcuno",
+    "e non poterlo vedere",
+    "quanto vorresti.",
+    "Puoi pensarlo",
+    "ogni giorno",
+    "e non sapere",
+    "come dirglielo.",
+    "Puoi avere",
+    "una telefonata",
+    "di cinque minuti",
+    "e portartela dentro",
+    "per tutta la giornata."
+   ],
+   "domanda": [
+    "Forse un giorno",
+    "tuo figlio",
+    "avrà un problema",
+    "e verrà da te.",
+    "Non perché",
+    "hai la soluzione.",
+    "Perché sa",
+    "che può venire."
+   ]
+  },
+  {
+   "id": "duau-fragilita",
+   "libro": "duau",
+   "capitolo": "13 — La fragilità",
+   "voce": "Il corpo non risponde più",
+   "situazioni": [
+    "fragilita",
+    "malattia"
+   ],
+   "corpo": [
+    "stanchezza",
+    "sonno"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "E il corpo",
+    "non risponde",
+    "come ti aspettavi.",
+    "Non è necessariamente",
+    "un dolore.",
+    "Non è necessariamente",
+    "un problema serio.",
+    "È qualcosa",
+    "di più sottile.",
+    "Un limite.",
+    "Un secondo",
+    "in più.",
+    "Un movimento",
+    "che fai diversamente.",
+    "Una cosa",
+    "che prima facevi",
+    "senza pensarci",
+    "e adesso",
+    "ti chiede attenzione.",
+    "All’inizio",
+    "puoi ignorarlo.",
+    "Come fai",
+    "con tante cose.",
+    "“Passerà.”",
+    "“È stanchezza.”",
+    "“Ho dormito male.”",
+    "“Domani va meglio.”",
+    "E continui.",
+    "Perché sei abituato",
+    "a continuare."
+   ],
+   "domanda": [
+    "E chiederti:",
+    "quanto della mia forza",
+    "è davvero forza?",
+    "E quanto",
+    "è soltanto",
+    "l’abitudine",
+    "a non chiedere?"
+   ]
+  },
+  {
+   "id": "duau-invecchiare",
+   "libro": "duau",
+   "capitolo": "14 — L'invecchiamento",
+   "voce": "Non recupero più",
+   "situazioni": [
+    "corpo-cambia"
+   ],
+   "corpo": [
+    "sonno",
+    "stanchezza",
+    "schiena",
+    "spalle",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Poi qualcosa cambia.",
+    "Non necessariamente",
+    "all’improvviso.",
+    "Un po’ alla volta.",
+    "Ti accorgi",
+    "che dopo una notte",
+    "dormita male",
+    "non sei più quello",
+    "di prima.",
+    "Che un allenamento",
+    "che prima ti lasciava",
+    "bene",
+    "adesso ti lascia",
+    "stanco per due giorni.",
+    "Che il recupero",
+    "ha bisogno",
+    "di più tempo.",
+    "Che alcune cose",
+    "che facevi senza pensarci",
+    "adesso le senti.",
+    "Una schiena.",
+    "Un ginocchio.",
+    "Una spalla.",
+    "Il fiato.",
+    "Non è detto",
+    "che ci sia un problema.",
+    "C’è il tempo.",
+    "E il tempo",
+    "passa anche",
+    "attraverso il corpo."
+   ],
+   "domanda": [
+    "Forse è:",
+    "Come voglio stare",
+    "dentro il corpo",
+    "che ho oggi?"
+   ]
+  },
+  {
+   "id": "duau-padre",
+   "libro": "duau",
+   "capitolo": "16 — La morte",
+   "voce": "Mio padre invecchia",
+   "situazioni": [
+    "padre",
+    "lutto"
+   ],
+   "corpo": [
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Poi cresci.",
+    "Li vedi",
+    "invecchiare.",
+    "Un capello bianco.",
+    "Un movimento",
+    "più lento.",
+    "Una visita",
+    "dal medico.",
+    "Una stanchezza",
+    "che prima",
+    "non avevi notato.",
+    "E qualcosa",
+    "cambia.",
+    "Per la prima volta",
+    "può capitarti",
+    "di guardare",
+    "un genitore",
+    "non soltanto",
+    "come il tuo genitore.",
+    "Come una persona.",
+    "Una persona",
+    "che ha un corpo.",
+    "Un corpo",
+    "che invecchia.",
+    "Un corpo",
+    "che un giorno",
+    "non ci sarà più."
+   ],
+   "domanda": [
+    "Forse la domanda",
+    "è un’altra.",
+    "Che cosa succede",
+    "quando smetto",
+    "per un momento",
+    "di fare finta",
+    "che il tempo",
+    "sia infinito?"
+   ]
+  },
+  {
+   "id": "duau-paura",
+   "libro": "duau",
+   "capitolo": "15 — La paura",
+   "voce": "Ho paura, non lo dico",
+   "situazioni": [
+    "paura"
+   ],
+   "corpo": [
+    "respiro",
+    "stomaco",
+    "mani"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La paura non arriva",
+    "sempre urlando.",
+    "A volte",
+    "arriva in silenzio.",
+    "Sei seduto",
+    "in macchina.",
+    "Hai appena parcheggiato.",
+    "Il telefono è lì,",
+    "sul sedile.",
+    "Vibra.",
+    "Guardi lo schermo.",
+    "Un messaggio.",
+    "Un nome.",
+    "Lo apri.",
+    "E per un secondo",
+    "il corpo cambia.",
+    "Il respiro.",
+    "Lo stomaco.",
+    "Le mani.",
+    "Non hai ancora",
+    "capito cosa significa.",
+    "Ma qualcosa",
+    "è già successo."
+   ],
+   "domanda": [
+    "Non sai",
+    "che cosa troverai.",
+    "Ma forse",
+    "non devi saperlo",
+    "prima."
+   ]
+  },
+  {
+   "id": "duau-restare",
+   "libro": "duau",
+   "capitolo": "6 — Restare",
+   "voce": "Non ci cerchiamo più",
+   "situazioni": [
+    "coppia-lunga",
+    "desiderio"
+   ],
+   "corpo": [
+    "stanchezza",
+    "sonno"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Perché all’inizio",
+    "il desiderio sembrava",
+    "una cosa spontanea.",
+    "Succedeva.",
+    "Bastava poco.",
+    "Un messaggio.",
+    "Uno sguardo.",
+    "Una notte insieme.",
+    "Poi la vita entra nella stanza.",
+    "La stanchezza.",
+    "Il lavoro.",
+    "I figli, se ci sono.",
+    "I problemi.",
+    "Le responsabilità.",
+    "Il sonno.",
+    "Il corpo cambia.",
+    "E il desiderio",
+    "non può più essere dato",
+    "per scontato.",
+    "A volte uno dei due può chiedersi:",
+    "“Mi desidera ancora?”",
+    "E l’altro può pensare:",
+    "“Non capisce quanto",
+    "sono stanco.”",
+    "Nessuno dei due",
+    "sta necessariamente",
+    "sbagliando.",
+    "Ma i corpi",
+    "non si incontrano",
+    "sempre nello stesso momento."
+   ],
+   "domanda": [
+    "Come sto accanto a te",
+    "oggi?",
+    "Come ti guardo?",
+    "Come mi lasci guardare?",
+    "Come ti tocco?",
+    "Come mi lasci toccare?",
+    "Come respiro",
+    "quando sei vicino?"
+   ]
+  },
+  {
+   "id": "duau-separarsi",
+   "libro": "duau",
+   "capitolo": "8 — Separarsi",
+   "voce": "Ci siamo separati",
+   "situazioni": [
+    "separazione"
+   ],
+   "corpo": [
+    "vuoto"
+   ],
+   "capitolo_pdf": "da-uomo-a-uomo-capitolo-separarsi.pdf",
+   "pagina": [
+    "Perché dentro una relazione",
+    "non sei soltanto tu.",
+    "Sei il compagno.",
+    "Il marito.",
+    "Il fidanzato.",
+    "Quello che torna a casa.",
+    "Quello che viene aspettato.",
+    "Quello che decide.",
+    "Quello che organizza.",
+    "Quello che protegge.",
+    "Quello che viene cercato.",
+    "Quello che viene desiderato.",
+    "Quello che dorme accanto a qualcuno.",
+    "Quando la relazione finisce,",
+    "alcuni di questi ruoli",
+    "spariscono insieme.",
+    "E allora puoi sentirti stranamente vuoto.",
+    "Non necessariamente disperato.",
+    "A volte addirittura più tranquillo.",
+    "Puoi pensare:",
+    "“Sto meglio.”",
+    "E contemporaneamente",
+    "non sapere cosa fare",
+    "con quel benessere.",
+    "Perché sei abituato",
+    "a vivere dentro",
+    "una struttura.",
+    "Adesso la struttura non c’è più."
+   ],
+   "domanda": [
+    "Come respiro?",
+    "Dove mi appoggio?",
+    "Come dormo?",
+    "Come mi muovo?",
+    "Come torno a casa?",
+    "Come sto quando",
+    "nessuno mi aspetta?"
+   ]
+  },
+  {
+   "id": "duau-solitudine",
+   "libro": "duau",
+   "capitolo": "12 — La solitudine maschile",
+   "voce": "Nessuno a cui dirlo",
+   "situazioni": [
+    "solitudine",
+    "paura"
+   ],
+   "corpo": [
+    "spalle",
+    "respiro"
+   ],
+   "capitolo_pdf": "da-uomo-a-uomo-capitolo-solitudine.pdf",
+   "pagina": [
+    "Ci sono uomini che per anni",
+    "non dicono di avere paura.",
+    "Poi un giorno lo dicono.",
+    "“Ho paura.”",
+    "E non succede nulla di terribile.",
+    "Nessuno li giudica.",
+    "Nessuno scappa.",
+    "Nessuno li corregge.",
+    "Qualcuno risponde:",
+    "“Anch’io.”",
+    "E qualcosa si allenta.",
+    "Le spalle.",
+    "Il respiro.",
+    "La tensione.",
+    "Non perché il problema sparisce.",
+    "Ma perché non è più solo tuo.",
+    "La solitudine maschile",
+    "non nasce solo dall’assenza di relazioni.",
+    "Nasce anche dalla difficoltà",
+    "di abitare quelle relazioni.",
+    "Puoi avere una famiglia,",
+    "amici,",
+    "un partner,",
+    "colleghi.",
+    "E restare solo in una parte di te.",
+    "Quella che non sai dire.",
+    "Quella che non vuoi mostrare.",
+    "Quella che tieni in sospeso."
+   ],
+   "domanda": [
+    "E allora la domanda non è:",
+    "“Quante persone ho intorno?”",
+    "Ma:",
+    "“Con chi posso stare",
+    "senza dover essere qualcuno?”"
+   ]
+  },
+  {
+   "id": "duau-tradimento",
+   "libro": "duau",
+   "capitolo": "7 — Il tradimento",
+   "voce": "Sento che c'è qualcosa",
+   "situazioni": [
+    "tradimento",
+    "sospetto"
+   ],
+   "corpo": [
+    "stomaco",
+    "respiro"
+   ],
+   "capitolo_pdf": "da-uomo-a-uomo-capitolo-tradimento.pdf",
+   "pagina": [
+    "A volte lo capisci",
+    "prima ancora",
+    "di avere una prova.",
+    "Non sai dire esattamente",
+    "che cosa sia.",
+    "Ma qualcosa è cambiato.",
+    "Un modo di guardarti.",
+    "Una distanza.",
+    "Il telefono",
+    "che viene girato",
+    "dall’altra parte.",
+    "Un silenzio",
+    "che prima non c’era.",
+    "Una risposta",
+    "diversa dal solito.",
+    "Magari non significa niente.",
+    "Magari significa tutto.",
+    "E tu non lo sai.",
+    "Ma il corpo",
+    "ha già cominciato",
+    "a fare qualcosa.",
+    "Può essere una sensazione",
+    "nello stomaco.",
+    "Una tensione",
+    "nel petto.",
+    "Una difficoltà",
+    "a respirare."
+   ],
+   "domanda": [
+    "E forse non ti sta dicendo",
+    "cosa fare.",
+    "Ti sta soltanto dicendo:",
+    "“Guarda.”",
+    "Guarda cosa è successo.",
+    "Guarda cosa senti.",
+    "Guarda cosa è cambiato.",
+    "Guarda dove sei."
+   ]
+  },
+  {
+   "id": "pac-corpo-non-risponde",
+   "libro": "pac",
+   "capitolo": "2 — Il corpo che non risponde",
+   "voce": "Non funziono più come prima",
+   "situazioni": [
+    "malattia",
+    "corpo-cambia"
+   ],
+   "corpo": [
+    "schiena",
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "All’inizio non lo chiamò così.",
+    "Non avrebbe saputo farlo.",
+    "C’erano solo piccole discrepanze, quasi impercettibili, tra ciò che il corpo faceva prima e ciò che faceva adesso.",
+    "Ritardi minimi.",
+    "Risposte meno immediate.",
+    "Sensazioni che arrivavano quando non servivano.",
+    "Nulla di grave.",
+    "Nulla di che.",
+    "Il corpo non aveva smesso di funzionare.",
+    "Aveva smesso di farlo come voleva lei.",
+    "La mattina, davanti allo specchio, iniziò a trattenersi qualche secondo in più.",
+    "Non per guardarsi davvero, ma per cercare una spiegazione visibile.",
+    "Un segno.",
+    "Un indizio che giustificasse quella sensazione di scarto.",
+    "Il volto era lo stesso.",
+    "Forse solo un po’ più stanco.",
+    "Passava le mani sulla pelle con un gesto rapido, quasi tecnico.",
+    "Come si controlla qualcosa che si teme possa cedere.",
+    "Il tocco non aveva intenzione.",
+    "Non aveva ascolto.",
+    "Aveva una funzione.",
+    "Controllare.",
+    "Verificare.",
+    "Confermare che fosse tutto sotto controllo.",
+    "Il corpo, sotto quelle mani, restava muto.",
+    "Quando compariva un dolore, lo collocava subito in una categoria.",
+    "Schiena.",
+    "Cervicale.",
+    "Stanchezza accumulata."
+   ],
+   "domanda": [
+    "Ma da quel momento, quando il corpo sembrava non rispondere, una domanda iniziò a farsi spazio, senza ancora prendere forma: E se non fosse un problema da risolvere?",
+    "E se fosse una richiesta che non aveva ancora imparato a riconoscere?"
+   ]
+  },
+  {
+   "id": "pac-non-fare-niente",
+   "libro": "pac",
+   "capitolo": "4 — Un posto dove non devi fare niente",
+   "voce": "Non so stare senza fare",
+   "situazioni": [
+    "fermarsi",
+    "reggere"
+   ],
+   "corpo": [
+    "spalle",
+    "mandibola",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La prima cosa che sentì fu un alleggerimento strano.",
+    "Non sollievo.",
+    "Non rilassamento.",
+    "Assenza di richieste.",
+    "Nessuno le chiedeva come stava.",
+    "Nessuno aspettava una risposta.",
+    "Nessuno le spiegava cosa avrebbe dovuto fare per “funzionare meglio”.",
+    "Il corpo reagì prima ancora che se ne rendesse conto.",
+    "Le spalle scesero di qualche millimetro.",
+    "La mandibola smise di stringere.",
+    "Il respiro cambiò direzione, senza diventare più profondo.",
+    "Si accorse di quanto fosse raro trovarsi in uno spazio dove non fosse necessario dimostrare nulla.",
+    "Dove non ci fosse una misura implicita.",
+    "Dove non esistesse una versione giusta di sé da mantenere.",
+    "All’inizio restare lì fu difficile.",
+    "Senza una consegna, la mente iniziò a cercarne una.",
+    "Un obiettivo.",
+    "Un senso.",
+    "Il corpo, invece, sembrava sapere esattamente come stare.",
+    "Seduta, sentiva il peso scendere verso il basso.",
+    "Non tutto insieme.",
+    "Non con abbandono.",
+    "Con gradualità.",
+    "Era come se il corpo stesse testando la possibilità di non doversi difendere.",
+    "Di non dover anticipare.",
+    "Di non dover reggere per nessuno."
+   ],
+   "domanda": [
+    "Si rese conto che passava gran parte delle sue giornate a fare qualcosa per il corpo: muoverlo, nutrirlo, organizzarlo.",
+    "Raramente stava con il corpo."
+   ]
+  },
+  {
+   "id": "pac-quando-il-corpo-chiede",
+   "libro": "pac",
+   "capitolo": "6 — Quando il corpo chiede",
+   "voce": "Il corpo mi chiede qualcosa",
+   "situazioni": [
+    "contatto",
+    "fermarsi"
+   ],
+   "corpo": [
+    "respiro",
+    "mandibola",
+    "spalle"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Una sera, tornando a casa, si fermò in piedi al centro della stanza.",
+    "Non accese subito la luce.",
+    "Il corpo oscillò leggermente, come se stesse cercando un orientamento.",
+    "Le mani salirono al petto.",
+    "Rimasero lì.",
+    "Non stava iniziando una pratica.",
+    "Non stava facendo qualcosa “per stare meglio”.",
+    "Stava rispondendo.",
+    "Il corpo chiede in molti modi.",
+    "A volte con il dolore.",
+    "A volte con la fatica.",
+    "A volte con un gesto che nasce prima del pensiero.",
+    "In quel momento, la richiesta era semplice e disarmante: non andare via.",
+    "Il respiro passò più volte nello stesso punto, senza essere corretto.",
+    "La mandibola si ammorbidì da sola.",
+    "Le spalle scesero lentamente, come se avessero aspettato un permesso.",
+    "Sentì un calore diffondersi, non intenso, ma continuo.",
+    "Come se il corpo stesse rioccupando uno spazio che aveva lasciato vuoto per anni.",
+    "Non provò sollievo immediato.",
+    "Provò riconoscimento.",
+    "Capì che per molto tempo aveva deciso per il corpo, interpretandone i segnali come ostacoli da superare o come malfunzionamenti da correggere.",
+    "Ora iniziava a vederli per quello che erano: tentativi di relazione.",
+    "Quando il corpo chiede, non chiede di essere migliorato.",
+    "Non chiede performance più dolci.",
+    "Chiede presenza."
+   ],
+   "domanda": [
+    "Il corpo non si chiudeva più del tutto.",
+    "Aspettava.",
+    "Aspettava che lei tornasse, non per sistemarlo, ma per stargli accanto."
+   ]
+  },
+  {
+   "id": "pac-sempre-in-ritardo",
+   "libro": "pac",
+   "capitolo": "3 — Sempre in ritardo",
+   "voce": "Sono sempre in ritardo",
+   "situazioni": [
+    "fermarsi",
+    "lavoro"
+   ],
+   "corpo": [
+    "stanchezza",
+    "schiena",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La sensazione arrivava prima ancora di guardare l’orologio.",
+    "Non aveva bisogno di numeri per esistere.",
+    "Era come se il tempo fosse sempre già partito, lasciandole addosso l’urgenza di rincorrerlo.",
+    "Non importava a che punto della giornata fosse: mattino, pomeriggio, sera.",
+    "C’era sempre qualcosa che stava accadendo un passo avanti rispetto a lei.",
+    "Il corpo lo sentiva subito.",
+    "Al mattino, anche quando si alzava con anticipo, c’era una fretta che non dipendeva dall’orario.",
+    "Un’accelerazione interna che non trovava un vero motivo.",
+    "Il corpo si muoveva più velocemente di quanto avrebbe voluto, come se dovesse recuperare qualcosa di perso.",
+    "Si vestiva pensando già al dopo.",
+    "Camminava pensando già all’arrivo.",
+    "Parlava pensando già alla risposta successiva.",
+    "Il presente era attraversato, non abitato.",
+    "Il corpo, in questo attraversamento continuo, iniziava a faticare.",
+    "Non con segnali clamorosi, ma con una stanchezza diffusa, che non si posava mai in un punto preciso.",
+    "Una stanchezza che non autorizzava a fermarsi perché non aveva un volto riconoscibile.",
+    "Si sentiva spesso in ritardo con il corpo stesso.",
+    "In ritardo nel riposare.",
+    "In ritardo nel nutrirlo davvero.",
+    "In ritardo nell’ascoltarlo prima che fosse troppo evidente.",
+    "Quando si concedeva una pausa, anche breve, la viveva come una concessione.",
+    "Non come un diritto.",
+    "Il corpo, invece, sembrava viverla come un recupero necessario.",
+    "Seduta, sentiva le gambe pesanti.",
+    "La schiena cercava un appoggio più ampio.",
+    "Il respiro chiedeva spazio.",
+    "La mente interveniva subito: solo cinque minuti."
+   ],
+   "domanda": [
+    "Capì che forse non era in ritardo con la vita.",
+    "Forse era sempre stata un passo avanti, trascinando il corpo dietro di sé."
+   ]
+  },
+  {
+   "id": "sv-contatto",
+   "libro": "sv",
+   "capitolo": "40 — Bisogno di comunità e contatto vero",
+   "voce": "Nessuno mi tocca più",
+   "situazioni": [
+    "contatto",
+    "solitudine"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Il telefono c’è.",
+    "La chat pure.",
+    "Arrivano messaggi brevi.",
+    "Funzionali.",
+    "Educati.",
+    "«Tutto bene?»",
+    "«Poi ti chiamo.»",
+    "«Adesso non riesco.»",
+    "La famiglia non è assente.",
+    "È occupata.",
+    "Il corpo lo sente come distanza senza rottura.",
+    "Nessun litigio.",
+    "Nessun dramma.",
+    "Solo mancanza di presenza reale.",
+    "Quando la famiglia si allontana o si assorbe,",
+    "non è sempre per scelta.",
+    "È per traiettoria.",
+    "Figli presi dalle loro vite.",
+    "Parenti dispersi.",
+    "Ritmi che non si incrociano più.",
+    "Tu resti al margine del flusso.",
+    "Non esclusa.",
+    "Non centrale.",
+    "E il bisogno che emerge",
+    "non è di assistenza.",
+    "È di contatto vero.",
+    "Non vuoi essere aiutata.",
+    "Vuoi essere incontrata.",
+    "La cultura dice: arrangiati.",
+    "Il corpo dice: non sono fatta per stare sola così."
+   ],
+   "domanda": [
+    "Porta una mano sul petto.",
+    "Una sull’addome.",
+    "Per 30 secondi,",
+    "senti questo:",
+    "ho bisogno di contatto.",
+    "Non giudicare.",
+    "Non giustificare."
+   ]
+  },
+  {
+   "id": "sv-dolore-cronico",
+   "libro": "sv",
+   "capitolo": "13 — Il dolore cronico",
+   "voce": "Il dolore non passa mai",
+   "situazioni": [
+    "malattia",
+    "fragilita"
+   ],
+   "corpo": [
+    "schiena",
+    "spalle",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è un dolore acuto.",
+    "È una presenza costante.",
+    "Schiena.",
+    "Anche.",
+    "Spalle.",
+    "Ginocchia.",
+    "Non urla.",
+    "Ma non se ne va.",
+    "All’inizio pensavi fosse passeggero.",
+    "Hai aspettato.",
+    "Hai compensato.",
+    "Hai preso qualcosa.",
+    "Poi hai capito che non è un episodio.",
+    "È diventato parte del tuo paesaggio.",
+    "Il meccanismo che hai sempre usato era:",
+    "resisto.",
+    "Ora resistere ti consuma.",
+    "Il dolore cronico modifica il sistema nervoso.",
+    "Non è solo il tessuto.",
+    "È la sensibilità che cambia.",
+    "Il corpo resta in allerta.",
+    "I muscoli si irrigidiscono per proteggere.",
+    "Il respiro si accorcia.",
+    "Più combatti, più ti contrai.",
+    "Più ti contrai, più senti.",
+    "Il corpo non vuole punirti.",
+    "Vuole proteggere una zona vulnerabile."
+   ],
+   "domanda": [
+    "Fermati.",
+    "Porta una mano vicino alla zona dolente.",
+    "Non sopra per correggere.",
+    "Vicino.",
+    "Respira senza voler sciogliere nulla.",
+    "Resta 30 secondi."
+   ]
+  },
+  {
+   "id": "sv-figli-che-se-ne-vanno",
+   "libro": "sv",
+   "capitolo": "63 — Figli che se ne vanno",
+   "voce": "Mio figlio è andato via",
+   "situazioni": [
+    "figli",
+    "solitudine"
+   ],
+   "corpo": [
+    "vuoto"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La stanza è vuota.",
+    "L’armadio mezzo aperto.",
+    "Il letto rifatto che nessuno disfa.",
+    "Hai desiderato che crescessero.",
+    "Ora che sono cresciuti, ti manca qualcosa.",
+    "Per anni il tuo tempo era intrecciato al loro.",
+    "Orari.",
+    "Compiti.",
+    "Preoccupazioni.",
+    "Il meccanismo era totale:",
+    "mi occupo di loro: ho uno scopo chiaro.",
+    "Ora lo scopo cambia.",
+    "Non sei più al centro della loro giornata.",
+    "E ti trovi fuori da un ruolo che ti definiva.",
+    "Il petto può sentirsi vuoto.",
+    "Le braccia senza direzione.",
+    "Il sistema nervoso, abituato a vigilare,",
+    "non sa subito rilassarsi.",
+    "Resta una tensione sottile.",
+    "Non è solo nostalgia.",
+    "È riorganizzazione.",
+    "Il corpo sta cercando un nuovo orientamento."
+   ],
+   "domanda": [
+    "Fermati.",
+    "Appoggia una mano sul petto.",
+    "Senti cosa c’è:",
+    "vuoto, tensione, calore.",
+    "Non riempire subito quello spazio.",
+    "Lascialo respirare."
+   ]
+  },
+  {
+   "id": "sv-lavoro",
+   "libro": "sv",
+   "capitolo": "45 — Lavoro, immagine, disponibilità emotiva",
+   "voce": "Il lavoro mi mangia",
+   "situazioni": [
+    "lavoro",
+    "reggere"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Ti svegli già in ritardo.",
+    "Non perché l’ora è sbagliata.",
+    "Perché sei indietro rispetto a tutto.",
+    "Prima ancora di alzarti,",
+    "stai già rispondendo.",
+    "A qualcuno.",
+    "A qualcosa.",
+    "Il corpo è operativo prima di essere presente.",
+    "Funziona.",
+    "Non arriva.",
+    "Alle donne non è mai stato chiesto di essere.",
+    "È stato chiesto di reggere.",
+    "Reggere il lavoro.",
+    "Reggere l’immagine.",
+    "Reggere le relazioni.",
+    "Reggere gli umori degli altri.",
+    "Essere competenti.",
+    "Gradevoli.",
+    "Disponibili.",
+    "Lucide.",
+    "Contenute."
+   ],
+   "domanda": [
+    "Lascia cadere le spalle, se vogliono.",
+    "Non correggere la postura.",
+    "Porta una mano dove capita.",
+    "Petto, pancia, fianco.",
+    "Non scegliere bene. Scegli.",
+    "Resta 30 secondi.",
+    "Senza aggiustare il respiro.",
+    "Senza fare bene."
+   ]
+  },
+  {
+   "id": "sv-non-mi-riconosco",
+   "libro": "sv",
+   "capitolo": "79 — «Non mi riconosco»",
+   "voce": "Non mi riconosco più",
+   "situazioni": [
+    "corpo-cambia"
+   ],
+   "corpo": [
+    "vuoto",
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Lo specchio non è cattivo.",
+    "Non giudica.",
+    "Riflette.",
+    "È lei che resta un secondo in più.",
+    "La testa leggermente inclinata.",
+    "Come se bastasse cambiare angolo",
+    "per tornare a prima.",
+    "La luce è quella di sempre.",
+    "Il volto no.",
+    "Non arriva un dolore netto.",
+    "Arriva uno scarto interno.",
+    "Un vuoto breve.",
+    "E una frase che cade, senza scena:",
+    "«Non mi riconosco.»",
+    "Non è vanità.",
+    "Non è paura di invecchiare.",
+    "È che per molto tempo l’identità è passata da lì.",
+    "Dal volto che funzionava.",
+    "Che rassicurava.",
+    "Che teneva insieme il mondo.",
+    "Quel volto ha lavorato.",
+    "Ha sorriso quando serviva.",
+    "Ha nascosto la stanchezza."
+   ],
+   "domanda": [
+    "Appoggia una mano sul viso.",
+    "Ferma.",
+    "Senza correggere nulla.",
+    "Respira tre volte,",
+    "senza cambiare il respiro.",
+    "Lascia che il corpo senta",
+    "com’è stare qui",
+    "senza cercare un’immagine migliore."
+   ]
+  },
+  {
+   "id": "sv-perdita-partner",
+   "libro": "sv",
+   "capitolo": "38 — Perdita del partner",
+   "voce": "Ho perso il mio compagno",
+   "situazioni": [
+    "lutto",
+    "solitudine"
+   ],
+   "corpo": [
+    "spalle",
+    "respiro",
+    "sonno"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La perdita del partner non è solo dolore.",
+    "È dislocazione.",
+    "Per anni sei stata in due.",
+    "Anche quando c’era distanza.",
+    "Anche quando c’erano conflitti.",
+    "C’era un riferimento.",
+    "Un altro corpo che teneva il perimetro.",
+    "Una presenza che faceva da controparte.",
+    "Quando scompare,",
+    "non perdi solo una persona.",
+    "Perdi una struttura.",
+    "E la solitudine che arriva",
+    "non è mancanza di compagnia.",
+    "È perdita di appoggio simbolico.",
+    "Nel corpo il lutto è un collasso lento.",
+    "Il peso scende verso il basso.",
+    "Le spalle cercano un appoggio che non c’è.",
+    "Il respiro diventa più corto, più interno.",
+    "Il corpo non sa più dove orientarsi.",
+    "Non perché sia fragile.",
+    "Perché era abituato a condividere.",
+    "Anche dormire cambia.",
+    "Anche mangiare.",
+    "Anche stare seduta.",
+    "Il corpo sente che manca un testimone.",
+    "Qualcuno che confermava l’esistenza quotidiana."
+   ],
+   "domanda": [
+    "Siediti.",
+    "Appoggia bene i piedi a terra.",
+    "Porta una mano sul petto.",
+    "Una sull’addome.",
+    "Per 30 secondi,",
+    "senti questo:",
+    "io sono qui, anche adesso."
+   ]
+  },
+  {
+   "id": "sv-rabbia-tardi",
+   "libro": "sv",
+   "capitolo": "59 — La rabbia che arriva tardi",
+   "voce": "Mi arrabbio per niente",
+   "situazioni": [
+    "rabbia",
+    "reggere"
+   ],
+   "corpo": [
+    "mandibola",
+    "spalle",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Ti irriti più facilmente.",
+    "Cose piccole ti fanno esplodere.",
+    "Rispondi secca.",
+    "Hai meno pazienza.",
+    "E ti chiedi cosa ti stia succedendo.",
+    "Per anni hai mediato.",
+    "Hai smussato conflitti.",
+    "Hai anticipato bisogni.",
+    "Hai ingoiato frasi.",
+    "Il meccanismo era chiaro:",
+    "meglio adattarmi che rompere.",
+    "Ha funzionato.",
+    "Ora non funziona più.",
+    "Non perché sei diventata aggressiva.",
+    "Perché il contenitore è pieno.",
+    "Quando trattieni, il corpo si compatta.",
+    "Mandibola serrata.",
+    "Spalle sollevate.",
+    "Diaframma bloccato.",
+    "La rabbia non espressa non sparisce.",
+    "Si deposita.",
+    "Con la menopausa il sistema nervoso è più reattivo.",
+    "Il cuscinetto ormonale è più sottile.",
+    "Quello che prima reggevi ora brucia.",
+    "Non è instabilità.",
+    "È sensibilità non più anestetizzata."
+   ],
+   "domanda": [
+    "Fermati.",
+    "Senti dove brucia.",
+    "Gola?",
+    "Petto?",
+    "Stomaco?",
+    "Non respingere.",
+    "Non giustificare.",
+    "Resta 30 secondi nel punto caldo."
+   ]
+  },
+  {
+   "id": "sv-separarsi",
+   "libro": "sv",
+   "capitolo": "83 — Separarsi / divorziare: il corpo senza ruolo",
+   "voce": "Dopo, mi sento vuota",
+   "situazioni": [
+    "separazione",
+    "reggere"
+   ],
+   "corpo": [
+    "vuoto"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è il dolore.",
+    "È il vuoto.",
+    "Non c’è più da resistere.",
+    "Non c’è più da tenere insieme niente.",
+    "Non c’è più nessuno da reggere.",
+    "Il corpo lo sente prima della testa.",
+    "Come quando finisce un rumore che c’era da anni",
+    "e il silenzio arriva troppo forte.",
+    "Non soffrivi più.",
+    "Ma non sapevi dove stare nel tuo corpo.",
+    "Per anni il corpo aveva una funzione.",
+    "Essere moglie.",
+    "Essere madre.",
+    "Essere quella che tiene.",
+    "Quella che aggiusta.",
+    "Quella che capisce anche quando l’altro non parla.",
+    "La separazione arriva come una fine chiara.",
+    "Firma.",
+    "Scatoloni.",
+    "Case che si dividono.",
+    "Giorni che cambiano ritmo.",
+    "E poi, dopo.",
+    "Quando «va meglio».",
+    "Nessuno prepara a questo.",
+    "Non c’è più l’emergenza.",
+    "Non c’è più la lotta.",
+    "Non c’è più il dover sopravvivere.",
+    "Il corpo resta.",
+    "Senza ruolo."
+   ],
+   "domanda": [
+    "Porta una mano dove senti più vuoto.",
+    "Non per riempirlo.",
+    "Solo per esserci.",
+    "Respira tre volte.",
+    "Senza aggiustare.",
+    "Senza migliorare.",
+    "Resta."
+   ]
+  },
+  {
+   "id": "sv-sessualita-compito",
+   "libro": "sv",
+   "capitolo": "73 — Sessualità che diventa compito",
+   "voce": "Lo faccio senza esserci",
+   "situazioni": [
+    "desiderio",
+    "coppia-lunga"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Succede senza un momento preciso.",
+    "Non c’è una data.",
+    "Non c’è una frase.",
+    "C’è un corpo che arriva a sera e fa.",
+    "Fa perché si fa.",
+    "Fa perché è giusto.",
+    "Fa perché «così evitiamo problemi».",
+    "Il corpo è presente.",
+    "Ma non è dentro.",
+    "È lì come una stanza lasciata aperta.",
+    "Le luci accese.",
+    "Nessuno che abita davvero.",
+    "Nelle relazioni lunghe l’eros non muore di colpo.",
+    "Si assottiglia.",
+    "Si organizza.",
+    "Si adatta.",
+    "Diventa efficiente.",
+    "Impari a tenere insieme tutto.",
+    "Il lavoro.",
+    "I figli.",
+    "La casa.",
+    "L’umore di lui.",
+    "Il clima.",
+    "E a un certo punto anche il sesso entra nella lista.",
+    "Non come desiderio.",
+    "Come manutenzione.",
+    "Non è più «ti voglio».",
+    "È «se no poi…»."
+   ],
+   "domanda": [
+    "Appoggia una mano sul basso ventre.",
+    "Non per sentire qualcosa.",
+    "Solo per esserci.",
+    "Respira tre volte.",
+    "Senza aggiustare.",
+    "Chiediti, senza rispondere:",
+    "«Sono qui o sto facendo?»",
+    "Resta."
    ]
   }
  ]
