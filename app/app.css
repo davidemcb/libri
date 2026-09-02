@@ -154,3 +154,9 @@ textarea{
 .altra a{text-decoration:none}
 .altra .titolo{font-size:1.25rem}
 .pulisci{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;font-size:.8rem;cursor:pointer;font-family:Archivo,system-ui,sans-serif}
+
+/* ---------- un minuto col corpo ---------- */
+.invito{background:var(--raise);padding:1.3rem 1.3rem 1.4rem;border-radius:3px}
+.copione{display:grid;gap:.15rem;font-size:clamp(1.22rem,4vw,1.5rem);line-height:1.55}
+.copione .pausa{display:block;height:1.4rem}
+audio{margin-block:.3rem}
