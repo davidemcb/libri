@@ -360,13 +360,21 @@ footer{background:var(--b-bg);color:var(--b-text);border-top:1px solid var(--b-l
 .trittico a:hover{transform:translateY(-6px)}
 .trittico a:nth-child(2){margin-bottom:1.6rem}   /* la centrale un filo più su */
 
-/* ---------- bottoni social sharing ---------- */
-.share-buttons{
-  display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;
+/* ---------- condividere: i marchi, in tondo ----------
+   I bottoni li costruisce sito.js dentro [data-share]: qui
+   c'è solo il vestito. Un cerchio sottile, il segno dentro,
+   e il verde della casa quando ci passi sopra. */
+.share-buttons{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+.condividi{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:2.35rem;height:2.35rem;padding:0;border-radius:50%;
+  border:1px solid var(--a-line);background:transparent;color:var(--a-muted);
+  cursor:pointer;text-decoration:none;-webkit-appearance:none;appearance:none;
+  transition:color .18s ease,border-color .18s ease,background .18s ease;
 }
-.share-buttons .btn{
-  padding:.65rem 1.1rem;font-size:.75rem;white-space:nowrap;
-}
-.share-buttons .btn svg{
-  width:1em;height:1em;
-}
+.condividi svg{display:block;width:1.05rem;height:1.05rem;fill:currentColor}
+.condividi:hover{color:var(--a-accent);border-color:var(--a-accent);background:var(--a-raise)}
+.condividi.fatto{color:var(--a-accent);border-color:var(--a-accent)}
+.b .condividi{border-color:var(--b-line);color:var(--b-muted)}
+.b .condividi:hover{color:var(--b-accent);border-color:var(--b-accent);background:var(--b-raise)}
+.b .condividi.fatto{color:var(--b-accent);border-color:var(--b-accent)}
