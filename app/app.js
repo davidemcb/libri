@@ -366,7 +366,7 @@
         '<div class="azioni"><a class="btn btn-vuoto" href="#settimana">La pagina della settimana</a><a class="btn btn-vuoto" href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">Scrivi a Davide</a><a class="btn btn-linea" href="#trova">Ricomincia</a></div></section>' + piede();
     }
     var e = esiti[0], altra = esiti[1];
-    var h = paginaTrovata(e.pagina, "Ho aperto questa pagina perché hai toccato " + e.perche.join(", ") + ".") + invitoPratica(e.pagina, corpo);
+    var h = paginaTrovata(e.pagina, "Ho aperto questa pagina perché hai toccato " + e.perche.join(", ") + ".");
     h += invitoPratica(praticaPer(corpo, e.pagina));
     h += '<section class="sez somiglia" data-altra="' + (altra ? altra.pagina.id : "") + '"><p class="lbl">Ti somigliava?</p><div class="azioni"><button class="btn btn-vuoto" type="button" data-somiglia="si">Sì</button><button class="btn btn-vuoto" type="button" data-somiglia="no">No</button></div><p class="muted piccolo" data-esito></p></section>';
     if (altra) h += '<section class="sez"><p class="lbl">Un\'altra pagina che potrebbe essere tua</p><div class="altra"><a href="#pagina/' + altra.pagina.id + '?da=' + esc(situazione) + '"><p class="titolo">' + esc(altra.pagina.voce) + '</p><p class="muted piccolo">«' + esc(libroDi(altra.pagina).titolo) + '», ' + esc(capBreve(altra.pagina)) + ' · ' + esc(altra.perche.join(", ")) + '</p></a></div></section>';
@@ -398,14 +398,6 @@
   }
   /* la pratica si sceglie dal segno del corpo che la persona ha toccato; se non ne ha toccati,
      dal primo segno che la pagina nomina; se non c'è niente, non si propone niente */
-  function invitoPratica(pg, corpoToccato){
-    var chiavi = (corpoToccato || []).concat(pg.corpo || []), pr = null;
-    for (var i = 0; i < chiavi.length && !pr; i++) pr = trovaPratica(chiavi[i]);
-    if (!pr) return "";
-    return '<section class="sez invito"><p class="lbl">Se vuoi, un minuto col corpo</p>' +
-      '<p>Hai toccato «' + esc(voceCorpo(pr.corpo)) + '». Il libro a questo punto chiede una cosa sola, da fare adesso: una mano lì, e un minuto di ascolto. Niente da ottenere.</p>' +
-      '<div class="azioni"><a class="btn btn-vuoto" href="#pratica/' + esc(pr.corpo) + '">' + esc(pr.titolo) + '</a></div></section>';
-  }
   function vistaPratica(chiave){
     var pr = trovaPratica(chiave);
     if (!pr) return nonTrovato();
@@ -421,7 +413,7 @@
   function vistaPagina(id){
     var pg = trovaPagina(id);
     if (!pg) return nonTrovato();
-    return paginaTrovata(pg, "") + invitoPratica(pg, []) + '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#trova">Trova la tua pagina</a></div></section>' + piede();
+    return paginaTrovata(pg, "") + invitoPratica(praticaPer([], pg)) + '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#trova">Trova la tua pagina</a></div></section>' + piede();
   }
 
   vista.addEventListener("click", function(ev){
