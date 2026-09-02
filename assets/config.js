@@ -32,8 +32,8 @@ window.SITO = {
      scarica PDF ed EPUB, e riceve l'email col link.
   ---------------------------------------------------------- */
   gumroad: {
-    duauEbook: "",   // Da uomo a uomo — https://wellfulnessn1.gumroad.com/l/...
-    svEbook:   "",   // Senza veli
+    duauEbook: "https://wellfulnessn1.gumroad.com/l/ijnuh", // Da uomo a uomo — 5,99 €
+    svEbook:   "https://wellfulnessn1.gumroad.com/l/jwydf", // Senza veli — 4,99 €
     pacEbook:  ""    // Prenditi a carezze — resta vuoto finché è in KDP Select
   },
 
