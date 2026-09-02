@@ -190,8 +190,12 @@
         <form class="modulo colonna" data-modulo="capitolo" novalidate>
           <label class="lbl" for="mail-estratto" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>
           <input id="mail-estratto" name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email">
+          <input type="hidden" name="email_address_check" value="">
+          <input type="hidden" name="locale" value="it">
+          <input type="hidden" name="html_type" value="simple">
+          <input type="hidden" name="ORIGINE" value="capitolo">
           <label class="consenso">
-            <input type="checkbox" required>
+            <input type="checkbox" name="OPT_IN" required>
             <span>Sì, mandami l'estratto e avvisami quando esce il libro. Posso cancellarmi con un clic. <a href="privacy.html">Come tratto i dati</a>.</span>
           </label>
           <button class="btn btn-pieno" type="submit" style="margin-top:1.2rem">Mandami l'estratto</button>

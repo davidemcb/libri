@@ -144,8 +144,12 @@
         <form class="modulo colonna" data-modulo="percorso" novalidate>
           <label class="lbl" for="mail-home" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>
           <input id="mail-home" name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email">
+          <input type="hidden" name="email_address_check" value="">
+          <input type="hidden" name="locale" value="it">
+          <input type="hidden" name="html_type" value="simple">
+          <input type="hidden" name="ORIGINE" value="percorso">
           <label class="consenso">
-            <input type="checkbox" required>
+            <input type="checkbox" name="OPT_IN" required>
             <span>Sì, mandami le sette email del percorso e ogni tanto una notizia sui libri. Posso cancellarmi con un clic. <a href="privacy.html">Come tratto i dati</a>.</span>
           </label>
           <button class="btn btn-pieno" type="submit" style="margin-top:1.2rem">Comincia dai piedi</button>
