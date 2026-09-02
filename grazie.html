@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="assets/stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%232C6C68'/%3E%3Ctext x='50' y='70' font-family='Georgia,serif' font-size='58' fill='%23F2E7D0' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 
@@ -28,7 +29,9 @@
 
   <section class="b" style="padding-block:clamp(3.5rem,9vw,6rem)">
     <div class="wrap">
-      <div class="col" style="margin-inline:auto">
+
+      <!-- ?da=percorso (anche default, se il parametro manca o è sconosciuto) -->
+      <div class="col" id="grazie-percorso" style="margin-inline:auto">
         <p class="lbl">Ci siamo</p>
         <h1 style="font-size:clamp(1.9rem,4.6vw,2.8rem);line-height:1.15;margin-top:.9rem">Adesso tocca alla tua casella di posta.</h1>
         <div class="versi" style="margin-top:2rem">
@@ -42,6 +45,35 @@
         <p style="margin-top:2.4rem">Ci vediamo domattina. Si comincia dai piedi.</p>
         <p class="lbl" style="margin-top:2rem">Davide</p>
       </div>
+
+      <!-- ?da=capitolo-* / estratto-carezze -->
+      <div class="col" id="grazie-capitolo" style="margin-inline:auto" hidden>
+        <p class="lbl">Ci siamo</p>
+        <h1 style="font-size:clamp(1.9rem,4.6vw,2.8rem);line-height:1.15;margin-top:.9rem">Il capitolo arriva nella tua posta.</h1>
+        <div class="versi" style="margin-top:2rem">
+          <p>Qualche minuto, non di più. È un PDF: si apre sul telefono e sul computer.<br>
+             Se non lo vedi, guarda nella posta indesiderata<br>
+             o nella scheda «Promozioni».</p>
+          <p class="muted">Leggilo con calma, senza obbligo di arrivare in fondo.</p>
+        </div>
+        <p style="margin-top:2.4rem">Nel frattempo, il libro da cui viene è qui sotto.</p>
+        <p class="muted" style="margin-top:1.2rem">Se non vuoi aspettare: <a href="capitoli/da-uomo-a-uomo-capitolo-tradimento.pdf">scarica subito il PDF del capitolo sul tradimento</a>. L'email che arriva è la copia.</p>
+        <p class="lbl" style="margin-top:2rem">Davide</p>
+      </div>
+
+      <!-- ?da=avviso-senza-veli -->
+      <div class="col" id="grazie-avviso" style="margin-inline:auto" hidden>
+        <p class="lbl">Ci siamo</p>
+        <h1 style="font-size:clamp(1.9rem,4.6vw,2.8rem);line-height:1.15;margin-top:.9rem">Ti scrivo io quando esce.</h1>
+        <div class="versi" style="margin-top:2rem">
+          <p><em>Senza veli</em> in cartaceo è in lavorazione.<br>
+             Quando c'è, te lo dico qui, una volta. Nient'altro.</p>
+          <p class="muted">Se non vuoi aspettare, l'ebook c'è già: PDF ed EPUB, si legge da subito.</p>
+        </div>
+        <p style="margin-top:2.4rem">Il libro è qui sotto.</p>
+        <p class="lbl" style="margin-top:2rem">Davide</p>
+      </div>
+
     </div>
   </section>
 
@@ -67,7 +99,7 @@
         <div class="libro">
           <img src="img/senzaveli.jpg" alt="Copertina di Senza veli" width="600" height="960" loading="lazy">
           <h3>Senza veli</h3>
-          <p class="muted">Il corpo di una donna attraverso le età della vita. In uscita.</p>
+          <p class="muted">Il corpo di una donna attraverso le età della vita. Disponibile in ebook.</p>
           <p style="margin-top:1rem"><a class="btn btn-vuoto" href="senza-veli.html">Il libro</a></p>
         </div>
       </div>

@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="assets/stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%232C6C68'/%3E%3Ctext x='50' y='70' font-family='Georgia,serif' font-size='58' fill='%23F2E7D0' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 
@@ -47,6 +48,7 @@
           <a class="btn btn-vuoto" href="#acquista">Cartaceo 14,90 €</a>
         </div>
         <p class="sotto-azioni riga" style="animation-delay:.85s">348 pagine · ebook subito, cartaceo su Amazon · <a href="#capitolo">un capitolo gratis</a></p>
+        <p class="sotto-azioni riga" style="animation-delay:.9s"><a data-link-amazon="duauEbook" style="color:inherit">Anche su Amazon per Kindle</a></p>
       </div>
       <div class="riga" style="animation-delay:.5s">
         <img class="cover" src="img/duau.jpg" alt="Copertina di Da uomo a uomo" width="600" height="960" loading="eager">
@@ -178,6 +180,7 @@
           <span class="cifra">5,99 €</span>
           <span class="dett">PDF ed EPUB, subito dopo il pagamento, senza registrazione. Anche su Amazon per Kindle.</span>
           <a class="btn btn-pieno" data-link="duauEbook" data-attesa="In arrivo" data-testo-gumroad="Ebook, subito">Ebook su Amazon</a>
+          <p class="sotto-azioni" style="margin-top:.6rem"><a data-link-amazon="duauEbook" style="color:inherit">Anche su Amazon per Kindle</a></p>
         </div>
         <div class="formato atteso">
           <span class="nome">Audiolibro</span>
@@ -198,15 +201,18 @@
         <div class="versi muted" style="margin-top:2rem;font-size:1.1em">
           <p>A volte lo capisci<br>prima ancora<br>di avere una prova.<br>Non sai dire esattamente<br>che cosa sia.<br>Ma qualcosa è cambiato.</p>
         </div>
-        <p style="margin-top:1.8rem">Sedici pagine, gratis, in PDF. Nessuna newsletter settimanale: ti scrivo quando c'è qualcosa da dirti, e basta.</p>
+        <p style="margin-top:1.8rem">Ventuno pagine, gratis, in PDF. Nessuna newsletter settimanale: ti scrivo quando c'è qualcosa da dirti, e basta.</p>
 
-        <form class="modulo colonna" data-modulo="capitolo" novalidate>
+        <form class="modulo colonna" data-modulo="capitolo-tradimento" novalidate>
           <label class="lbl" for="mail-capitolo" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>
           <input id="mail-capitolo" name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email">
           <input type="hidden" name="email_address_check" value="">
           <input type="hidden" name="locale" value="it">
           <input type="hidden" name="html_type" value="simple">
-          <input type="hidden" name="ORIGINE" value="capitolo">
+          <input type="hidden" name="ORIGINE" value="capitolo-tradimento">
+          <input type="hidden" name="UTM_SOURCE" value="">
+          <input type="hidden" name="UTM_CAMPAIGN" value="">
+          <input type="hidden" name="UTM_CONTENUTO" value="">
           <label class="consenso">
             <input type="checkbox" name="OPT_IN" required>
             <span>Sì, mandami il capitolo e avvisami quando esce il libro. Posso cancellarmi con un clic. <a href="privacy.html">Come tratto i dati</a>.</span>

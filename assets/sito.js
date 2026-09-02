@@ -62,15 +62,61 @@
     }
   });
 
+  /* ---------- 1c. RIGA "ANCHE SU AMAZON" ------------------
+     <a data-link-amazon="duauEbook">…</a> è una riga piccola sotto
+     il bottone Gumroad: porta comunque all'edizione Kindle, che
+     con Gumroad attivo il bottone principale non raggiunge più.
+     Non tocca la logica di data-link qui sopra.
+  ---------------------------------------------------------- */
+  document.querySelectorAll("[data-link-amazon]").forEach(function(a){
+    var chiave = a.getAttribute("data-link-amazon");
+    var url    = (C.amazon || {})[chiave];
+    if(url){
+      a.setAttribute("href", url);
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noopener");
+    } else {
+      a.style.display = "none";
+    }
+  });
+
+  /* ---------- 1d. UTM: catturati all'arrivo, portati al modulo ---
+     Letti da location.search al primo caricamento della pagina e
+     salvati in sessionStorage, così restano anche se la persona
+     gira fra le pagine del sito prima di lasciare la mail.
+  ---------------------------------------------------------- */
+  (function(){
+    var parametri = new URLSearchParams(location.search);
+    ["utm_source", "utm_campaign", "utm_content"].forEach(function(chiave){
+      var valore = parametri.get(chiave);
+      if(valore){
+        try { sessionStorage.setItem(chiave, valore); } catch(e){}
+      }
+    });
+  })();
+
+  function leggiUTM(chiave){
+    try { return sessionStorage.getItem(chiave) || ""; } catch(e){ return ""; }
+  }
+
   /* ---------- 2. MODULI EMAIL ------------------------------
      Il modulo manda i dati al servizio email (Brevo/MailerLite)
      e porta alla pagina di ringraziamento. Se l'indirizzo non
      è ancora configurato lo dice, invece di fingere.
   ---------------------------------------------------------- */
+  var MAPPA_UTM = { UTM_SOURCE:"utm_source", UTM_CAMPAIGN:"utm_campaign", UTM_CONTENUTO:"utm_content" };
+
   document.querySelectorAll("form[data-modulo]").forEach(function(f){
     var esito   = f.parentNode.querySelector(".esito");
     var errore  = f.parentNode.querySelector(".errore");
-    var origine = f.getAttribute("data-modulo");   // percorso | capitolo | avviso
+    var origine = f.getAttribute("data-modulo");   // percorso | capitolo-* | estratto-carezze | avviso-senza-veli
+
+    // riempie subito i campi nascosti UTM_*, così anche il ripiego
+    // f.submit() (se la fetch a Brevo fallisce) li porta con sé
+    Object.keys(MAPPA_UTM).forEach(function(nomeCampo){
+      var campoUtm = f.querySelector('input[name=' + nomeCampo + ']');
+      if(campoUtm) campoUtm.value = leggiUTM(MAPPA_UTM[nomeCampo]);
+    });
 
     function dico(msg){
       if(!errore) return;
@@ -102,6 +148,9 @@
         dati.append(k, C.campiExtra[k]);
       });
       dati.append("ORIGINE", origine || "sito");     // da quale pagina è arrivato
+      Object.keys(MAPPA_UTM).forEach(function(nomeCampo){
+        dati.append(nomeCampo, leggiUTM(MAPPA_UTM[nomeCampo]));   // vuoto se non c'è
+      });
 
       var bottone = f.querySelector("button");
       if(bottone){ bottone.disabled = true; bottone.textContent = "Un attimo…"; }
@@ -217,6 +266,33 @@
   document.querySelectorAll("[data-anno]").forEach(function(el){
     el.textContent = new Date().getFullYear();
   });
+
+  /* ---------- 4b. GRAZIE.HTML: LA VARIANTE GIUSTA -----------
+     Tre blocchi nascosti in HTML (#grazie-percorso, #grazie-capitolo,
+     #grazie-avviso). Sceglie quello giusto dal parametro ?da=:
+     - "avviso-senza-veli"                        → grazie-avviso
+     - "capitolo", "capitolo-*", "estratto-carezze" → grazie-capitolo
+     - qualsiasi altro valore, o nessun parametro   → grazie-percorso
+       (è il caso più frequente, ed è il testo che c'era prima delle varianti)
+  ---------------------------------------------------------- */
+  (function(){
+    var percorsoEl = document.getElementById("grazie-percorso");
+    var capitoloEl = document.getElementById("grazie-capitolo");
+    var avvisoEl   = document.getElementById("grazie-avviso");
+    if(!percorsoEl && !capitoloEl && !avvisoEl) return;   // non è grazie.html
+
+    var da = new URLSearchParams(location.search).get("da") || "";
+    var mostra;
+    if(da === "avviso-senza-veli") mostra = avvisoEl;
+    else if(da === "capitolo" || da.indexOf("capitolo-") === 0 || da === "estratto-carezze") mostra = capitoloEl;
+    else mostra = percorsoEl;   // manca il parametro, o non è riconosciuto
+
+    [percorsoEl, capitoloEl, avvisoEl].forEach(function(el){
+      if(!el) return;
+      if(el === mostra) el.removeAttribute("hidden");
+      else el.setAttribute("hidden", "");
+    });
+  })();
 
   /* ---------- 5. CONDIVIDERE UNA PAGINA --------------------
      <div data-share data-share-title data-share-url data-share-desc>
