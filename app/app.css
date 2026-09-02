@@ -1,0 +1,144 @@
+/* Una pagina — stile dell'app. Stessa palette del sito (assets/stile.css):
+   carta e sabbia, terracotta per l'azione, verde salvia come accento. */
+:root{
+  --bg:#FBF6EC; --raise:#F3EADA; --text:#3A3128; --muted:#82715F; --line:#E5D9C2;
+  --sabbia:#F2E7D0; --sabbia-line:#DCCCA9;
+  --accent:#2C6C68; --terra:#C0684B;
+  --barra:64px;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:"EB Garamond",Palatino,"Palatino Linotype",Georgia,serif;
+  font-size:clamp(1.1rem,.6vw + 1rem,1.22rem);line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(var(--barra) + env(safe-area-inset-bottom));
+  min-height:100vh;
+}
+h1,h2,h3{font-weight:500;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.ui{font-family:Archivo,system-ui,sans-serif}
+.lbl{font-family:Archivo,system-ui,sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.piccolo{font-size:.92rem}
+.attesa{padding:3rem 1.5rem;text-align:center}
+
+/* testata */
+.testa{
+  position:sticky;top:0;z-index:20;display:flex;align-items:baseline;gap:.9rem;
+  padding:calc(.9rem + env(safe-area-inset-top)) 1.3rem .8rem;
+  background:var(--bg);border-bottom:1px solid var(--line);
+}
+.marchio{font-family:Archivo,system-ui,sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.testa-sotto{margin-left:auto}
+.installa{
+  margin-left:.6rem;border:1px solid var(--accent);background:transparent;color:var(--accent);
+  font-size:.72rem;font-weight:600;letter-spacing:.08em;padding:.35rem .7rem;cursor:pointer;border-radius:2px;
+}
+
+/* vista */
+.vista{width:min(100% - 2.4rem,36rem);margin-inline:auto;padding-block:1.6rem 2.5rem}
+.sez{display:grid;gap:1.4rem}
+.sez + .sez{margin-top:2.4rem}
+.testata h1{font-size:clamp(1.9rem,5.5vw,2.5rem);line-height:1.15;margin-top:.3rem}
+.testata h2{font-size:clamp(1.55rem,4.6vw,2rem);line-height:1.2;margin-top:.3rem}
+.sotto{margin-top:.5rem;font-style:italic;color:var(--muted)}
+
+/* la frase del giorno e le righe del libro: la voce dei libri, un verso per riga */
+.versi{white-space:pre-line;font-size:clamp(1.28rem,4.4vw,1.62rem);line-height:1.5}
+.pagina .versi{font-size:clamp(1.14rem,3.6vw,1.36rem);line-height:1.6}
+.carta{
+  background:var(--sabbia);border:1px solid var(--sabbia-line);
+  padding:1.6rem 1.4rem 1.4rem;border-radius:3px;display:grid;gap:1.2rem;
+}
+.carta .firma{font-family:Archivo,system-ui,sans-serif;font-size:.74rem;letter-spacing:.06em;color:var(--muted)}
+.riga-via{font-style:italic;font-size:1.2em;padding:1rem 0;border-block:1px solid var(--line)}
+.prosa{display:grid;gap:1rem}
+
+/* la soglia: due tratti su un terreno comune */
+.soglia{display:block;margin:.4rem auto;width:44px;height:38px;overflow:visible}
+.soglia .t1{stroke:var(--accent)}
+.soglia .t2{stroke:var(--text);opacity:.55}
+.soglia .terreno{stroke:var(--muted);opacity:.5}
+
+/* bottoni */
+.btn{
+  font-family:Archivo,system-ui,sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.04em;
+  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  padding:.85rem 1.3rem;text-decoration:none;border:1px solid transparent;cursor:pointer;
+  border-radius:2px;background:transparent;
+}
+.btn-pieno{background:var(--terra);color:#FBF6EC;border-color:var(--terra)}
+.btn-vuoto{color:var(--text);border-color:var(--sabbia-line)}
+.btn-linea{padding:0;border:0;text-decoration:underline;text-underline-offset:.25em;color:var(--muted);font-size:.8rem}
+.azioni{display:flex;flex-wrap:wrap;gap:.7rem}
+.azioni .btn{flex:1 1 auto}
+
+/* lista giorni / archivio */
+.lista{list-style:none;padding:0;margin:0;display:grid;gap:.9rem}
+.lista li{display:grid;gap:.4rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.lista li:last-child{border-bottom:0}
+.lista .versi{font-size:1.08rem;line-height:1.55}
+.lista a.blocco{text-decoration:none;display:grid;gap:.3rem}
+.lista .titolo{font-size:1.35rem}
+.lista .oggi-segno{color:var(--terra)}
+.lista .azioni-mini{display:flex;gap:1.2rem;margin-top:.2rem}
+
+/* libri */
+.libro{display:grid;grid-template-columns:5.2rem 1fr;gap:1.1rem;align-items:start;padding:1.2rem 0;border-bottom:1px solid var(--line)}
+.libro:last-child{border-bottom:0}
+.libro img{width:100%;height:auto;display:block;box-shadow:0 8px 18px -10px rgba(58,49,40,.45)}
+.libro h3{font-size:1.4rem;line-height:1.2}
+.libro .azioni{margin-top:.8rem}
+.libro .btn{font-size:.76rem;padding:.65rem .9rem}
+.cover-piccola{width:5.2rem;box-shadow:0 8px 18px -10px rgba(58,49,40,.45)}
+.regalo{display:grid;grid-template-columns:5.2rem 1fr;gap:1.1rem;align-items:start}
+
+/* modulo «dimmi tu» */
+.scelte{display:flex;flex-wrap:wrap;gap:.55rem}
+.scelte label{
+  font-family:Archivo,system-ui,sans-serif;font-size:.8rem;letter-spacing:.03em;
+  border:1px solid var(--sabbia-line);padding:.5rem .85rem;border-radius:999px;cursor:pointer;user-select:none;
+}
+.scelte input{position:absolute;opacity:0;width:0;height:0}
+.scelte label:has(input:checked){background:var(--accent);border-color:var(--accent);color:#FBF6EC}
+textarea{
+  width:100%;min-height:7rem;font:inherit;font-size:1.05rem;line-height:1.55;color:var(--text);
+  background:#fff;border:1px solid var(--sabbia-line);border-radius:3px;padding:.8rem;resize:vertical;
+}
+.passi{padding-left:1.2rem;margin:0;display:grid;gap:.5rem}
+
+/* barra in basso */
+.barra{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;
+  height:calc(var(--barra) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);
+  background:var(--bg);border-top:1px solid var(--line);
+}
+.barra a{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;
+  text-decoration:none;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+}
+.barra a .ico{font-family:"EB Garamond",Georgia,serif;font-size:1.25rem;line-height:1;text-transform:none;letter-spacing:0}
+.barra a[aria-current="page"]{color:var(--accent);font-weight:600}
+@media(min-width:700px){
+  .barra{position:sticky;top:calc(3.2rem + env(safe-area-inset-top));bottom:auto;order:-1;height:auto;border-top:0;border-bottom:1px solid var(--line);padding:0}
+  .barra a{flex-direction:row;gap:.5rem;padding:.7rem 0}
+  body{padding-bottom:2rem;display:flex;flex-direction:column}
+  .testa{order:-2}
+}
+
+/* foglio di condivisione (quando il telefono non ha la condivisione nativa) */
+.foglio{position:fixed;inset:0;z-index:40}
+.foglio-sfondo{position:absolute;inset:0;background:rgba(58,49,40,.35)}
+.foglio-corpo{
+  position:absolute;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);
+  padding:1.4rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom));display:grid;gap:1rem;
+  border-radius:12px 12px 0 0;
+}
+.foglio-azioni{display:grid;gap:.6rem}
+.chiudi{background:none;border:0;color:var(--muted);text-decoration:underline;justify-self:center;cursor:pointer;font-size:.8rem}
+[hidden]{display:none!important}
+.avviso{background:var(--raise);border-left:3px solid var(--accent);padding:.9rem 1rem;font-size:.98rem}

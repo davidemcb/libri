@@ -1,0 +1,316 @@
+/* Una pagina — la logica dell'app. Nessun tracciamento, nessun account:
+   legge contenuti.json (generato da MARKETING/APP/build_app.py) e i link
+   di vendita da ../assets/config.js, come tutto il sito. */
+(function(){
+  "use strict";
+
+  var C = window.SITO || {amazon:{}, gumroad:{}};
+  var BASE_SITO = new URL("../", location.href).href;           // …/libri/
+  var URL_APP = location.origin + location.pathname;             // …/libri/app/
+  var WHATSAPP = "393481514382";
+  var EMAIL = C.emailPubblica || "davidescuderi1981@gmail.com";
+
+  var LIBRI = {
+    duau: {titolo:"Da uomo a uomo", cover:"../img/duau.jpg",
+           sotto:"Per gli uomini che dicono «tutto a posto» e intanto reggono.",
+           cartaceo:C.amazon.duauCartaceo, prezzoCartaceo:"14,90 €",
+           ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoEbook:"5,99 €", ebookDalSito:!!C.gumroad.duauEbook},
+    sv:   {titolo:"Senza veli", cover:"../img/senzaveli.jpg",
+           sotto:"Per la donna che regge tutto.",
+           cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"",
+           ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook},
+    pac:  {titolo:"Prenditi a carezze", cover:"../img/prenditi.jpg",
+           sotto:"Una pratica semplice, nessun metodo da imparare.",
+           cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"",
+           ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"", ebookDalSito:!!C.gumroad.pacEbook}
+  };
+  var TEMI_DIMMI = ["Sessualità","Lavoro","Amore","Malattia","I figli","L'ex","Solitudine","Il padre","Il corpo"];
+
+  var vista = document.getElementById("vista");
+  var dati = null;
+
+  /* ---------- utilità ---------- */
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function versi(righe){ return esc(righe.join("\n")); }
+  function oggi(){
+    var m = /[?&]data=(\d{4}-\d{2}-\d{2})/.exec(location.search);   // ?data=AAAA-MM-GG per provare un altro giorno
+    var d = m ? new Date(m[1] + "T12:00:00") : new Date();
+    return d;
+  }
+  function iso(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+  function dataItaliana(s){
+    var d = new Date(s + "T12:00:00");
+    return d.toLocaleDateString("it-IT", {day:"numeric", month:"long"});
+  }
+  function indiceGiorno(d){ return (d.getDay() + 6) % 7; }   // lunedì = 0
+  function settimanaCorrente(){
+    var t = iso(oggi()), s = dati.settimane, scelta = s[0];
+    for (var i = 0; i < s.length; i++) if (s[i].inizio <= t) scelta = s[i];
+    return scelta;
+  }
+  function trovaSettimana(inizio){
+    for (var i = 0; i < dati.settimane.length; i++) if (dati.settimane[i].inizio === inizio) return dati.settimane[i];
+    return null;
+  }
+  function libroDi(s){ return LIBRI[s.libro] || LIBRI.duau; }
+  function capBreve(s){ var m = /^(\d+)/.exec(s.capitolo); return m ? "cap. " + m[1] : s.capitolo; }
+
+  var SOGLIA = '<svg class="soglia" viewBox="0 0 44 38" aria-hidden="true" fill="none" stroke-width="2">' +
+    '<line class="t1" x1="17" y1="4" x2="17" y2="30"></line><line class="t2" x1="27" y1="9" x2="27" y2="30"></line>' +
+    '<line class="terreno" x1="4" y1="34" x2="40" y2="34" stroke-width="1"></line></svg>';
+
+  function piede(){
+    return '<section class="sez" style="margin-top:3rem"><p class="muted piccolo" style="text-align:center;line-height:1.9">' +
+      '<em>Il corpo è il primo posto.</em><br>' +
+      '<a href="' + esc(BASE_SITO) + '" target="_blank" rel="noopener">Il sito</a> · ' +
+      '<a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Privacy</a> · ' +
+      '<a href="#installa">Metti l\'app sul telefono</a></p></section>';
+  }
+
+  /* ---------- condivisione ---------- */
+  function testoPost(s, n){
+    var p = s.post[n], L = libroDi(s);
+    var cap = p.capitolo || capBreve(s);
+    return p.righe.join("\n") + "\n\n— Davide Scuderi, «" + L.titolo + "», " + cap;
+  }
+  function urlPost(s, n){ return URL_APP + "#post/" + s.inizio + "/" + n; }
+  function urlSettimana(s){ return URL_APP + "#settimana/" + s.inizio; }
+
+  function condividi(titolo, testo, url){
+    if (navigator.share) {
+      navigator.share({title:titolo, text:testo, url:url}).catch(function(){});
+      return;
+    }
+    var f = document.getElementById("foglio");
+    var tutto = testo + "\n" + url;
+    document.getElementById("cond-wa").href = "https://wa.me/?text=" + encodeURIComponent(tutto);
+    document.getElementById("cond-tg").href = "https://t.me/share/url?url=" + encodeURIComponent(url) + "&text=" + encodeURIComponent(testo);
+    document.getElementById("cond-esito").textContent = "";
+    document.getElementById("cond-copia").onclick = function(){
+      var esito = document.getElementById("cond-esito");
+      function ok(){ esito.textContent = "Copiato. Incollalo dove vuoi."; }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(tutto).then(ok, function(){ vecchia(); });
+      else vecchia();
+      function vecchia(){
+        var ta = document.createElement("textarea"); ta.value = tutto; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); ok(); } catch(e){ esito.textContent = "Non riesco a copiare: tieni premuto sul testo."; }
+        document.body.removeChild(ta);
+      }
+    };
+    f.hidden = false;
+  }
+  document.querySelectorAll("[data-chiudi]").forEach(function(el){ el.addEventListener("click", function(){ document.getElementById("foglio").hidden = true; }); });
+
+  vista.addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-condividi]");
+    if (!b) return;
+    ev.preventDefault();
+    var s = trovaSettimana(b.getAttribute("data-inizio"));
+    var tipo = b.getAttribute("data-condividi");
+    if (tipo === "post") {
+      var n = +b.getAttribute("data-n");
+      condividi("Una pagina — Davide Scuderi", testoPost(s, n), urlPost(s, n));
+    } else if (tipo === "pagina") {
+      condividi(s.titolo + " — Davide Scuderi", "«" + s.riga + "»\n— Davide Scuderi, «" + libroDi(s).titolo + "», " + capBreve(s) + "\n\nLa pagina intera:", urlSettimana(s));
+    } else if (tipo === "capitolo") {
+      condividi("Un capitolo per te",
+        "Ti mando un capitolo di un libro. Leggilo con calma, senza obbligo di arrivare in fondo.\n«" + libroDi(s).titolo + "», di Davide Scuderi, " + capBreve(s) + ".",
+        BASE_SITO + "capitoli/" + s.capitolo_pdf);
+    }
+  });
+
+  /* ---------- pezzi ---------- */
+  function bottoniLibro(L, compatti){
+    var out = "";
+    if (L.ebook) out += '<a class="btn btn-pieno" href="' + esc(L.ebook) + '" target="_blank" rel="noopener">Ebook' + (L.prezzoEbook ? ", " + L.prezzoEbook : "") + (L.ebookDalSito ? " · subito" : " · Kindle") + '</a>';
+    if (L.cartaceo) out += '<a class="btn btn-vuoto" href="' + esc(L.cartaceo) + '" target="_blank" rel="noopener">Cartaceo su Amazon' + (L.prezzoCartaceo ? ", " + L.prezzoCartaceo : "") + '</a>';
+    else if (!compatti) out += '<span class="btn btn-vuoto muted" aria-disabled="true">Cartaceo in arrivo</span>';
+    return '<div class="azioni">' + out + '</div>';
+  }
+
+  function cartaPost(s, n, opz){
+    opz = opz || {};
+    var p = s.post[n], L = libroDi(s);
+    var cap = p.capitolo || capBreve(s);
+    return '<div class="carta">' +
+      (opz.etichetta ? '<p class="lbl">' + esc(opz.etichetta) + '</p>' : "") +
+      '<p class="versi">' + versi(p.righe) + '</p>' +
+      '<p class="firma">Davide Scuderi · «' + esc(L.titolo) + '», ' + esc(cap) + '</p>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="button" data-condividi="post" data-inizio="' + s.inizio + '" data-n="' + n + '">Passala a qualcuno</button>' +
+      (opz.linkPagina ? '<a class="btn btn-vuoto" href="#settimana/' + s.inizio + '">La pagina della settimana</a>' : "") +
+      '</div></div>';
+  }
+
+  function blocco3(s){   // la parte 3 della formula: compra o regala
+    var L = libroDi(s);
+    var h = '<section class="sez"><div class="testata"><p class="lbl">Il libro</p><h2>' + esc(L.titolo) + '</h2><p class="sotto">' + esc(L.sotto) + '</p></div>' +
+      '<div class="regalo"><img class="cover-piccola" src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy"><div>' +
+      '<p class="lbl" style="margin-bottom:.6rem">Per te</p>' + bottoniLibro(L) + '</div></div>' +
+      '<div class="prosa"><p class="lbl">Per qualcuno a cui non sai come dirlo</p>' +
+      '<p>Si regala bene: molto bianco, righe corte, si apre a caso. Oppure mandagli solo questo capitolo, gratis, e lascia che sia lui a decidere.</p>' +
+      '<div class="azioni">' +
+      (L.cartaceo ? '<a class="btn btn-vuoto" href="' + esc(L.cartaceo) + '" target="_blank" rel="noopener">Regala il cartaceo</a>' : "") +
+      (s.capitolo_pdf ? '<button class="btn btn-vuoto" type="button" data-condividi="capitolo" data-inizio="' + s.inizio + '">Mandagli il capitolo, gratis</button>' : "") +
+      '</div></div></section>';
+    return h;
+  }
+
+  /* ---------- viste ---------- */
+  function vistaOggi(){
+    var s = settimanaCorrente(), d = oggi(), n = indiceGiorno(d);
+    var etich = d.toLocaleDateString("it-IT", {weekday:"long", day:"numeric", month:"long"});
+    return '<section class="sez">' +
+      '<div class="testata"><p class="lbl">' + esc(etich) + '</p><h1>' + esc(s.titolo) + '</h1><p class="sotto">La settimana, dal libro «' + esc(libroDi(s).titolo) + '», ' + esc(capBreve(s)) + '.</p></div>' +
+      cartaPost(s, n, {etichetta:"La riga di oggi", linkPagina:true}) +
+      '</section>' +
+      '<section class="sez"><p class="prosa muted piccolo">Una riga al giorno, una pagina a settimana. Niente da fare, niente da imparare: se una riga ti somiglia, passala a chi ne ha bisogno.</p></section>' +
+      piede();
+  }
+
+  function vistaSettimana(inizio){
+    var s = inizio ? trovaSettimana(inizio) : settimanaCorrente();
+    if (!s) return nonTrovato();
+    var L = libroDi(s), d = oggi(), nOggi = (iso(d) >= s.inizio && settimanaCorrente() === s) ? indiceGiorno(d) : -1;
+    var h = '<section class="sez"><div class="testata"><p class="lbl">Settimana dal ' + esc(dataItaliana(s.inizio)) + '</p><h1>' + esc(s.titolo) + '</h1>' +
+      '<p class="sotto">Da «' + esc(L.titolo) + '», capitolo ' + esc(s.capitolo) + '.</p></div>' +
+      '<div class="prosa">' + s.problema.map(function(p){ return "<p>" + esc(p) + "</p>"; }).join("") + '</div>' +
+      SOGLIA +
+      '<div class="pagina"><p class="lbl" style="margin-bottom:1rem">La pagina</p><p class="versi">' + versi(s.pagina) + '</p></div>' +
+      '<p class="riga-via">' + esc(s.riga) + '</p>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="button" data-condividi="pagina" data-inizio="' + s.inizio + '">Passa la pagina a qualcuno</button></div>' +
+      '</section>' +
+      blocco3(s) +
+      '<section class="sez"><div class="testata"><p class="lbl">Le sette righe della settimana</p></div><ul class="lista">' +
+      s.post.map(function(p, i){
+        return '<li><p class="lbl">' + esc(p.giorno) + (i === nOggi ? ' <span class="oggi-segno">· oggi</span>' : "") + '</p>' +
+          '<p class="versi">' + versi(p.righe) + '</p>' +
+          '<div class="azioni-mini"><button class="btn btn-linea" type="button" data-condividi="post" data-inizio="' + s.inizio + '" data-n="' + i + '">Passala a qualcuno</button></div></li>';
+      }).join("") + '</ul></section>' + piede();
+    return h;
+  }
+
+  function vistaPost(inizio, n){
+    var s = trovaSettimana(inizio);
+    n = +n;
+    if (!s || !(n >= 0 && n < 7)) return nonTrovato();
+    return '<section class="sez"><div class="testata"><p class="lbl">Una pagina · ' + esc(s.titolo) + '</p></div>' +
+      cartaPost(s, n, {etichetta:s.post[n].giorno, linkPagina:true}) +
+      '<p class="prosa muted piccolo">Questa riga viene da un libro. La pagina intera, e da dove nasce, sono qui sopra. Ogni giorno ce n\'è una nuova.</p>' +
+      '<div class="azioni"><a class="btn btn-vuoto" href="#oggi">La riga di oggi</a></div></section>' + piede();
+  }
+
+  function vistaArchivio(){
+    var lista = dati.settimane.slice().reverse(), corr = settimanaCorrente();
+    return '<section class="sez"><div class="testata"><p class="lbl">Archivio</p><h1>Le settimane</h1></div><ul class="lista">' +
+      lista.map(function(s){
+        return '<li><a class="blocco" href="#settimana/' + s.inizio + '"><p class="lbl">Dal ' + esc(dataItaliana(s.inizio)) + (s === corr ? ' <span class="oggi-segno">· in corso</span>' : "") + '</p>' +
+          '<p class="titolo">' + esc(s.titolo) + '</p><p class="muted piccolo"><em>' + esc(s.riga) + '</em></p></a></li>';
+      }).join("") + '</ul></section>' + piede();
+  }
+
+  function vistaLibri(){
+    var ordine = ["duau", "sv", "pac"];
+    return '<section class="sez"><div class="testata"><p class="lbl">I libri</p><h1>Tre libri, un solo posto</h1><p class="sotto">Il corpo, e quello che ha imparato a reggere per essere amato.</p></div>' +
+      ordine.map(function(k){ var L = LIBRI[k];
+        return '<div class="libro"><img src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy"><div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
+      }).join("") +
+      '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB, con l\'email dell\'acquirente stampata. Il cartaceo lo stampa Amazon.</p></section>' + piede();
+  }
+
+  function vistaDimmi(){
+    return '<section class="sez"><div class="testata"><p class="lbl">Dimmi tu</p><h1>Di cosa vuoi che parli qui</h1>' +
+      '<p class="sotto">Questa è una versione di prova. Quello che scrivi arriva a me, e decide le prossime settimane.</p></div>' +
+      '<form id="modulo-dimmi" class="sez"><div><p class="lbl" style="margin-bottom:.7rem">Gli argomenti che ti riguardano</p><div class="scelte">' +
+      TEMI_DIMMI.map(function(t){ return '<label><input type="checkbox" name="tema" value="' + esc(t) + '">' + esc(t) + '</label>'; }).join("") + '</div></div>' +
+      '<div><p class="lbl" style="margin-bottom:.7rem">Se vuoi, due righe</p><textarea name="testo" placeholder="Cosa ti è rimasto addosso di quello che hai letto. O cosa non trovi. E se l\'app ti ha dato problemi a installarla, scrivimelo qui: è la cosa che mi serve di più adesso."></textarea></div>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="submit" data-via="whatsapp">Mandalo su WhatsApp</button><button class="btn btn-vuoto" type="submit" data-via="email">Mandalo per email</button></div>' +
+      '<p class="muted piccolo">Si apre WhatsApp o la posta col messaggio già scritto: lo leggi, lo cambi, lo mandi tu. Qui dentro non resta niente.</p></form></section>' + piede();
+  }
+
+  vista.addEventListener("submit", function(ev){
+    var f = ev.target.closest("#modulo-dimmi");
+    if (!f) return;
+    ev.preventDefault();
+    var via = (ev.submitter && ev.submitter.getAttribute("data-via")) || "whatsapp";
+    var temi = Array.prototype.map.call(f.querySelectorAll('input[name="tema"]:checked'), function(i){ return i.value; });
+    var testo = f.querySelector('textarea[name="testo"]').value.trim();
+    var msg = "Ciao Davide, ti scrivo dall'app Una pagina." +
+      (temi.length ? "\nMi riguardano: " + temi.join(", ") + "." : "") +
+      (testo ? "\n\n" + testo : "");
+    if (via === "email") location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Dall'app Una pagina") + "&body=" + encodeURIComponent(msg);
+    else window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  });
+
+  function vistaInstalla(){
+    var ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua), android = /Android/.test(ua);
+    var giaInstallata = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+    var h = '<section class="sez"><div class="testata"><p class="lbl">Sul telefono</p><h1>Mettila tra le app</h1><p class="sotto">Un\'icona sulla schermata, si apre come un\'app, funziona anche senza rete.</p></div>';
+    if (giaInstallata) h += '<p class="avviso">Ce l\'hai già: stai leggendo dall\'app installata.</p>';
+    else {
+      if (promptInstallazione) h += '<div class="azioni"><button class="btn btn-pieno" type="button" id="btn-installa-2">Installa adesso</button></div>';
+      h += '<div class="prosa">' +
+        (ios || !android ? '<p class="lbl">iPhone (Safari)</p><ol class="passi"><li>Tocca il pulsante <strong>Condividi</strong> in basso (il quadrato con la freccia).</li><li>Scorri e tocca <strong>Aggiungi alla schermata Home</strong>.</li><li>Tocca <strong>Aggiungi</strong>. L\'icona compare tra le app.</li></ol>' : "") +
+        (android || !ios ? '<p class="lbl" style="margin-top:1rem">Android (Chrome)</p><ol class="passi"><li>Tocca i <strong>tre puntini</strong> in alto a destra.</li><li>Tocca <strong>Installa app</strong> oppure <strong>Aggiungi a schermata Home</strong>.</li><li>Conferma. L\'icona compare tra le app.</li></ol>' : "") +
+        '<p class="muted piccolo">Se non trovi la voce, apri questo indirizzo in Safari (iPhone) o Chrome (Android), non dentro WhatsApp o Facebook: da lì non si può installare.</p></div>';
+    }
+    return h + '</section>' + piede();
+  }
+
+  function nonTrovato(){
+    return '<section class="sez"><div class="testata"><h1>Questa pagina non c\'è.</h1></div><div class="azioni"><a class="btn btn-vuoto" href="#oggi">La riga di oggi</a></div></section>' + piede();
+  }
+
+  /* ---------- installazione ---------- */
+  var promptInstallazione = null;
+  var btnInstalla = document.getElementById("btn-installa");
+  function installa(){
+    if (!promptInstallazione) { location.hash = "#installa"; return; }
+    promptInstallazione.prompt();
+    promptInstallazione.userChoice.then(function(){ promptInstallazione = null; btnInstalla.hidden = true; });
+  }
+  window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); promptInstallazione = e; btnInstalla.hidden = false; });
+  window.addEventListener("appinstalled", function(){ promptInstallazione = null; btnInstalla.hidden = true; });
+  btnInstalla.addEventListener("click", installa);
+  vista.addEventListener("click", function(ev){ if (ev.target.id === "btn-installa-2") installa(); });
+  (function(){
+    var standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+    if (!standalone && /iPhone|iPad|iPod/.test(navigator.userAgent)) btnInstalla.hidden = false;   // su iPhone il bottone spiega come si fa
+  })();
+
+  /* ---------- rotte ---------- */
+  function mostra(){
+    if (!dati) return;
+    var h = (location.hash || "#oggi").slice(1).split("/");
+    var sez = h[0] || "oggi", html;
+    switch (sez) {
+      case "oggi": html = vistaOggi(); break;
+      case "settimana": html = vistaSettimana(h[1]); break;
+      case "post": html = vistaPost(h[1], h[2]); break;
+      case "archivio": html = vistaArchivio(); break;
+      case "libri": html = vistaLibri(); break;
+      case "dimmi": html = vistaDimmi(); break;
+      case "installa": html = vistaInstalla(); break;
+      default: html = nonTrovato();
+    }
+    vista.innerHTML = html;
+    document.querySelectorAll(".barra a").forEach(function(a){
+      var mia = a.getAttribute("data-sez");
+      var attiva = mia === sez || (mia === "settimana" && sez === "post");
+      if (attiva) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", mostra);
+
+  fetch("contenuti.json", {cache:"no-cache"}).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(d){
+      if (!d.settimane || !d.settimane.length) throw new Error("vuoto");
+      dati = d; mostra();
+    })
+    .catch(function(){
+      vista.innerHTML = '<section class="sez"><div class="testata"><h1>Non riesco a leggere le pagine.</h1><p class="sotto">Controlla la rete e riprova tra un momento.</p></div><div class="azioni"><button class="btn btn-vuoto" type="button" onclick="location.reload()">Riprova</button></div></section>';
+    });
+
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+})();
