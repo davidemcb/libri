@@ -332,8 +332,10 @@
     var esiti = [];
     (dati.pagine || []).forEach(function(pg){
       var punti = 0, perche = [];
-      if (perChi === "uomo" && pg.libro === "duau") { punti += 2; perche.push("«leggo da uomo»"); }
-      if (perChi === "donna" && pg.libro !== "duau") { punti += 2; perche.push("«leggo da donna»"); }
+      var maschile = pg.libro === "duau" || pg.libro === "alce";
+      if (perChi === "uomo" && maschile) { punti += 2; perche.push("«leggo da uomo»"); }
+      if (perChi === "donna" && !maschile) { punti += 2; perche.push("«leggo da donna»"); }
+      if (libroDi(pg).inLavorazione) punti -= 0.5;   // a parità vince il libro che si può leggere intero
       if (pg.situazioni.indexOf(situazione) >= 0) { punti += 3; perche.push("«" + voceSituazione(situazione) + "»"); if (pg.situazioni[0] === situazione) punti += 1; }
       corpo.forEach(function(c){ if (pg.corpo.indexOf(c) >= 0) { punti += 1; perche.push("«" + voceCorpo(c) + "»"); } });
       if (pg.situazioni.indexOf(situazione) >= 0) esiti.push({pagina:pg, punti:punti, perche:perche});

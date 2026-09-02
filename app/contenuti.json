@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 22:39",
+ "generato": "2026-09-02 22:42",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -906,6 +906,10 @@
   {
    "chiave": "famiglia",
    "voce": "Casa mia, da piccolo"
+  },
+  {
+   "chiave": "vergogna",
+   "voce": "Mi vergogno"
   }
  ],
  "corpo": [
@@ -955,6 +959,293 @@
   }
  ],
  "pagine": [
+  {
+   "id": "alce-a-letto",
+   "libro": "alce",
+   "capitolo": "8 — E a letto?",
+   "voce": "E a letto?",
+   "situazioni": [
+    "desiderio",
+    "tradimento"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Un mese dopo la scoperta, una sera, succede.",
+    "Vi cercate.",
+    "Non lo avevate deciso.",
+    "È successo, come succedeva prima.",
+    "E a metà, mentre lei ha gli occhi chiusi, ti accorgi che tu li hai aperti.",
+    "Stai guardando.",
+    "Non lei.",
+    "Te.",
+    "«Sto andando bene?»",
+    "«Lei è presente?»",
+    "«Sta pensando a lui?»",
+    "«Sono abbastanza?»",
+    "È difficile vivere il piacere quando hai un commissario d’esame seduto sul comodino.",
+    "Con la penna in mano.",
+    "Che prende appunti.",
+    "E il commissario sei tu.",
+    "Il problema è che stai chiedendo al sesso una risposta che il sesso non può dare.",
+    "Il tuo valore.",
+    "Non esiste una prestazione capace di certificare quanto vali come uomo.",
+    "E non esiste nemmeno il contrario.",
+    "Una difficoltà sessuale non rende un uomo meno uomo.",
+    "Una prestazione straordinaria non lo rende più uomo.",
+    "Il corpo non è una pagella morale.",
+    "E il desiderio non è una classifica."
+   ],
+   "domanda": [
+    "Il punto vero è un altro.",
+    "Forse non stai cercando di sapere com’era il sesso con lui.",
+    "Forse stai cercando di sapere:",
+    "«Ero abbastanza?»",
+    "E questa domanda merita una risposta diversa da quella che ti dai la notte."
+   ]
+  },
+  {
+   "id": "alce-coglione",
+   "libro": "alce",
+   "capitolo": "9 — L’uomo che si sente un coglione",
+   "voce": "Mi sento un coglione",
+   "situazioni": [
+    "vergogna",
+    "tradimento"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Sabato mattina.",
+    "Il bar sotto casa, quello con i tavolini fuori e il barista che ti chiama per nome.",
+    "Il tuo amico di sempre, quello con cui giocavi a pallone a undici anni, si siede e ti guarda.",
+    "«Tutto bene?»",
+    "«Tutto bene.»",
+    "Lui fa un cenno.",
+    "Ordina.",
+    "E la conversazione passa al campionato.",
+    "Ecco.",
+    "È successo tutto lì, in due secondi.",
+    "«Mi sento un coglione.»",
+    "Non significa:",
+    "«Ho fatto qualcosa di stupido.»",
+    "Significa:",
+    "«Adesso mi sembra che tutti possano vedermi come quello che non aveva capito.»",
+    "Ed è diverso.",
+    "Perché la vergogna ha un pubblico.",
+    "Anche quando il pubblico non esiste.",
+    "Il tuo amico non sa niente.",
+    "O forse sa.",
+    "O forse sa e fa finta di niente per gentilezza, e questo sarebbe anche peggio.",
+    "Immagini cosa penseranno i colleghi.",
+    "I parenti.",
+    "Quello che incontrerai al supermercato.",
+    "Quello che sa.",
+    "Quello che forse sa.",
+    "Quello che probabilmente non sa niente ma, nella tua testa, sa tutto e lo racconta."
+   ],
+   "domanda": [
+    "La vergogna diventa pericolosa quando ti convince che ciò che è accaduto dice chi sei.",
+    "Non dice chi sei.",
+    "Dice che sei stato ferito.",
+    "E c’è una differenza enorme."
+   ]
+  },
+  {
+   "id": "alce-non-ci-credo",
+   "libro": "alce",
+   "capitolo": "1 — Non ci credo",
+   "voce": "Non ci credo",
+   "situazioni": [
+    "tradimento"
+   ],
+   "corpo": [
+    "mani"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "All’inizio arriva una frase.",
+    "Quasi sempre è una variazione di:",
+    "«Non ci credo.»",
+    "E non è negazione.",
+    "Non ancora.",
+    "È il cervello che chiede qualche secondo.",
+    "Come quando il computer si blocca e tu continui a cliccare, sperando che prima o poi si riprenda.",
+    "Solo che qui non c’è il tasto Ctrl+Alt+Canc.",
+    "C’è una realtà che non vuoi ancora caricare.",
+    "Ti accorgi di avere le chiavi in mano.",
+    "Le posi.",
+    "Le riprendi.",
+    "Non sai dove metterle.",
+    "Sono le chiavi di casa tua da undici anni, e non sai dove metterle.",
+    "Poi cominciano le domande.",
+    "Da quanto?",
+    "Quando?",
+    "Dove?",
+    "Mentre io ero dove?",
+    "E sotto tutte, quella grossa, che le contiene tutte:",
+    "Come può essere successo?"
+   ],
+   "domanda": [
+    "È qui che vale la pena fermarsi un attimo.",
+    "Perché il tradimento è quello che è successo tra due persone.",
+    "La ferita è quello che comincia a succedere dentro di te.",
+    "E sono due cose diverse."
+   ]
+  },
+  {
+   "id": "alce-restare-o-andarsene",
+   "libro": "alce",
+   "capitolo": "15 — Restare o andarsene",
+   "voce": "Resto o vado?",
+   "situazioni": [
+    "coppia-lunga",
+    "separazione"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Sabato sera, la pizzeria di sempre, quattro amici.",
+    "Il primo, quello che ha divorziato due volte, dice:",
+    "«Lasciala. Fidati. Una che lo fa una volta lo rifà.»",
+    "Il secondo, quello sposato da trent’anni con una donna che gli ha risistemato la vita almeno tre volte, dice:",
+    "«Resta. Le storie si aggiustano. Cosa credi, che fuori sia meglio?»",
+    "Il terzo non dice niente e guarda il menù, perché una cosa del genere è capitata anche a lui e non lo sa nessuno.",
+    "Il quarto dice:",
+    "«Dipende.»",
+    "E ordina.",
+    "Tua madre, il giorno dopo, non dice niente.",
+    "Cucina.",
+    "Ti fa il piatto che ti faceva a dieci anni.",
+    "E in quel piatto c’è un’opinione, ma non te la dice.",
+    "Ecco.",
+    "Tutti votano.",
+    "Ma una relazione non è un sondaggio.",
+    "E tu non sei obbligato a prendere una decisione perché qualcuno pensa che sarebbe quella giusta.",
+    "Nemmeno se quel qualcuno ti vuole bene.",
+    "Soprattutto se ti vuole bene: le persone che ci vogliono bene votano con la loro storia, non con la tua.",
+    "Puoi restare.",
+    "Puoi andare.",
+    "Puoi prenderti tempo.",
+    "Puoi restare e poi andare.",
+    "Puoi andare e poi cambiare idea, e nessuno ti deve dare del debole per questo.",
+    "Puoi non sapere, per mesi."
+   ],
+   "domanda": [
+    "C’è ancora una relazione che voglio costruire, o c’è solo l’abitudine di averla?",
+    "Da parte sua c’è responsabilità, o c’è solo dispiacere di essere stata scoperta?",
+    "C’è verità, adesso, anche quando è scomoda?",
+    "C’è volontà di entrambi, o ce l’ho solo io?",
+    "Ci sono comportamenti nuovi, o solo parole nuove?"
+   ]
+  },
+  {
+   "id": "alce-spaccare-tutto",
+   "libro": "alce",
+   "capitolo": "10 — Vorrei spaccare tutto",
+   "voce": "Vorrei spaccare tutto",
+   "situazioni": [
+    "rabbia",
+    "tradimento"
+   ],
+   "corpo": [
+    "mandibola",
+    "spalle",
+    "cuore",
+    "mani"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La rabbia arriva con una certa puntualità.",
+    "A volte arriva dopo il dolore.",
+    "A volte lo copre.",
+    "A volte arrivano insieme, e non sai quale dei due ti sta parlando.",
+    "E la prima sensazione è fisica.",
+    "Mascella serrata.",
+    "Spalle rigide.",
+    "Il cuore che va come se avessi fatto le scale.",
+    "Le mani che stringono qualcosa, qualunque cosa.",
+    "Adesso stringono il volante.",
+    "Sei nel parcheggio sotto l’ufficio, alle undici e quaranta di sera, con il motore spento.",
+    "Non sei salito in casa.",
+    "Non potevi.",
+    "Il corpo diceva:",
+    "«Adesso facciamo qualcosa.»",
+    "Il problema è capire cosa.",
+    "Perché la rabbia ha energia.",
+    "Un’energia enorme, di quelle che potrebbero muovere una casa.",
+    "Ma non ha una direzione.",
+    "Puoi voler rompere qualcosa.",
+    "Urlare.",
+    "Scrivere.",
+    "Chiamare.",
+    "Andare sotto casa di lui e suonare, e poi non sapere cosa dire quando apre.",
+    "Affrontarla.",
+    "Dire cose che non si possono più ritirare."
+   ],
+   "domanda": [
+    "E proprio qui serve una distinzione.",
+    "La rabbia è un’emozione.",
+    "Non è un ordine.",
+    "Sentire «vorrei spaccare tutto» non significa dover spaccare qualcosa.",
+    "Il corpo produce una spinta.",
+    "Tu puoi scegliere cosa farne."
+   ]
+  },
+  {
+   "id": "alce-telefono",
+   "libro": "alce",
+   "capitolo": "3 — Il telefono che non dovevi guardare",
+   "voce": "Guardo, o non guardo?",
+   "situazioni": [
+    "sospetto",
+    "tradimento"
+   ],
+   "corpo": [
+    "sonno"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Con lo schermo rivolto verso il basso.",
+    "Da quando lo schermo è rivolto verso il basso?",
+    "Non lo sai.",
+    "Ma da quando l’hai notato, non riesci a non notarlo.",
+    "Improvvisamente ogni movimento sembra avere un significato.",
+    "Il telefono che va in bagno con lei.",
+    "La password cambiata: «Me l’ha chiesto l’aggiornamento.»",
+    "Le notifiche che non mostrano più l’anteprima.",
+    "Quel sorriso mentre scrive, subito rimesso a posto quando entri.",
+    "«Chi era?»",
+    "«Nessuno. Il gruppo del corso.»",
+    "Non è detto che ogni cambiamento significhi un tradimento.",
+    "Le persone cambiano password.",
+    "Le persone sorridono ai gruppi del corso.",
+    "Ma quando hai già il sospetto, il cervello comincia a collegare i punti.",
+    "E il cervello, con i punti, è generoso: ne trova anche dove non ci sono.",
+    "Poi arriva la notte.",
+    "Le due e quattordici.",
+    "Lei dorme.",
+    "Il telefono è sul comodino, in carica, con lo schermo in giù.",
+    "Tu sei sveglio da un’ora e ti stai dicendo che non lo farai.",
+    "Lo fai.",
+    "La password è la data di nascita di sua madre.",
+    "La sai perché l’hai comprato tu il regalo, l’anno scorso.",
+    "Guardi.",
+    "Trovi.",
+    "«Cazzo.»",
+    "A bassa voce, per non svegliarla.",
+    "È l’unica parola che hai.",
+    "Non è nemmeno una parola: è il rumore che fa una certezza quando cade."
+   ],
+   "domanda": [
+    "E in quel momento accade qualcosa di strano.",
+    "La verità che cercavi diventa, nello stesso istante, la verità che avresti voluto non trovare.",
+    "È una delle contraddizioni più umane che esistano.",
+    "Vuoi sapere.",
+    "Poi sai.",
+    "E vorresti non sapere."
+   ]
+  },
   {
    "id": "duau-contatto",
    "libro": "duau",
@@ -2636,6 +2927,50 @@
     "Resta 20 secondi dentro quella risposta,",
     "anche se è scomoda.",
     "Anche se è vuota."
+   ]
+  },
+  {
+   "id": "sv-vergogna",
+   "libro": "sv",
+   "capitolo": "48 — Essere sexy ma non troppo: il triplo vincolo",
+   "voce": "Se mi mostro, mi attaccano",
+   "situazioni": [
+    "vergogna"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Il corpo, sotto questo tipo di vita, non riposa mai davvero.",
+    "Perché non è «essere viste».",
+    "È essere valutate.",
+    "E quando sei valutata, succede questo:",
+    "ti viene un’attenzione addosso che non è carezza,",
+    "è scansione.",
+    "Il corpo si fa prudente.",
+    "Controllato.",
+    "Impostato.",
+    "Ti muovi un po’ meno di come vorresti.",
+    "Ridi un po’ più piano.",
+    "Ti siedi in modo da occupare meno spazio.",
+    "Ti viene naturale coprirti, anche quando fa caldo.",
+    "E soprattutto:",
+    "ti osservi da fuori.",
+    "Ti guardi mentre parli.",
+    "Ti ascolti mentre ridi.",
+    "Ti aggiusti mentre cammini.",
+    "Non sei più dentro l’esperienza.",
+    "Sei sopra di te, come un occhio di sicurezza.",
+    "E quando stai troppo tempo così, succede la cosa più grave:",
+    "il corpo non è più casa.",
+    "È scena.",
+    "E una scena, se sbagli, ti punisce."
+   ],
+   "domanda": [
+    "Non lo dici mai così.",
+    "Ma dentro, a volte, è questo:",
+    "«Se mi sento bella, mi vergogno.»",
+    "«Se mi mostro, mi attaccano.»",
+    "«Se non mi mostro, non esisto.»"
    ]
   }
  ]
