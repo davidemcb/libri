@@ -359,3 +359,14 @@ footer{background:var(--b-bg);color:var(--b-text);border-top:1px solid var(--b-l
 .trittico a{display:block;transition:transform .25s ease}
 .trittico a:hover{transform:translateY(-6px)}
 .trittico a:nth-child(2){margin-bottom:1.6rem}   /* la centrale un filo più su */
+
+/* ---------- bottoni social sharing ---------- */
+.share-buttons{
+  display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;
+}
+.share-buttons .btn{
+  padding:.65rem 1.1rem;font-size:.75rem;white-space:nowrap;
+}
+.share-buttons .btn svg{
+  width:1em;height:1em;
+}

@@ -193,4 +193,61 @@
   document.querySelectorAll("[data-anno]").forEach(function(el){
     el.textContent = new Date().getFullYear();
   });
+
+  /* ---------- 5. SOCIAL SHARING BUTTONS -----------------------
+     Condivisione per WhatsApp, Twitter, Email e copia link.
+  ---------------------------------------------------------- */
+  document.querySelectorAll("[data-share]").forEach(function(container){
+    var titolo = container.getAttribute("data-share-title") || document.title;
+    var url = container.getAttribute("data-share-url") || location.href;
+    var descrizione = container.getAttribute("data-share-desc") || document.querySelector('meta[property="og:description"]')?.content || "";
+
+    var bottoneWhatsapp = container.querySelector("[data-social=whatsapp]");
+    var bottoneTwitter = container.querySelector("[data-social=twitter]");
+    var bottoneEmail = container.querySelector("[data-social=email]");
+    var bottoneCopia = container.querySelector("[data-social=copy]");
+
+    if(bottoneWhatsapp){
+      var msgWhatsapp = encodeURIComponent(titolo + " — " + url);
+      bottoneWhatsapp.href = "https://wa.me/?text=" + msgWhatsapp;
+      bottoneWhatsapp.target = "_blank";
+      bottoneWhatsapp.rel = "noopener";
+    }
+
+    if(bottoneTwitter){
+      var msgTwitter = encodeURIComponent(titolo + " " + url);
+      bottoneTwitter.href = "https://twitter.com/intent/tweet?text=" + msgTwitter;
+      bottoneTwitter.target = "_blank";
+      bottoneTwitter.rel = "noopener";
+    }
+
+    if(bottoneEmail){
+      var msgEmail = encodeURIComponent(titolo);
+      var bodyEmail = encodeURIComponent(descrizione + "\n\n" + url);
+      bottoneEmail.href = "mailto:?subject=" + msgEmail + "&body=" + bodyEmail;
+    }
+
+    if(bottoneCopia){
+      bottoneCopia.addEventListener("click", function(e){
+        e.preventDefault();
+        if(navigator.share){
+          navigator.share({
+            title: titolo,
+            text: descrizione,
+            url: url
+          }).catch(function(){});
+        } else {
+          navigator.clipboard.writeText(url).then(function(){
+            var testo = bottoneCopia.textContent;
+            bottoneCopia.textContent = "Copiato!";
+            setTimeout(function(){
+              bottoneCopia.textContent = testo;
+            }, 2000);
+          }).catch(function(){
+            alert("Prova a copiare manualmente: " + url);
+          });
+        }
+      });
+    }
+  });
 })();
