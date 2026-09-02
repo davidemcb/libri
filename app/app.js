@@ -25,6 +25,7 @@
            ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"", ebookDalSito:!!C.gumroad.pacEbook}
   };
   LIBRI.alce = {titolo:"L'Alce", cover:"", sotto:"Un viaggio dentro la perdita di una certezza.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
+  LIBRI.exnemico = {titolo:"L'ex non è un nemico", cover:"", sotto:"Quando la separazione finisce, ma la guerra continua.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   function libroCantiere(chiave){ for (var i = 0; i < (dati.cantiere || []).length; i++) if (dati.cantiere[i].chiave === chiave) return dati.cantiere[i]; return null; }
   function urlAvvisami(titolo){ return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Ciao Davide, avvisami quando esce «" + titolo + "»."); }
   var TEMI_DIMMI = ["Sessualità","Lavoro","Amore","Malattia","I figli","L'ex","Solitudine","Il padre","Il corpo"];
@@ -332,7 +333,7 @@
     var esiti = [];
     (dati.pagine || []).forEach(function(pg){
       var punti = 0, perche = [];
-      var maschile = pg.libro === "duau" || pg.libro === "alce";
+      var maschile = pg.libro === "duau" || pg.libro === "alce" || pg.libro === "exnemico";
       if (perChi === "uomo" && maschile) { punti += 2; perche.push("«leggo da uomo»"); }
       if (perChi === "donna" && !maschile) { punti += 2; perche.push("«leggo da donna»"); }
       if (libroDi(pg).inLavorazione) punti -= 0.5;   // a parità vince il libro che si può leggere intero

@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 23:08",
+ "generato": "2026-09-02 23:09",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -514,6 +514,12 @@
    "chiave": "alce",
    "titolo": "L'Alce",
    "sotto": "Un viaggio dentro la perdita di una certezza. Essere traditi.",
+   "stato": "lavorazione"
+  },
+  {
+   "chiave": "exnemico",
+   "titolo": "L'ex non è un nemico",
+   "sotto": "Quando la separazione finisce, ma la guerra continua.",
    "stato": "lavorazione"
   },
   {
