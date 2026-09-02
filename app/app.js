@@ -309,7 +309,7 @@
     if (!dati.pagine || !dati.pagine.length) return '<section class="sez"><div class="testata"><p class="lbl">Trova la pagina</p><h1>Le pagine stanno arrivando.</h1><p class="sotto">Questa parte si accende appena le pagine dei tre libri sono pronte.</p></div></section>' + piede();
     if (!situazione) {
       return '<section class="sez"><div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
-        '<p class="sotto">Qui c\'è un bibliotecario che conosce a memoria i libri di Davide. Tocca una cosa: non ti dirà cosa fare, ti aprirà la pagina in cui qualcuno ha già scritto la tua.</p></div>' +
+        '<p class="sotto">Qui c\'è un bibliotecario che conosce a memoria i libri di Davide. Non dà risposte. Ti accompagna fino alla pagina in cui il tuo problema è già scritto, e lì si fa da parte: la risposta, se c\'è, è tua. Tocca una cosa.</p></div>' +
         '<form id="modulo-trova" class="sez"><div class="scelte scelte-lunghe">' +
         dati.situazioni.map(function(x){ return '<label><input type="radio" name="situazione" value="' + esc(x.chiave) + '" required>' + esc(x.voce) + '</label>'; }).join("") + '</div>' +
         '<div><p class="lbl" style="margin-bottom:.7rem">E il corpo, intanto, cosa fa? <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:400">(se vuoi)</span></p><div class="scelte">' +
