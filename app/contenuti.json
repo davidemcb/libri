@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 21:30",
+ "generato": "2026-09-02 21:39",
  "settimane": [
   {
    "inizio": "2026-08-31",
@@ -373,6 +373,60 @@
  ],
  "pagine": [
   {
+   "id": "duau-contatto",
+   "libro": "duau",
+   "capitolo": "10 — L’amore adulto",
+   "voce": "Mi sono chiuso, per proteggermi",
+   "situazioni": [
+    "contatto",
+    "desiderio"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Perché quando hai passato",
+    "molto tempo a proteggerti,",
+    "desiderare di vedere qualcuno",
+    "significa già esporsi.",
+    "Aspettare un incontro.",
+    "Pensare a quella persona.",
+    "Immaginare di starle vicino.",
+    "Sentire il desiderio",
+    "di toccarla.",
+    "Non soltanto sessualmente.",
+    "Desiderare il contatto.",
+    "Una mano.",
+    "Un abbraccio.",
+    "La vicinanza.",
+    "Il corpo dell’altro",
+    "accanto al tuo.",
+    "E dentro quel desiderio",
+    "può esserci qualcosa",
+    "di molto più grande",
+    "del sesso.",
+    "Può esserci tenerezza.",
+    "Curiosità.",
+    "Affetto.",
+    "Una forma di fiducia",
+    "che ancora non sai nominare.",
+    "E forse è proprio questo",
+    "che sorprende.",
+    "Perché pensavi",
+    "che il corpo ricordasse",
+    "soprattutto il dolore."
+   ],
+   "domanda": [
+    "E forse, a un certo punto,",
+    "puoi accorgerti",
+    "che il corpo che avevi chiuso",
+    "per proteggerti",
+    "non era morto.",
+    "Stava aspettando.",
+    "Aspettava di sentire",
+    "che poteva aprirsi di nuovo."
+   ]
+  },
+  {
    "id": "duau-ex",
    "libro": "duau",
    "capitolo": "9 — La relazione che resta",
@@ -479,6 +533,57 @@
     "mi serve ancora?",
     "Oppure continuo a farlo",
     "perché non conosco altro?"
+   ]
+  },
+  {
+   "id": "duau-fermarsi",
+   "libro": "duau",
+   "capitolo": "2 — Vivere il corpo come uno strumento, non come un luogo",
+   "voce": "Se mi fermo, perdo tempo",
+   "situazioni": [
+    "fermarsi",
+    "reggere"
+   ],
+   "corpo": [
+    "sonno",
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è disprezzo.",
+    "È distanza.",
+    "Hai imparato presto",
+    "che sentire troppo ti rallenta.",
+    "Che ascoltarti complica.",
+    "Che fermarti può farti perdere tempo.",
+    "Che il corpo va tenuto sotto controllo.",
+    "Se hai sonno, vai avanti.",
+    "Se sei stanco, resisti.",
+    "Se sei teso, non importa.",
+    "Se hai dolore, vedrai dopo.",
+    "Se hai paura, fai quello che devi fare.",
+    "E così impari",
+    "a non chiedere troppo al corpo.",
+    "Gli chiedi soltanto",
+    "di funzionare.",
+    "All’inizio sembra efficace.",
+    "Sei operativo.",
+    "Ti adatti.",
+    "Regoli il ritmo.",
+    "Trovi una soluzione.",
+    "Vai avanti anche quando sei stanco.",
+    "Gli altri possono contare su di te.",
+    "E tu puoi contare",
+    "sulla tua capacità di reggere."
+   ],
+   "domanda": [
+    "ci sono?",
+    "E sentire.",
+    "Il peso.",
+    "Il respiro.",
+    "Il contatto.",
+    "La posizione.",
+    "Quello che c’è."
    ]
   },
   {
@@ -641,6 +746,56 @@
     "Come voglio stare",
     "dentro il corpo",
     "che ho oggi?"
+   ]
+  },
+  {
+   "id": "duau-lavoro",
+   "libro": "duau",
+   "capitolo": "5 — Il ruolo che impara",
+   "voce": "Lavoro anche quando sono stanco",
+   "situazioni": [
+    "lavoro",
+    "reggere"
+   ],
+   "corpo": [
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Diventi quello",
+    "che porta fuori la spazzatura.",
+    "Quello che chiama",
+    "quando c’è un problema.",
+    "Quello che accompagna.",
+    "Quello che paga.",
+    "Quello che organizza.",
+    "Quello che pensa",
+    "a cosa bisogna fare domani.",
+    "Quello che lavora",
+    "anche quando è stanco.",
+    "Quello che, quando gli altri hanno paura,",
+    "dice:",
+    "“Ci penso io.”",
+    "E magari",
+    "non c’è niente di sbagliato.",
+    "Anzi.",
+    "Essere affidabile",
+    "è una cosa bella.",
+    "Essere presente",
+    "è una cosa bella.",
+    "Prendersi responsabilità",
+    "è una cosa bella.",
+    "Il problema",
+    "non è il ruolo.",
+    "Il problema arriva",
+    "quando non sai più",
+    "chi sei senza."
+   ],
+   "domanda": [
+    "E chiederti,",
+    "a un certo punto:",
+    "“Quali di queste cose",
+    "sono davvero mie?”"
    ]
   },
   {
@@ -1320,6 +1475,96 @@
    ]
   },
   {
+   "id": "sv-ex",
+   "libro": "sv",
+   "capitolo": "77 — Dopo: non tornare a funzionare",
+   "voce": "Non torno a funzionare",
+   "situazioni": [
+    "ex",
+    "separazione"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è successo niente.",
+    "Eppure lo sai.",
+    "La conversazione scorre.",
+    "Le parole sono giuste.",
+    "Il contesto è quello corretto.",
+    "Ma dentro, qualcosa non si apre.",
+    "Non c’è tensione viva.",
+    "Non c’è appoggio.",
+    "Non è delusione.",
+    "È riconoscimento.",
+    "Il corpo non si prepara.",
+    "Non anticipa.",
+    "Non aspetta.",
+    "Sta.",
+    "E in quello stare, capisci subito:",
+    "qui non c’è incontro.",
+    "Prima non era così.",
+    "Prima restavi.",
+    "Spiegavi.",
+    "Aggiustavi.",
+    "Se non arrivava l’incontro, lo costruivi.",
+    "Se mancava l’ascolto, lo fornivi tu.",
+    "Se l’altro era confuso, ti facevi chiara al posto suo.",
+    "Funzionavi.",
+    "Funzionavi bene.",
+    "Funzionavi per due."
+   ],
+   "domanda": [
+    "Ora pensa a una situazione recente",
+    "in cui hai detto sì, ma il corpo era già altrove.",
+    "Nota solo questo:",
+    "c’è apertura o c’è tenuta?"
+   ]
+  },
+  {
+   "id": "sv-famiglia",
+   "libro": "sv",
+   "capitolo": "3 — Brava = comoda",
+   "voce": "Sono sempre stata brava",
+   "situazioni": [
+    "famiglia"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è una parola cattiva.",
+    "È una carezza corta.",
+    "Un premio rapido.",
+    "«Brava.»",
+    "Arriva presto.",
+    "Arriva quando stai ferma.",
+    "Quando non chiedi.",
+    "Quando non rompi il ritmo di nessuno.",
+    "Il corpo lo capisce prima della testa.",
+    "Capisce che lì c’è pace.",
+    "E che muoversi, no.",
+    "«Brava» non è un complimento.",
+    "È un addestramento.",
+    "Brava se stai zitta.",
+    "Brava se non disturbi.",
+    "Brava se sei gentile.",
+    "Brava se sorridi.",
+    "Brava se ti adatti.",
+    "Non te lo dicono tutto insieme.",
+    "Te lo insegnano a rate.",
+    "Ogni volta che trattieni una domanda.",
+    "Ogni volta che ingoi una risposta.",
+    "Ogni volta che sistemi il tono per non sembrare «troppo»."
+   ],
+   "domanda": [
+    "Nota solo questo:",
+    "cosa succede se, per pochi secondi,",
+    "non sei brava per nessuno?",
+    "Non fare nulla.",
+    "Non dimostrare nulla.",
+    "Resta."
+   ]
+  },
+  {
    "id": "sv-figli-che-se-ne-vanno",
    "libro": "sv",
    "capitolo": "63 — Figli che se ne vanno",
@@ -1457,6 +1702,102 @@
     "Lascia che il corpo senta",
     "com’è stare qui",
     "senza cercare un’immagine migliore."
+   ]
+  },
+  {
+   "id": "sv-padre",
+   "libro": "sv",
+   "capitolo": "66 — Sei il pilastro: lavoro, casa, figli, genitori",
+   "voce": "I miei genitori hanno bisogno",
+   "situazioni": [
+    "padre",
+    "reggere"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non crolli.",
+    "Non oggi.",
+    "Ti alzi.",
+    "Metti in ordine.",
+    "Rispondi ai messaggi.",
+    "Funzioni.",
+    "Il corpo ha imparato a stare in piedi anche quando vorrebbe sedersi.",
+    "Anche quando sarebbe il momento di appoggiarsi.",
+    "Anche quando non c’è più nessuno a cui appoggiarsi davvero.",
+    "Non crolli.",
+    "Perché se crolli, chi regge tutto?",
+    "A un certo punto della vita smetti di essere solo donna.",
+    "Diventi struttura.",
+    "Il lavoro deve andare avanti.",
+    "I figli devono mangiare.",
+    "I genitori iniziano ad avere bisogno.",
+    "Le scadenze non aspettano.",
+    "Le emozioni sì. Quelle vengono dopo. Sempre dopo.",
+    "Non è una scelta consapevole.",
+    "È un adattamento.",
+    "Hai visto che se ti fermi, tutto rallenta.",
+    "Che se cedi, qualcosa rischia di cadere.",
+    "E allora stringi.",
+    "Reggi.",
+    "Compensi.",
+    "Diventi affidabile.",
+    "E l’affidabilità diventa la tua gabbia più elegante."
+   ],
+   "domanda": [
+    "Porta una mano dove senti più «tenuta».",
+    "Non cercare il rilassamento.",
+    "Resta.",
+    "Tre respiri.",
+    "Senza aggiustare nulla.",
+    "Lascia che il peso cada di mezzo centimetro.",
+    "Non di più.",
+    "Solo questo."
+   ]
+  },
+  {
+   "id": "sv-paura",
+   "libro": "sv",
+   "capitolo": "17 — La paura della notte",
+   "voce": "Di notte ho paura",
+   "situazioni": [
+    "paura",
+    "solitudine"
+   ],
+   "corpo": [
+    "cuore",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Di notte tutto si sente di più.",
+    "Il battito.",
+    "Il dolore.",
+    "Il pensiero.",
+    "Il buio amplifica.",
+    "Durante il giorno reggi.",
+    "Di notte il controllo si abbassa.",
+    "Il meccanismo è antico:",
+    "nel buio siamo vulnerabili.",
+    "E con l’età, la vulnerabilità è più concreta.",
+    "Il sistema nervoso può attivarsi.",
+    "Il battito accelera.",
+    "Il respiro si fa corto.",
+    "Il silenzio lascia spazio ai segnali interni.",
+    "Ogni sensazione sembra più grande.",
+    "Il corpo non è in pericolo.",
+    "È senza distrazioni.",
+    "«E se succede qualcosa?»",
+    "«E se mi sento male?»",
+    "«E se nessuno mi sente?»"
+   ],
+   "domanda": [
+    "Sdraiata.",
+    "Una mano sul petto.",
+    "Una sull’addome.",
+    "Senti il movimento sotto le mani.",
+    "Non chiedere che la paura sparisca.",
+    "Chiedi solo di restare."
    ]
   },
   {
@@ -1670,6 +2011,48 @@
     "Chiediti, senza rispondere:",
     "«Sono qui o sto facendo?»",
     "Resta."
+   ]
+  },
+  {
+   "id": "sv-tradimento",
+   "libro": "sv",
+   "capitolo": "75 — Il tradimento: quando il corpo sa prima della testa",
+   "voce": "Mi ha tradito",
+   "situazioni": [
+    "tradimento",
+    "sospetto"
+   ],
+   "corpo": [
+    "sonno"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Quando subisce il tradimento.",
+    "Il corpo perde fiducia nel campo.",
+    "Non nel partner.",
+    "Nel contesto.",
+    "Da quel momento non si rilassa più del tutto.",
+    "Anche quando dorme.",
+    "Anche quando ride.",
+    "Scatta l’iper-controllo.",
+    "Ogni dettaglio viene passato al setaccio.",
+    "Ogni assenza pesa doppio.",
+    "Ogni silenzio diventa minaccia.",
+    "A volte non è panico.",
+    "È peggio.",
+    "È una dissociazione sottile.",
+    "Essere presenti.",
+    "Ma non abitare.",
+    "Il corpo smette di sentire «casa»."
+   ],
+   "domanda": [
+    "Chiediti solo:",
+    "In questo momento, mi sento al sicuro?",
+    "Non rispondere.",
+    "Senti.",
+    "Resta 20 secondi dentro quella risposta,",
+    "anche se è scomoda.",
+    "Anche se è vuota."
    ]
   }
  ]
