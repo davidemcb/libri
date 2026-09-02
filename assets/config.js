@@ -25,6 +25,18 @@ window.SITO = {
     svEbook:      "https://www.amazon.it/dp/B0HHC8Y46W"  // Senza veli — ebook Kindle
   },
 
+  /* ---------- 1b. EBOOK VENDUTI DAL SITO (Gumroad) ------------
+     Link del prodotto Gumroad. Se compilato, il bottone «Ebook»
+     apre la finestra di acquisto sopra la pagina; se vuoto, il
+     bottone porta all'ebook su Amazon. Dopo il pagamento il lettore
+     scarica PDF ed EPUB, e riceve l'email col link.
+  ---------------------------------------------------------- */
+  gumroad: {
+    duauEbook: "",   // Da uomo a uomo — https://wellfulnessn1.gumroad.com/l/...
+    svEbook:   "",   // Senza veli
+    pacEbook:  ""    // Prenditi a carezze — resta vuoto finché è in KDP Select
+  },
+
 
   /* ---------- 2. IL MODULO EMAIL ---------------------------
      Indirizzo a cui il modulo manda le iscrizioni. Lo dà il

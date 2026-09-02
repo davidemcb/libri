@@ -11,11 +11,30 @@
   /* ---------- 1. LINK DI VENDITA ---------------------------
      <a data-link="duauEbook">…</a> prende l'indirizzo da
      config.js. Se manca, il bottone diventa «In arrivo».
+
+     Per le chiavi che finiscono in "Ebook", se in config.js
+     C.gumroad[chiave] è compilato, il bottone vende direttamente
+     dal sito (finestra Gumroad sopra la pagina) invece di
+     mandare ad Amazon. Se è vuoto, non cambia niente: si
+     comporta come prima (Amazon in nuova scheda, o «In arrivo»).
   ---------------------------------------------------------- */
+  var gumroadUsato = false;
   document.querySelectorAll("[data-link]").forEach(function(a){
-    var chiave = a.getAttribute("data-link");
-    var url = (C.amazon || {})[chiave];       // Amazon: nuova scheda
-    if(url){
+    var chiave  = a.getAttribute("data-link");
+    var gumroad = chiave.slice(-5) === "Ebook" ? (C.gumroad || {})[chiave] : "";
+    var url     = (C.amazon || {})[chiave];       // Amazon: nuova scheda
+
+    if(gumroad){
+      gumroadUsato = true;
+      a.setAttribute("href", gumroad);
+      a.classList.add("gumroad-button");
+      a.removeAttribute("target");
+      a.removeAttribute("rel");
+      a.removeAttribute("aria-disabled");
+      a.style.opacity = "";
+      a.style.pointerEvents = "";
+      if(a.dataset.testoGumroad) a.textContent = a.dataset.testoGumroad;
+    } else if(url){
       a.setAttribute("href", url);
       a.setAttribute("target", "_blank");
       a.setAttribute("rel", "noopener");
@@ -27,6 +46,14 @@
       if(a.dataset.attesa !== "no") a.textContent = a.dataset.attesa || "In arrivo";
     }
   });
+
+  // lo script dell'overlay Gumroad si carica solo se serve davvero:
+  // finché tutti i link gumroad sono vuoti, il sito non lo tocca.
+  if(gumroadUsato){
+    var scriptGumroad = document.createElement("script");
+    scriptGumroad.src = "https://gumroad.com/js/gumroad.js";
+    document.head.appendChild(scriptGumroad);
+  }
 
   // contatti in fondo alle pagine
   document.querySelectorAll("[data-contatto=email]").forEach(function(el){
