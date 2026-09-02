@@ -24,6 +24,9 @@
            cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"",
            ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"", ebookDalSito:!!C.gumroad.pacEbook}
   };
+  LIBRI.alce = {titolo:"L'Alce", cover:"", sotto:"Un viaggio dentro la perdita di una certezza.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
+  function libroCantiere(chiave){ for (var i = 0; i < (dati.cantiere || []).length; i++) if (dati.cantiere[i].chiave === chiave) return dati.cantiere[i]; return null; }
+  function urlAvvisami(titolo){ return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Ciao Davide, avvisami quando esce «" + titolo + "»."); }
   var TEMI_DIMMI = ["Sessualità","Lavoro","Amore","Malattia","I figli","L'ex","Solitudine","Il padre","Il corpo"];
 
   var vista = document.getElementById("vista");
@@ -115,7 +118,7 @@
       condividi(s.titolo + " — Davide Scuderi", "«" + s.riga + "»\n— Davide Scuderi, «" + libroDi(s).titolo + "», " + capBreve(s) + "\n\nLa pagina intera:", urlSettimana(s));
     } else if (tipo === "trovata") {
       var pg = trovaPagina(b.getAttribute("data-id"));
-      if (pg) condividi("Davide Scuderi", pg.pagina.slice(0, 6).join("\n") + (pg.pagina.length > 6 ? "\n[…]" : "") + "\n\n— Davide Scuderi, «" + libroDi(pg).titolo + "», " + capBreve(pg), URL_APP + "#pagina/" + pg.id);
+      if (pg) condividi("Davide Scuderi", pg.pagina.slice(0, 6).join("\n") + (pg.pagina.length > 6 ? "\n[…]" : "") + "\n\n— Davide Scuderi, «" + libroDi(pg).titolo + "»" + (libroDi(pg).inLavorazione ? " (in lavorazione)" : "") + ", " + capBreve(pg), URL_APP + "#pagina/" + pg.id);
     } else if (tipo === "capitolo") {
       condividi("Un capitolo per te",
         "Ti mando un capitolo di un libro. Leggilo con calma, senza obbligo di arrivare in fondo.\n«" + libroDi(s).titolo + "», di Davide Scuderi, " + capBreve(s) + ".",
@@ -145,8 +148,17 @@
       '</div></div>';
   }
 
+  function bloccoLavorazione(L){
+    var c = libroCantiere(s_chiave(L)) || {};
+    return '<section class="sez"><div class="testata"><p class="lbl">Il libro · in lavorazione</p><h2>' + esc(L.titolo) + '</h2><p class="sotto">' + esc(c.sotto || L.sotto) + '</p></div>' +
+      '<div class="prosa"><p>Questo libro lo stiamo scrivendo adesso. La pagina che hai letto viene dal manoscritto, e può ancora cambiare. Se la vuoi intera, dimmelo: è il modo in cui decido quale libro finire per primo.</p>' +
+      '<div class="azioni"><a class="btn btn-pieno" href="' + esc(urlAvvisami(L.titolo)) + '" target="_blank" rel="noopener">Avvisami quando esce</a>' +
+      '<a class="btn btn-vuoto" href="mailto:' + esc(EMAIL) + '?subject=' + encodeURIComponent("Avvisami quando esce " + L.titolo) + '">Per email</a></div></div></section>';
+  }
+  function s_chiave(L){ for (var k in LIBRI) if (LIBRI[k] === L) return k; return ""; }
   function blocco3(s){   // la parte 3 della formula: compra o regala
     var L = libroDi(s);
+    if (L.inLavorazione) return bloccoLavorazione(L);
     var h = '<section class="sez"><div class="testata"><p class="lbl">Il libro</p><h2>' + esc(L.titolo) + '</h2><p class="sotto">' + esc(L.sotto) + '</p></div>' +
       '<div class="regalo"><img class="cover-piccola" src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy"><div>' +
       '<p class="lbl" style="margin-bottom:.6rem">Per te</p>' + bottoniLibro(L) + '</div></div>' +
@@ -218,7 +230,8 @@
       ordine.map(function(k){ var L = LIBRI[k];
         return '<div class="libro"><img src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy"><div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
       }).join("") +
-      '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB, con l\'email dell\'acquirente stampata. Il cartaceo lo stampa Amazon.</p></section>' + piede();
+      '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB, con l\'email dell\'acquirente stampata. Il cartaceo lo stampa Amazon.</p></section>' +
+      sezioneCantiere() + piede();
   }
 
   function vistaDimmi(){
@@ -230,6 +243,30 @@
       '<div class="azioni"><button class="btn btn-pieno" type="submit" data-via="whatsapp">Mandalo su WhatsApp</button><button class="btn btn-vuoto" type="submit" data-via="email">Mandalo per email</button></div>' +
       '<p class="muted piccolo">Si apre WhatsApp o la posta col messaggio già scritto: lo leggi, lo cambi, lo mandi tu. Qui dentro non resta niente.</p></form></section>' + piede();
   }
+
+  function sezioneCantiere(){
+    var c = dati.cantiere || [];
+    if (!c.length) return "";
+    var lav = c.filter(function(x){ return x.stato === "lavorazione"; }), cant = c.filter(function(x){ return x.stato === "cantiere"; });
+    var h = '<section class="sez"><div class="testata"><p class="lbl">I prossimi</p><h2>Quali vuoi leggere?</h2><p class="sotto">Libri sulle scene della vita di un uomo, non sui suoi problemi. Li scrivo uno alla volta: dimmi quali, e comincio da quelli.</p></div>';
+    if (lav.length) h += '<div class="prosa">' + lav.map(function(x){ return '<div class="cantiere-libro"><p class="lbl">In lavorazione</p><p class="titolo">' + esc(x.titolo) + '</p><p class="muted piccolo">' + esc(x.sotto) + '</p><div class="azioni-mini"><a class="btn btn-linea" href="' + esc(urlAvvisami(x.titolo)) + '" target="_blank" rel="noopener">Avvisami quando esce</a></div></div>'; }).join("") + '</div>';
+    h += '<form id="modulo-cantiere" class="sez"><div class="scelte scelte-lunghe">' +
+      cant.map(function(x){ return '<label><input type="checkbox" name="libro" value="' + esc(x.titolo) + '">' + esc(x.titolo) + '</label>'; }).join("") + '</div>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="submit" data-via="whatsapp">Mandalo su WhatsApp</button><button class="btn btn-vuoto" type="submit" data-via="email">Per email</button></div>' +
+      '<p class="muted piccolo">Si apre WhatsApp o la posta col messaggio già scritto: lo mandi tu. Qui non resta niente.</p></form></section>';
+    return h;
+  }
+  vista.addEventListener("submit", function(ev){
+    var f = ev.target.closest("#modulo-cantiere");
+    if (!f) return;
+    ev.preventDefault();
+    var via = (ev.submitter && ev.submitter.getAttribute("data-via")) || "whatsapp";
+    var libri = Array.prototype.map.call(f.querySelectorAll('input[name="libro"]:checked'), function(i){ return "«" + i.value + "»"; });
+    if (!libri.length) return;
+    var msg = "Ciao Davide, dei prossimi libri vorrei leggere " + libri.join(", ") + ".";
+    if (via === "email") location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("I prossimi libri") + "&body=" + encodeURIComponent(msg);
+    else window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  });
 
   vista.addEventListener("submit", function(ev){
     var f = ev.target.closest("#modulo-dimmi");
@@ -338,7 +375,7 @@
   function paginaTrovata(pg, perche){
     var L = libroDi(pg);
     return '<section class="sez"><div class="testata"><p class="lbl">La pagina per te</p><h1>' + esc(pg.voce) + '</h1>' +
-      '<p class="sotto">Da «' + esc(L.titolo) + '», capitolo ' + esc(pg.capitolo) + '.</p></div>' +
+      '<p class="sotto">Da «' + esc(L.titolo) + '»' + (L.inLavorazione ? ', libro in lavorazione' : '') + ', capitolo ' + esc(pg.capitolo) + '.</p></div>' +
       '<div class="pagina"><p class="versi">' + versi(pg.pagina) + '</p></div>' +
       '<div class="domanda-libro"><p class="lbl" style="margin-bottom:.7rem">La domanda del libro</p><p class="versi">' + versi(pg.domanda) + '</p></div>' +
       (perche ? '<p class="perche">' + esc(perche) + ' Nessuna intelligenza artificiale: le pagine portano scritto di cosa parlano, e io le confronto con quello che hai toccato.</p>' : "") +

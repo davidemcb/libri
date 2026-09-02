@@ -166,3 +166,6 @@ audio{margin-block:.3rem}
 .voce audio{width:100%;display:block}
 .copione{display:grid;gap:1.3rem}
 .copione .versi{font-size:clamp(1.18rem,3.8vw,1.42rem);line-height:1.6}
+
+.cantiere-libro{display:grid;gap:.3rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.cantiere-libro .titolo{font-size:1.35rem}

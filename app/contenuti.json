@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 22:24",
+ "generato": "2026-09-02 22:39",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -99,7 +99,7 @@
    "corpo": "mandibola",
    "titolo": "I denti che si toccano",
    "durata": 75,
-   "audio": null,
+   "audio": "mandibola.mp3",
    "copione": [
     "Fermati dove sei.",
     "Non muovere la bocca.",
@@ -285,7 +285,7 @@
    "corpo": "sonno",
    "titolo": "Sono qui, non ti spengo",
    "durata": 78,
-   "audio": null,
+   "audio": "sonno.mp3",
    "copione": [
     "Se sei a letto, resta come sei.",
     "Se è giorno, va bene lo stesso.",
@@ -507,6 +507,80 @@
     "Se dopo un minuto non è successo niente,",
     "è successo un minuto."
    ]
+  }
+ ],
+ "cantiere": [
+  {
+   "chiave": "alce",
+   "titolo": "L'Alce",
+   "sotto": "Un viaggio dentro la perdita di una certezza. Essere traditi.",
+   "stato": "lavorazione"
+  },
+  {
+   "chiave": "a-spasso",
+   "titolo": "A spasso",
+   "sotto": "Perdere il lavoro, e la risposta a «e tu adesso cosa fai?»",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "ikea",
+   "titolo": "La domenica all'Ikea",
+   "sotto": "La coppia, dopo anni",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "calcetto",
+   "titolo": "Il calcetto con gli amici",
+   "sotto": "L'amicizia tra uomini",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "prima-barba",
+   "titolo": "La prima barba",
+   "sotto": "Diventare uomo",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "capello-bianco",
+   "titolo": "Il capello bianco",
+   "sotto": "Invecchiare",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "telecomando",
+   "titolo": "Il telecomando comanda",
+   "sotto": "Il controllo",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "spazzatura",
+   "titolo": "La spazzatura non la butta nessuno",
+   "sotto": "La responsabilità",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "rocco",
+   "titolo": "Non sei Rocco",
+   "sotto": "La prestazione sessuale",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "banana",
+   "titolo": "La banana guarda in giù",
+   "sotto": "La disfunzione sessuale",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "scappatella",
+   "titolo": "La scappatella",
+   "sotto": "Tradire",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "mamma-moglie",
+   "titolo": "Mamma contro moglie",
+   "sotto": "Famiglia e coppia",
+   "stato": "cantiere"
   }
  ],
  "settimane": [
