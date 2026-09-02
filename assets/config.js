@@ -25,17 +25,6 @@ window.SITO = {
     svEbook:      "https://www.amazon.it/dp/B0HHC8Y46W"  // Senza veli — ebook Kindle
   },
 
-  /* ---------- 1b. EBOOK VENDUTI QUI (Stripe) ---------------
-     Link di pagamento Stripe. Dopo il pagamento il lettore
-     viene mandato su leggi.html e legge il libro nel browser.
-     Li crei/modifichi su dashboard.stripe.com > Link di pagamento.
-  ---------------------------------------------------------- */
-  stripe: {
-    duauQui:   "https://buy.stripe.com/5kQ28rg978eE9n4aUndnW02", // Da uomo a uomo — 5,16 €
-    svQui:     "https://buy.stripe.com/6oU9ATaONamMfLsbYrdnW03", // Senza veli — 4,99 €
-    pacQui:    "https://buy.stripe.com/4gM28r6yxdyY9n4d2vdnW04", // Prenditi a carezze — 5,59 €
-    bundleQui: "https://buy.stripe.com/00wcN5g979iIczg5A3dnW05"  // Tutti e tre — 9,99 €
-  },
 
   /* ---------- 2. IL MODULO EMAIL ---------------------------
      Indirizzo a cui il modulo manda le iscrizioni. Lo dà il

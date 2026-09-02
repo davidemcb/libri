@@ -14,11 +14,8 @@
   ---------------------------------------------------------- */
   document.querySelectorAll("[data-link]").forEach(function(a){
     var chiave = a.getAttribute("data-link");
-    var qui = (C.stripe || {})[chiave];       // ebook venduti qui (Stripe): stessa scheda
     var url = (C.amazon || {})[chiave];       // Amazon: nuova scheda
-    if(qui){
-      a.setAttribute("href", qui);
-    } else if(url){
+    if(url){
       a.setAttribute("href", url);
       a.setAttribute("target", "_blank");
       a.setAttribute("rel", "noopener");
