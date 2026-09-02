@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 21:20",
+ "generato": "2026-09-02 21:30",
  "settimane": [
   {
    "inizio": "2026-08-31",
@@ -59,8 +59,7 @@
      "giorno": "Lunedì",
      "righe": [
       "Prima di avere un figlio",
-      "puoi pensare di sapere",
-      "cosa significhi essere padre.",
+      "puoi pensare di sapere cosa significhi essere padre.",
       "Poi arriva.",
       "E capisci che non lo sapevi."
      ],
@@ -69,11 +68,10 @@
     {
      "giorno": "Martedì",
      "righe": [
-      "Diventi quello che controlla se tutto è a posto.",
-      "Quello che accompagna. Quello che porta. Quello che aggiusta.",
-      "Quello che aspetta. Quello che paga. Quello che organizza.",
-      "Quello che cerca di non far mancare niente.",
-      "E spesso non te ne accorgi nemmeno."
+      "Ci sono uomini che diventano padri",
+      "senza aver mai avuto un modello",
+      "che sentissero davvero proprio.",
+      "Devono inventarsi la strada."
      ],
      "capitolo": null
     },
@@ -93,8 +91,7 @@
       "Un uomo che può chiedere scusa.",
       "Un uomo che può dire: Prima ho sbagliato.",
       "Può sembrare una piccola cosa.",
-      "Ma per un uomo che ha imparato",
-      "che deve sempre avere ragione, può essere enorme."
+      "Ma per un uomo che ha imparato che deve sempre avere ragione, può essere enorme."
      ],
      "capitolo": null
     },
@@ -102,8 +99,7 @@
      "giorno": "Venerdì",
      "righe": [
       "Può succedere che tu senta di non essere abbastanza.",
-      "Abbastanza presente. Abbastanza paziente.",
-      "Abbastanza forte. Abbastanza bravo. Abbastanza padre.",
+      "Abbastanza presente. Abbastanza paziente. Abbastanza forte. Abbastanza bravo. Abbastanza padre.",
       "E magari nessuno te lo sta dicendo.",
       "Sei tu a dirtelo."
      ],
@@ -112,8 +108,7 @@
     {
      "giorno": "Sabato",
      "righe": [
-      "Ma tuo figlio non è nato",
-      "per restituirti quello che hai dato.",
+      "Tuo figlio non è nato per restituirti quello che hai dato.",
       "Non è nato per realizzare la tua vita.",
       "Non è nato per essere la versione riuscita di te."
      ],
@@ -122,10 +117,10 @@
     {
      "giorno": "Domenica",
      "righe": [
-      "Prima tenevi la sua mano.",
-      "Poi camminavi accanto.",
-      "Poi qualche passo indietro.",
-      "Poi lo guardavi andare."
+      "Un giorno, quando tuo figlio non avrà più bisogno",
+      "della tua mano per attraversare la strada,",
+      "potresti scoprire che non ha smesso di aver bisogno di te.",
+      "Ha soltanto bisogno di te in un modo diverso."
      ],
      "capitolo": null
     }
@@ -175,34 +170,32 @@
     "anche il posto",
     "che occupavi nella sua vita."
    ],
-   "riga": "Non devi uscire da questa storia più forte.",
+   "riga": "Quando una relazione finisce puoi perdere un ruolo. Ma puoi anche smettere di recitarlo.",
    "post": [
     {
      "giorno": "Lunedì",
      "righe": [
-      "Vi allontanate.",
-      "Parlate meno.",
-      "Vi cercate meno.",
-      "State insieme ma sempre meno davvero."
+      "A volte la relazione finisce prima",
+      "che tu riesca davvero a capire che è finita.",
+      "Può essere una frase. Una decisione.",
+      "Una discussione che non si può più rimandare."
      ],
      "capitolo": null
     },
     {
      "giorno": "Martedì",
      "righe": [
-      "E poi ci sono le abitudini.",
-      "Il bicchiere che usavi sempre. Il lato del letto.",
-      "Il supermercato. La strada per tornare a casa.",
-      "Il ristorante. La domenica. Una canzone. Un odore. Un oggetto.",
-      "Piccole cose che improvvisamente diventano enormi."
+      "Può succedere che una cosa banale ti faccia stare male",
+      "più di una grande discussione.",
+      "Vedi qualcosa che apparteneva alla vostra vita.",
+      "E per un attimo il corpo torna indietro."
      ],
      "capitolo": null
     },
     {
      "giorno": "Mercoledì",
      "righe": [
-      "A volte però la separazione porta",
-      "anche qualcosa che non ti aspettavi.",
+      "A volte la separazione porta anche qualcosa che non ti aspettavi.",
       "Spazio.",
       "Puoi respirare. Puoi stare in silenzio. Puoi fare cose che non facevi più.",
       "Puoi accorgerti di quanto eri stanco."
@@ -212,8 +205,7 @@
     {
      "giorno": "Giovedì",
      "righe": [
-      "Essere conosciuti per anni",
-      "può diventare quasi invisibile.",
+      "Essere conosciuti per anni può diventare quasi invisibile.",
       "Ti accorgi di quanto contava soltanto quando non c’è più.",
       "E allora può arrivare una domanda strana:",
       "“Chi sono io quando nessuno mi sta guardando in quel modo?”"
@@ -749,6 +741,66 @@
     "Ma forse",
     "non devi saperlo",
     "prima."
+   ]
+  },
+  {
+   "id": "duau-rabbia",
+   "libro": "duau",
+   "capitolo": "15 — La paura",
+   "voce": "Mi arrabbio, e non so perché",
+   "situazioni": [
+    "rabbia",
+    "paura"
+   ],
+   "corpo": [
+    "mandibola",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "A volte",
+    "la paura",
+    "non sembra",
+    "nemmeno paura.",
+    "Sembra rabbia.",
+    "Una porta chiusa.",
+    "Una risposta",
+    "troppo dura.",
+    "Una frase",
+    "detta male.",
+    "Un gesto.",
+    "Perché alcune emozioni",
+    "sono più facili",
+    "da mostrare",
+    "di altre.",
+    "La rabbia",
+    "può dare",
+    "una sensazione",
+    "di forza.",
+    "La paura",
+    "può farti sentire",
+    "esposto.",
+    "E forse",
+    "per questo",
+    "alcuni uomini",
+    "conoscono meglio",
+    "la propria rabbia",
+    "che la propria paura.",
+    "Non perché",
+    "non abbiano paura.",
+    "Perché la paura",
+    "è difficile",
+    "da ammettere."
+   ],
+   "domanda": [
+    "A volte",
+    "la rabbia",
+    "è davvero rabbia.",
+    "Altre volte",
+    "non lo sai.",
+    "E forse",
+    "non serve",
+    "deciderlo subito."
    ]
   },
   {
