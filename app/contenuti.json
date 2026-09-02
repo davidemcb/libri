@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 22:42",
+ "generato": "2026-09-02 23:01",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -140,7 +140,7 @@
    "corpo": "mani",
    "titolo": "Una mano tiene l’altra",
    "durata": 88,
-   "audio": null,
+   "audio": "mani.mp3",
    "copione": [
     "Guardati le mani un momento.",
     "",
@@ -235,7 +235,7 @@
    "corpo": "schiena",
    "titolo": "Vicino, non sopra",
    "durata": 83,
-   "audio": null,
+   "audio": "schiena.mp3",
    "copione": [
     "Fermati.",
     "In piedi, seduto, sdraiato.",
@@ -419,7 +419,7 @@
    "corpo": "stomaco",
    "titolo": "Dove finisce il non detto",
    "durata": 80,
-   "audio": null,
+   "audio": "stomaco.mp3",
    "copione": [
     "Siediti, o resta sdraiato.",
     "Come sei.",
