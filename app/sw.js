@@ -1,8 +1,8 @@
-/* Una pagina — service worker. Tiene in cache il guscio dell'app così si apre
+/* Davide Scuderi — service worker. Tiene in cache il guscio dell'app così si apre
    anche senza rete; i contenuti li chiede sempre prima alla rete, e se la rete
    manca mostra l'ultima copia. Per pubblicare un guscio nuovo si alza VERSIONE. */
-var VERSIONE = "una-pagina-v1";
-var GUSCIO = ["./", "./index.html", "./app.css?v=1", "./app.js?v=1", "./manifest.webmanifest",
+var VERSIONE = "davide-scuderi-v2";
+var GUSCIO = ["./", "./index.html", "./app.css?v=2", "./app.js?v=2", "./manifest.webmanifest",
   "../assets/config.js", "./icona-192.png", "./icona-512.png",
   "../img/duau.jpg", "../img/senzaveli.jpg", "../img/prenditi.jpg"];
 

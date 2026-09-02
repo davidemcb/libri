@@ -1,4 +1,4 @@
-/* Una pagina — la logica dell'app. Nessun tracciamento, nessun account:
+/* Davide Scuderi — la logica dell'app. Nessun tracciamento, nessun account:
    legge contenuti.json (generato da MARKETING/APP/build_app.py) e i link
    di vendita da ../assets/config.js, come tutto il sito. */
 (function(){
@@ -110,7 +110,7 @@
     var tipo = b.getAttribute("data-condividi");
     if (tipo === "post") {
       var n = +b.getAttribute("data-n");
-      condividi("Una pagina — Davide Scuderi", testoPost(s, n), urlPost(s, n));
+      condividi("Davide Scuderi", testoPost(s, n), urlPost(s, n));
     } else if (tipo === "pagina") {
       condividi(s.titolo + " — Davide Scuderi", "«" + s.riga + "»\n— Davide Scuderi, «" + libroDi(s).titolo + "», " + capBreve(s) + "\n\nLa pagina intera:", urlSettimana(s));
     } else if (tipo === "capitolo") {
@@ -194,7 +194,7 @@
     var s = trovaSettimana(inizio);
     n = +n;
     if (!s || !(n >= 0 && n < 7)) return nonTrovato();
-    return '<section class="sez"><div class="testata"><p class="lbl">Una pagina · ' + esc(s.titolo) + '</p></div>' +
+    return '<section class="sez"><div class="testata"><p class="lbl">Davide Scuderi · ' + esc(s.titolo) + '</p></div>' +
       cartaPost(s, n, {etichetta:s.post[n].giorno, linkPagina:true}) +
       '<p class="prosa muted piccolo">Questa riga viene da un libro. La pagina intera, e da dove nasce, sono qui sopra. Ogni giorno ce n\'è una nuova.</p>' +
       '<div class="azioni"><a class="btn btn-vuoto" href="#oggi">La riga di oggi</a></div></section>' + piede();
@@ -235,10 +235,10 @@
     var via = (ev.submitter && ev.submitter.getAttribute("data-via")) || "whatsapp";
     var temi = Array.prototype.map.call(f.querySelectorAll('input[name="tema"]:checked'), function(i){ return i.value; });
     var testo = f.querySelector('textarea[name="testo"]').value.trim();
-    var msg = "Ciao Davide, ti scrivo dall'app Una pagina." +
+    var msg = "Ciao Davide, ti scrivo dalla tua app." +
       (temi.length ? "\nMi riguardano: " + temi.join(", ") + "." : "") +
       (testo ? "\n\n" + testo : "");
-    if (via === "email") location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Dall'app Una pagina") + "&body=" + encodeURIComponent(msg);
+    if (via === "email") location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Dalla tua app") + "&body=" + encodeURIComponent(msg);
     else window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
   });
 
