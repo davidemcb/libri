@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 23:14",
+ "generato": "2026-09-02 23:15",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -2104,7 +2104,7 @@
    "id": "exnemico-casa-vuota",
    "libro": "exnemico",
    "capitolo": "16 — La casa vuota",
-   "voce": "La casa vuota",
+   "voce": "Faccio la spesa da solo",
    "situazioni": [
     "separazione",
     "solitudine"
@@ -2191,8 +2191,7 @@
     "separazione"
    ],
    "corpo": [
-    "stomaco",
-    "vuoto"
+    "stomaco"
    ],
    "capitolo_pdf": null,
    "pagina": [
