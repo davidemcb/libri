@@ -195,7 +195,7 @@
   });
 
   /* ---------- 5. SOCIAL SHARING BUTTONS -----------------------
-     Condivisione per WhatsApp, Twitter, Email e copia link.
+     Condivisione per WhatsApp, Twitter, Facebook, Instagram, Email e copia link.
   ---------------------------------------------------------- */
   document.querySelectorAll("[data-share]").forEach(function(container){
     var titolo = container.getAttribute("data-share-title") || document.title;
@@ -204,6 +204,8 @@
 
     var bottoneWhatsapp = container.querySelector("[data-social=whatsapp]");
     var bottoneTwitter = container.querySelector("[data-social=twitter]");
+    var bottoneFacebook = container.querySelector("[data-social=facebook]");
+    var bottoneInstagram = container.querySelector("[data-social=instagram]");
     var bottoneEmail = container.querySelector("[data-social=email]");
     var bottoneCopia = container.querySelector("[data-social=copy]");
 
@@ -219,6 +221,19 @@
       bottoneTwitter.href = "https://twitter.com/intent/tweet?text=" + msgTwitter;
       bottoneTwitter.target = "_blank";
       bottoneTwitter.rel = "noopener";
+    }
+
+    if(bottoneFacebook){
+      bottoneFacebook.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+      bottoneFacebook.target = "_blank";
+      bottoneFacebook.rel = "noopener";
+    }
+
+    if(bottoneInstagram){
+      bottoneInstagram.href = "https://www.instagram.com/";
+      bottoneInstagram.target = "_blank";
+      bottoneInstagram.rel = "noopener";
+      bottoneInstagram.title = "Apri Instagram — copia il link e condividilo nelle storie o nei post";
     }
 
     if(bottoneEmail){
