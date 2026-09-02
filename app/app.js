@@ -301,7 +301,7 @@
       corpo.forEach(function(c){ if (pg.corpo.indexOf(c) >= 0) { punti += 1; perche.push("«" + voceCorpo(c) + "»"); } });
       if (pg.situazioni.indexOf(situazione) >= 0) esiti.push({pagina:pg, punti:punti, perche:perche});
     });
-    esiti.sort(function(a, b){ return b.punti - a.punti; });
+    esiti.sort(function(a, b){ return (b.punti - a.punti) || ((b.pagina.situazioni[0] === situazione) - (a.pagina.situazioni[0] === situazione)); });
     return esiti;
   }
 
