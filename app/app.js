@@ -458,14 +458,14 @@
   function invitoPratica(pr){
     if (!dati.pratiche || !dati.pratiche.length) return "";
     return '<section class="sez invito"><p class="lbl">Se vuoi, un minuto col corpo</p>' +
-      (pr ? '<p>Una mano dove senti la cosa, e un minuto di ascolto. Con la voce di Davide, o leggendo.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica/' + esc(pr.corpo) + '">' + esc(pr.titolo) + '</a></div>'
-          : '<p>Una mano dove senti la cosa, e un minuto di ascolto.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica">Scegli dove la senti</a></div>') +
+      (pr ? '<p>Una pratica di un minuto: una mano sul punto del corpo che hai toccato, e niente altro da fare. La voce di Davide ti accompagna.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica/' + esc(pr.corpo) + '">' + esc(pr.titolo) + '</a></div>'
+          : '<p>Undici pratiche di un minuto: una mano sul punto del corpo che senti tirare, e niente altro da fare. Con la voce di Davide.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica">Scegli il punto del corpo</a></div>') +
       '</section>';
   }
   function vistaPratica(chiave){
     if (!dati.pratiche || !dati.pratiche.length) return nonTrovato();
     if (!chiave) {
-      return '<section class="sez"><div class="testata"><p class="lbl">Un minuto col corpo</p><h1>Dove la senti?</h1><p class="sotto">Una mano lì, e un minuto di ascolto. Non è una cura: è quello che il libro chiede di fare.</p></div><ul class="lista">' +
+      return '<section class="sez"><div class="testata"><p class="lbl">Un minuto col corpo</p><h1>Da dove cominci?</h1><p class="sotto">Scegli il punto del corpo che senti di più adesso. Una mano lì, un minuto, con la voce di Davide. Non è una cura: è quello che il libro chiede di fare.</p></div><ul class="lista">' +
         dati.pratiche.map(function(pr){ return '<li><a class="blocco" href="#pratica/' + esc(pr.corpo) + '"><p class="titolo">' + esc(voceCorpo(pr.corpo)) + '</p><p class="muted piccolo">' + esc(pr.titolo) + (pr.audio ? ' · con la voce di Davide' : '') + '</p></a></li>'; }).join("") +
         '</ul></section>' + piede();
     }
