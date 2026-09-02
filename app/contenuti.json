@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 23:09",
+ "generato": "2026-09-02 23:14",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -188,7 +188,7 @@
    "corpo": "respiro",
    "titolo": "Guardarlo senza cambiarlo",
    "durata": 81,
-   "audio": null,
+   "audio": "respiro.mp3",
    "copione": [
     "Ovunque tu sia.",
     "Non cambiare posizione.",
@@ -2051,6 +2051,267 @@
     "Guarda cosa senti.",
     "Guarda cosa è cambiato.",
     "Guarda dove sei."
+   ]
+  },
+  {
+   "id": "exnemico-arrabbiato",
+   "libro": "exnemico",
+   "capitolo": "22 — Puoi essere arrabbiato senza essere cattivo",
+   "voce": "Sono furioso",
+   "situazioni": [
+    "rabbia",
+    "ex"
+   ],
+   "corpo": [
+    "sonno",
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "«Sei una persona falsa.»",
+    "Invio.",
+    "Tre secondi.",
+    "Visualizzato.",
+    "«Come ti permetti?»",
+    "Invio.",
+    "Visualizzato.",
+    "«Tu non sai niente di quello che ho fatto per te.»",
+    "Invio.",
+    "Visualizzato.",
+    "Poi arriva la risposta.",
+    "Lunga.",
+    "Tu la rileggi.",
+    "Rileggi.",
+    "Rileggi.",
+    "Scrivi.",
+    "Cancelli.",
+    "Riscrivi.",
+    "Invii.",
+    "E quando finalmente appoggi il telefono sono le 02:03.",
+    "Alle 07:10 devi accompagnare tuo figlio a scuola.",
+    "La guerra ha appena mangiato quasi due ore del tuo sonno.",
+    "E domani sarai stanco.",
+    "Non è una metafora.",
+    "È un costo."
+   ],
+   "domanda": [
+    "A volte la cosa più intelligente che puoi fare quando sei arrabbiato è non prendere decisioni importanti.",
+    "La rabbia può dirti che qualcosa non va.",
+    "Non necessariamente cosa fare."
+   ]
+  },
+  {
+   "id": "exnemico-casa-vuota",
+   "libro": "exnemico",
+   "capitolo": "16 — La casa vuota",
+   "voce": "La casa vuota",
+   "situazioni": [
+    "separazione",
+    "solitudine"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "C’è un momento assurdo.",
+    "Il supermercato.",
+    "Prima compravi pensando a due.",
+    "O a tre.",
+    "O a quattro.",
+    "Adesso prendi qualcosa e pensi:",
+    "«Questo lo mangia lei.»",
+    "Poi lo rimetti.",
+    "«Ah, già.»",
+    "È incredibile quante volte il nostro cervello continui a vivere nel passato mentre la realtà è già andata avanti.",
+    "Prendi il latte.",
+    "Ti fermi.",
+    "«Quale?»",
+    "Quello che piaceva a lei?",
+    "Quello che piace a te?",
+    "Per anni hai comprato senza pensarci.",
+    "Adesso devi scegliere il latte.",
+    "Sembra ridicolo.",
+    "Non lo è.",
+    "Perché ricominciare una vita spesso non comincia da una grande decisione.",
+    "Comincia da piccole cose che prima decidevate in due."
+   ],
+   "domanda": [
+    "Se ti manca qualcuno, ti manca.",
+    "Se hai bisogno di compagnia, hai bisogno di compagnia.",
+    "Non c’è nessuna medaglia per chi riesce a mangiare da solo davanti alla televisione per sei mesi senza sentire niente.",
+    "La solitudine non è una prova di forza.",
+    "È una condizione.",
+    "E può essere vissuta in modi diversi.",
+    "Puoi attraversarla senza trasformarla in una nuova identità."
+   ]
+  },
+  {
+   "id": "exnemico-mia-madre",
+   "libro": "exnemico",
+   "capitolo": "11 — Mia madre dice che dovrei…",
+   "voce": "Mia madre dice che dovrei…",
+   "situazioni": [
+    "famiglia",
+    "separazione"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "«Mia madre dice che dovrei farti vedere da un avvocato.»",
+    "La frase arriva durante una telefonata.",
+    "«Mio fratello dice che non devo lasciarti entrare in casa.»",
+    "«La mia amica dice che devi pagare.»",
+    "«Mio padre dice che devi sparire.»",
+    "«Mia sorella dice che dovrei chiederti metà.»",
+    "A un certo punto della separazione può succedere una cosa curiosa.",
+    "La coppia si rompe.",
+    "Ma intorno alla coppia nasce una commissione parlamentare.",
+    "Ognuno ha un’opinione.",
+    "Tutti hanno una soluzione.",
+    "Molti hanno anche un’esperienza personale che, stranamente, assomiglia moltissimo alla tua.",
+    "«È successo anche a me.»",
+    "E da lì parte la consulenza.",
+    "Gratis.",
+    "Immediata.",
+    "Irrevocabile."
+   ],
+   "domanda": [
+    "La tua famiglia può amarti.",
+    "I tuoi amici possono volerti proteggere.",
+    "Le loro intenzioni possono essere buone.",
+    "Ma la tua vita resta tua."
+   ]
+  },
+  {
+   "id": "exnemico-non-abbastanza",
+   "libro": "exnemico",
+   "capitolo": "1 — Ci siamo lasciati. Ma non abbastanza",
+   "voce": "Lasciati, ma non abbastanza",
+   "situazioni": [
+    "ex",
+    "separazione"
+   ],
+   "corpo": [
+    "stomaco",
+    "vuoto"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La mattina dopo la separazione è una delle cose più strane che esistano.",
+    "Ti svegli.",
+    "Per qualche secondo non ricordi.",
+    "Poi ricordi.",
+    "E il corpo lo sa prima della testa.",
+    "Quel piccolo peso nello stomaco.",
+    "Quel senso di vuoto.",
+    "Quel bisogno di controllare il telefono anche se sai già che non troverai il messaggio che vorresti.",
+    "A volte invece arriva.",
+    "«Dobbiamo parlare dei bambini.»",
+    "Ecco.",
+    "La poesia è durata diciotto ore.",
+    "Poi bisogna organizzare il mercoledì.",
+    "«Li prendi tu?»",
+    "«Sì.»",
+    "«A che ora?»",
+    "«Alle sei.»",
+    "«Alle sei dove?»",
+    "«A casa.»",
+    "«Quale casa?»",
+    "E improvvisamente ti accorgi che avete chiuso una relazione ma dovete ancora organizzare una logistica.",
+    "L’amore è finito.",
+    "Il calendario no.",
+    "Ed è una delle cose più difficili da accettare.",
+    "Perché una parte di te vorrebbe una fine netta.",
+    "Un sipario.",
+    "Una porta.",
+    "Buonanotte."
+   ],
+   "domanda": [
+    "È una forma curiosa di convivenza.",
+    "Non dorme più nel tuo letto.",
+    "Ma vive ancora nella tua testa."
+   ]
+  },
+  {
+   "id": "exnemico-postino",
+   "libro": "exnemico",
+   "capitolo": "6 — Diglielo tu a papà",
+   "voce": "Diglielo tu a papà",
+   "situazioni": [
+    "figli",
+    "separazione"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "È domenica sera.",
+    "Il bambino torna dal weekend.",
+    "Ha ancora addosso la felpa del padre.",
+    "La madre apre la porta.",
+    "«Tutto bene?»",
+    "«Sì.»",
+    "«Papà ti ha detto qualcosa?»",
+    "Pausa.",
+    "«No.»",
+    "«Sicuro?»",
+    "«Sì.»",
+    "«Perché aveva detto che mi avrebbe fatto sapere una cosa.»",
+    "Il bambino guarda per terra.",
+    "«Non lo so.»",
+    "La madre potrebbe prendere il telefono.",
+    "Potrebbe scrivere.",
+    "Potrebbe chiedere direttamente.",
+    "Oppure potrebbe dire:",
+    "«Va bene. Se c’è qualcosa che riguarda noi adulti, ne parleremo noi.»",
+    "Fine.",
+    "Non è una grande scena.",
+    "Non finirà su Instagram.",
+    "Non ci sarà musica.",
+    "Ma quella frase potrebbe aver evitato a suo figlio di passare un’altra sera a sentirsi responsabile di una cosa che non gli appartiene."
+   ],
+   "domanda": [
+    "Perché alla fine il problema non è soltanto cosa diciamo ai figli.",
+    "È il ruolo nel quale li costringiamo a entrare.",
+    "E quando un bambino diventa il ponte tra due adulti che non vogliono più parlarsi, prima o poi il ponte comincia a tremare."
+   ]
+  },
+  {
+   "id": "exnemico-tribunale",
+   "libro": "exnemico",
+   "capitolo": "3 — Il tribunale di WhatsApp",
+   "voce": "Perché non risponde?",
+   "situazioni": [
+    "ex",
+    "rabbia"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "A volte il problema non è ciò che l’ex scrive.",
+    "È ciò che non scrive.",
+    "«Visualizzato.»",
+    "Passano dieci minuti.",
+    "Niente.",
+    "Un’ora.",
+    "Niente.",
+    "Tre ore.",
+    "Niente.",
+    "La mente comincia a lavorare.",
+    "«Perché non risponde?»",
+    "«Lo fa apposta.»",
+    "«Vuole farmi arrabbiare.»",
+    "«Sta con qualcuno.»",
+    "«Mi sta ignorando.»",
+    "E magari, banalmente, l’altra persona sta facendo la spesa.",
+    "Ma quando c’è una storia di conflitto, il silenzio non rimane mai soltanto silenzio.",
+    "Diventa significato.",
+    "Diventa intenzione.",
+    "Diventa provocazione."
+   ],
+   "domanda": [
+    "È qui che bisogna fare attenzione.",
+    "Non tutto ciò che interpretiamo è stato realmente detto.",
+    "A volte un messaggio è soltanto un messaggio.",
+    "E un silenzio è soltanto un silenzio."
    ]
   },
   {
