@@ -13,11 +13,11 @@
   var LIBRI = {
     duau: {titolo:"Da uomo a uomo", cover:"../img/duau.jpg", pagina:"da-uomo-a-uomo.html",
            sotto:"Per gli uomini che dicono «tutto a posto» e intanto reggono.",
-           cartaceo:C.amazon.duauCartaceo, prezzoCartaceo:"14,90 €",
+           cartaceo:C.amazon.duauCartaceo, prezzoCartaceo:"19,90 €",
            ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoEbook:"5,99 €", ebookDalSito:!!C.gumroad.duauEbook},
     sv:   {titolo:"Senza veli", cover:"../img/senzaveli.jpg", pagina:"senza-veli.html",
            sotto:"Per la donna che regge tutto.",
-           cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"",
+           cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"19,90 €",
            ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook},
     vds:  {titolo:"Vestirsi di sé", cover:"../img/vestirsi.jpg", coverL:700, coverA:1052,
            pagina:"vestirsi-di-se.html",
