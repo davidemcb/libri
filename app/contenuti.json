@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-03 00:52",
+ "generato": "2026-09-03 00:54",
  "pratiche": [
   {
    "corpo": "cranio",
@@ -1461,6 +1461,7 @@
     "Non si arriva mai."
    ],
    "domanda": [
+    "E torni a casa anche in un altro senso.",
     "Perché non c’è nessuno da battere.",
     "Non c’è nessuno da umiliare.",
     "Non c’è niente da dimostrare a uno che, adesso, sta cercando il parcheggio.",
@@ -2033,6 +2034,54 @@
     "è soltanto",
     "l’abitudine",
     "a non chiedere?"
+   ]
+  },
+  {
+   "id": "duau-gelosia",
+   "libro": "duau",
+   "capitolo": "9 — La relazione che resta",
+   "voce": "Lei ha qualcun altro",
+   "situazioni": [
+    "gelosia",
+    "ex"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Può esserci",
+    "anche il nuovo compagno.",
+    "O la nuova compagna.",
+    "Una persona",
+    "che entra",
+    "in uno spazio",
+    "che una volta",
+    "era tuo.",
+    "E questo può fare male.",
+    "Molto.",
+    "Puoi sentirti sostituito.",
+    "Puoi sentirti",
+    "messo da parte.",
+    "Puoi chiederti:",
+    "“Come può",
+    "essere così facile",
+    "per lei?”",
+    "Ma ciò che vedi",
+    "non è necessariamente",
+    "ciò che l’altro vive.",
+    "E soprattutto la tua vita",
+    "non ha bisogno di essere una gara.",
+    "Non devi essere",
+    "più felice.",
+    "Più forte.",
+    "Più desiderato."
+   ],
+   "domanda": [
+    "Più desiderato.",
+    "Più avanti.",
+    "Non devi dimostrare",
+    "che hai vinto",
+    "la separazione.",
+    "Non c’è nessuna gara."
    ]
   },
   {
