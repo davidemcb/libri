@@ -19,6 +19,9 @@
            sotto:"Per la donna che regge tutto.",
            cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"",
            ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook},
+    vds:  {titolo:"Vestirsi di sé", cover:"", sotto:"Il primo libro: l'auto-massaggio consapevole, con gli esercizi per tutto il corpo.",
+           cartaceo:C.amazon.vdsCartaceo, prezzoCartaceo:"11,40 €",
+           ebook:C.amazon.vdsEbook, prezzoEbook:"4,99 €", ebookDalSito:false},
     pac:  {titolo:"Prenditi a carezze", cover:"../img/prenditi.jpg",
            sotto:"Una pratica semplice, nessun metodo da imparare.",
            cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"",
@@ -226,10 +229,10 @@
   }
 
   function vistaLibri(){
-    var ordine = ["duau", "sv", "pac"];
+    var ordine = ["duau", "sv", "pac", "vds"];
     return '<section class="sez"><div class="testata"><p class="lbl">I libri</p><h1>Tre libri, un solo posto</h1><p class="sotto">Il corpo, e quello che ha imparato a reggere per essere amato.</p></div>' +
       ordine.map(function(k){ var L = LIBRI[k];
-        return '<div class="libro"><img src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy"><div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
+        return '<div class="libro' + (L.cover ? '' : ' senza-cover') + '">' + (L.cover ? '<img src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy">' : '') + '<div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
       }).join("") +
       '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB, con l\'email dell\'acquirente stampata. Il cartaceo lo stampa Amazon.</p></section>' +
       sezioneCantiere() + piede();

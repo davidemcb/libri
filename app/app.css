@@ -173,3 +173,5 @@ audio{margin-block:.3rem}
 .scala{border-left:0;padding:0 0 .2rem;margin-bottom:-.6rem}
 .scala a{color:var(--accent);text-decoration:none}
 .lista .blocco .titolo{line-height:1.25}
+
+.libro.senza-cover{grid-template-columns:1fr}
