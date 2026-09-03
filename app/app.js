@@ -19,7 +19,8 @@
            sotto:"Per la donna che regge tutto.",
            cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"",
            ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook},
-    vds:  {titolo:"Vestirsi di sé", cover:"", sotto:"Il primo libro: l'auto-massaggio consapevole, con gli esercizi per tutto il corpo.",
+    vds:  {titolo:"Vestirsi di sé", cover:"../img/vestirsi.jpg", coverL:700, coverA:1052,
+           sotto:"Il primo libro: l'auto-massaggio consapevole, con gli esercizi per tutto il corpo.",
            cartaceo:C.amazon.vdsCartaceo, prezzoCartaceo:"11,40 €",
            ebook:C.amazon.vdsEbook, prezzoEbook:"4,99 €", ebookDalSito:false},
     pac:  {titolo:"Prenditi a carezze", cover:"../img/prenditi.jpg",
@@ -162,11 +163,21 @@
       '<a class="btn btn-vuoto" href="mailto:' + esc(EMAIL) + '?subject=' + encodeURIComponent("Avvisami quando esce " + L.titolo) + '">Per email</a></div></div></section>';
   }
   function s_chiave(L){ for (var k in LIBRI) if (LIBRI[k] === L) return k; return ""; }
+  // La copertina, con le sue proporzioni vere: se le dichiara sbagliate la
+  // pagina fa un salto quando l'immagine arriva. Chi non le dichiara ha le
+  // proporzioni delle prime tre (700x1120, come 600x960). Senza copertina
+  // non si stampa un'immagine rotta: non si stampa niente.
+  function immagineCover(L, classe){
+    if (!L.cover) return "";
+    return '<img' + (classe ? ' class="' + classe + '"' : '') + ' src="' + esc(L.cover) +
+      '" alt="La copertina di ' + esc(L.titolo) + '" width="' + (L.coverL || 600) +
+      '" height="' + (L.coverA || 960) + '" loading="lazy">';
+  }
   function blocco3(s){   // la parte 3 della formula: compra o regala
     var L = libroDi(s);
     if (L.inLavorazione) return bloccoLavorazione(L);
     var h = '<section class="sez"><div class="testata"><p class="lbl">Il libro</p><h2>' + esc(L.titolo) + '</h2><p class="sotto">' + esc(L.sotto) + '</p></div>' +
-      '<div class="regalo"><img class="cover-piccola" src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy"><div>' +
+      '<div class="regalo">' + immagineCover(L, "cover-piccola") + '<div>' +
       '<p class="lbl" style="margin-bottom:.6rem">Per te</p>' + bottoniLibro(L) + '</div></div>' +
       '<div class="prosa"><p class="lbl">Per qualcuno a cui non sai come dirlo</p>' +
       '<p>Si regala bene: molto bianco, righe corte, si apre a caso. Oppure mandagli solo questo capitolo, gratis, e lascia che sia lui a decidere.</p>' +
@@ -234,7 +245,7 @@
     var ordine = ["duau", "sv", "pac", "vds"];
     return '<section class="sez"><div class="testata"><p class="lbl">I libri</p><h1>I libri, in un solo posto</h1><p class="sotto">Il corpo, e quello che ha imparato a reggere per essere amato.</p></div>' +
       ordine.map(function(k){ var L = LIBRI[k];
-        return '<div class="libro' + (L.cover ? '' : ' senza-cover') + '">' + (L.cover ? '<img src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy">' : '') + '<div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
+        return '<div class="libro' + (L.cover ? '' : ' senza-cover') + '">' + immagineCover(L, "") + '<div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
       }).join("") +
       '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB, con l\'email dell\'acquirente stampata. Il cartaceo lo stampa Amazon.</p></section>' +
       sezioneCantiere() + piede();
