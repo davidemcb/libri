@@ -45,9 +45,9 @@
         <p class="domanda riga" style="animation-delay:.6s">Non è che regge tutto. È che non ha mai avuto il permesso di mollare.</p>
         <div class="azioni riga" style="animation-delay:.75s">
           <a class="btn btn-pieno" data-link="svEbook" data-attesa="In arrivo" data-testo-gumroad="Ebook, subito">Ebook su Amazon</a>
-          <a class="btn btn-vuoto" href="#avvisami">Avvisami per il cartaceo</a>
+          <a class="btn btn-vuoto" data-link="svCartaceo" data-attesa="Cartaceo in arrivo">Cartaceo su Amazon</a>
         </div>
-        <p class="sotto-azioni riga" style="animation-delay:.85s">Ebook 4,99 €, subito · cartaceo in arrivo</p>
+        <p class="sotto-azioni riga" style="animation-delay:.85s">Ebook 4,99 €, subito · cartaceo su Amazon</p>
         <p class="sotto-azioni riga" style="animation-delay:.9s"><a data-link-amazon="svEbook" style="color:inherit">Anche su Amazon per Kindle</a></p>
       </div>
       <div class="riga" style="animation-delay:.5s">
@@ -86,9 +86,9 @@
     <div class="wrap">
       <div class="col" style="margin-inline:auto">
         <p class="lbl">A che punto è</p>
-        <h2 style="font-size:clamp(1.5rem,3vw,2rem);margin-top:.7rem">L'ebook è uscito. Il cartaceo sta arrivando.</h2>
-        <p style="margin-top:1.4rem">L'ebook si compra qui e arriva subito, PDF ed EPUB, senza registrazione (c'è anche su Amazon per Kindle). Il cartaceo sta attraversando l'ultimo passaggio prima della stampa e arriverà anche lui, come gli altri.</p>
-        <p class="muted" style="margin-top:1.2rem">Il giorno che è disponibile lo scrivo qui — e lo mando per prima cosa a chi ha lasciato la mail qui sotto.</p>
+        <h2 style="font-size:clamp(1.5rem,3vw,2rem);margin-top:.7rem">L'ebook e il cartaceo sono usciti.</h2>
+        <p style="margin-top:1.4rem">L'ebook si compra qui e arriva subito, PDF ed EPUB, senza registrazione (c'è anche su Amazon per Kindle). Il cartaceo, 374 pagine, è su Amazon.</p>
+        <p class="muted" style="margin-top:1.2rem">Chi vuole una pagina ogni lunedì, senza altro, lascia la mail qui sotto.</p>
       </div>
     </div>
   </section>
@@ -96,25 +96,25 @@
   <section class="b" id="avvisami">
     <div class="wrap">
       <div class="col" style="margin-inline:auto">
-        <p class="lbl">Quando esce</p>
-        <h2 style="font-size:clamp(1.7rem,3.4vw,2.3rem);margin-top:.7rem">Lascia la mail: te lo scrivo io.</h2>
-        <p style="margin-top:1.4rem">Una email il giorno che il cartaceo è disponibile, con il link. Niente conto alla rovescia, niente sollecitazioni.</p>
+        <p class="lbl">Le pagine</p>
+        <h2 style="font-size:clamp(1.7rem,3.4vw,2.3rem);margin-top:.7rem">Una pagina ogni lunedì.</h2>
+        <p style="margin-top:1.4rem">Una pagina vera dai libri, ogni lunedì alle sette. Un problema, e quello che il libro ne dice. Niente altro.</p>
 
-        <form class="modulo colonna" data-modulo="avviso-senza-veli" novalidate>
+        <form class="modulo colonna" data-modulo="pagine" novalidate>
           <label class="lbl" for="mail-sv" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>
           <input id="mail-sv" name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email">
           <input type="hidden" name="email_address_check" value="">
           <input type="hidden" name="locale" value="it">
           <input type="hidden" name="html_type" value="simple">
-          <input type="hidden" name="ORIGINE" value="avviso-senza-veli">
+          <input type="hidden" name="ORIGINE" value="pagine">
           <input type="hidden" name="UTM_SOURCE" value="">
           <input type="hidden" name="UTM_CAMPAIGN" value="">
           <input type="hidden" name="UTM_CONTENUTO" value="">
           <label class="consenso">
             <input type="checkbox" name="OPT_IN" required>
-            <span>Sì, avvisami il giorno che <em>Senza veli</em> esce, e ogni tanto mandami una pagina. Posso cancellarmi con un clic. <a href="privacy.html">Come tratto i dati</a>.</span>
+            <span>Sì, mandami una pagina ogni lunedì. Posso cancellarmi con un clic. <a href="privacy.html">Come tratto i dati</a>.</span>
           </label>
-          <button class="btn btn-pieno" type="submit" style="margin-top:1.2rem">Avvisami</button>
+          <button class="btn btn-pieno" type="submit" style="margin-top:1.2rem">Mandami le pagine</button>
         </form>
         <p class="esito">Fatto. Sei nella lista: ti scrivo io.</p>
         <p class="errore"></p>

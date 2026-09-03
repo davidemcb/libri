@@ -21,7 +21,7 @@ window.SITO = {
     duauEbook:    "https://www.amazon.it/dp/B0HHC4PXBR", // Da uomo a uomo — ebook Kindle
     pacCartaceo:  "https://www.amazon.it/dp/B0HHC7238K", // Prenditi a carezze — cartaceo (5"×8")
     pacEbook:     "https://www.amazon.it/dp/B0GL769877", // Prenditi a carezze — ebook Kindle
-    svCartaceo:   "",                                  // Senza veli — cartaceo non ancora pubblicato
+    svCartaceo:   "https://www.amazon.it/dp/B0HHKCLBR3", // Senza veli — cartaceo (dal 02/09)
     svEbook:      "https://www.amazon.it/dp/B0HHC8Y46W", // Senza veli — ebook Kindle
     vdsCartaceo:  "https://www.amazon.it/dp/B0C12D3DQS", // Vestirsi di sé — cartaceo (11,40 €, Youcanprint 2023)
     vdsEbook:     "https://www.amazon.it/dp/B0C4RC7N5J"  // Vestirsi di sé — ebook Kindle (4,99 €)
