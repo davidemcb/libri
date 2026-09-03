@@ -80,7 +80,7 @@ window.SITO = {
      "Iscrizione percorso" creata in Google Ads → Obiettivi →
      Conversioni; finché è vuota non parte nulla.
      Formato: "AW-969285863/ETICHETTA" */
-  googleAdsConversione: "",
+  googleAdsConversione: "AW-969285863/yUz5CKnBje0cEOfBmM4D",
 
   /* ---------- 4. CONTATTI ----------------------------------
      Compaiono in fondo alle pagine e nella privacy.
