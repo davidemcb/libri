@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-03 00:28",
+ "generato": "2026-09-03 00:42",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -847,7 +847,7 @@
   },
   {
    "chiave": "ex",
-   "voce": "La mia ex, ancora"
+   "voce": "L'ex, ancora"
   },
   {
    "chiave": "coppia-lunga",
@@ -862,8 +862,8 @@
    "voce": "Mio figlio"
   },
   {
-   "chiave": "padre",
-   "voce": "Mio padre invecchia"
+   "chiave": "genitori",
+   "voce": "I miei invecchiano"
   },
   {
    "chiave": "lutto",
@@ -914,6 +914,10 @@
    "voce": "Casa mia, da piccolo"
   },
   {
+   "chiave": "parenti",
+   "voce": "Tutti dicono la loro"
+  },
+  {
    "chiave": "vergogna",
    "voce": "Mi vergogno"
   }
@@ -936,7 +940,8 @@
    "voce": "Figli e famiglia",
    "situazioni": [
     "figli",
-    "padre",
+    "genitori",
+    "parenti",
     "famiglia",
     "lutto"
    ]
@@ -1024,8 +1029,8 @@
    "capitolo": "8 — E a letto?",
    "voce": "E a letto?",
    "situazioni": [
-    "desiderio",
-    "tradimento"
+    "tradimento",
+    "desiderio"
    ],
    "corpo": [],
    "capitolo_pdf": null,
@@ -1419,8 +1424,7 @@
    "capitolo": "3 — La famiglia d'origine",
    "voce": "Da piccolo, a casa mia",
    "situazioni": [
-    "famiglia",
-    "reggere"
+    "famiglia"
    ],
    "corpo": [
     "mandibola",
@@ -1682,13 +1686,64 @@
    ]
   },
   {
-   "id": "duau-lavoro",
+   "id": "duau-lavoro-tempo",
    "libro": "duau",
    "capitolo": "5 — Il ruolo che impara",
-   "voce": "Lavoro anche quando sono stanco",
+   "voce": "Il lavoro mi mangia",
    "situazioni": [
     "lavoro",
     "reggere"
+   ],
+   "corpo": [
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Se sei stanco,",
+    "vai avanti.",
+    "Se hai paura,",
+    "ci pensi dopo.",
+    "Se sei arrabbiato,",
+    "lavori.",
+    "Se sei triste,",
+    "esci.",
+    "Se qualcosa non va",
+    "nella relazione,",
+    "cerchi una soluzione.",
+    "Se un figlio ha un problema,",
+    "ti attivi.",
+    "Se tuo padre sta male,",
+    "organizzi.",
+    "Se tua madre ha bisogno,",
+    "ci sei.",
+    "Se al lavoro",
+    "qualcuno conta su di te,",
+    "non puoi mancare.",
+    "E così il corpo",
+    "impara una cosa precisa.",
+    "A essere disponibile.",
+    "Sempre.",
+    "Pronto.",
+    "Funzionante.",
+    "Anche quando",
+    "dentro qualcosa",
+    "non funziona affatto."
+   ],
+   "domanda": [
+    "E chiederti,",
+    "a un certo punto:",
+    "“Quali di queste cose",
+    "sono davvero mie?”"
+   ]
+  },
+  {
+   "id": "duau-lavoro",
+   "libro": "duau",
+   "capitolo": "5 — Il ruolo che impara",
+   "voce": "Faccio tutto io, in casa",
+   "situazioni": [
+    "reggere",
+    "coppia-lunga"
    ],
    "corpo": [
     "stanchezza"
@@ -1737,7 +1792,7 @@
    "capitolo": "16 — La morte",
    "voce": "Mio padre invecchia",
    "situazioni": [
-    "padre",
+    "genitori",
     "lutto"
    ],
    "corpo": [
@@ -2201,9 +2256,9 @@
    "id": "exnemico-mia-madre",
    "libro": "exnemico",
    "capitolo": "11 — Mia madre dice che dovrei…",
-   "voce": "Mia madre dice che dovrei…",
+   "voce": "Tutti dicono la loro",
    "situazioni": [
-    "famiglia",
+    "parenti",
     "separazione"
    ],
    "corpo": [],
@@ -2903,7 +2958,7 @@
    "capitolo": "66 — Sei il pilastro: lavoro, casa, figli, genitori",
    "voce": "I miei genitori hanno bisogno",
    "situazioni": [
-    "padre",
+    "genitori",
     "reggere"
    ],
    "corpo": [],
@@ -2954,8 +3009,7 @@
    "capitolo": "17 — La paura della notte",
    "voce": "Di notte ho paura",
    "situazioni": [
-    "paura",
-    "solitudine"
+    "paura"
    ],
    "corpo": [
     "cuore",
