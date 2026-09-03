@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-03 00:54",
+ "generato": "2026-09-03 02:28",
  "pratiche": [
   {
    "corpo": "cranio",
@@ -840,14 +840,14 @@
   {
    "chiave": "rocco",
    "titolo": "Non sei Rocco",
-   "sotto": "La prestazione sessuale",
-   "stato": "cantiere"
+   "sotto": "La prestazione sessuale: quando il letto diventa un esame.",
+   "stato": "lavorazione"
   },
   {
    "chiave": "banana",
    "titolo": "La banana guarda in giù",
-   "sotto": "La disfunzione sessuale",
-   "stato": "cantiere"
+   "sotto": "Quando non si alza, e la testa ci va a vivere.",
+   "stato": "lavorazione"
   },
   {
    "chiave": "scappatella",
@@ -1191,6 +1191,10 @@
    "voce": "Tutti dicono la loro"
   },
   {
+   "chiave": "vergogna",
+   "voce": "Mi vergogno"
+  },
+  {
    "chiave": "tristezza",
    "voce": "Mi viene da piangere"
   },
@@ -1203,8 +1207,24 @@
    "voce": "Penso a lui, a lei"
   },
   {
-   "chiave": "vergogna",
-   "voce": "Mi vergogno"
+   "chiave": "sessualita",
+   "voce": "Il sesso non va più"
+  },
+  {
+   "chiave": "stanchezza",
+   "voce": "Sono sempre stanco"
+  },
+  {
+   "chiave": "ascolto",
+   "voce": "Non ascolto il mio corpo"
+  },
+  {
+   "chiave": "tensione",
+   "voce": "Le spalle rigide"
+  },
+  {
+   "chiave": "dolore",
+   "voce": "Il dolore non passa"
   }
  ],
  "aree": [
@@ -1212,12 +1232,12 @@
    "chiave": "famiglia",
    "voce": "Famiglia e amore",
    "situazioni": [
+    "figli",
+    "separazione",
+    "ex",
     "tradimento",
     "sospetto",
-    "ex",
-    "separazione",
     "coppia-lunga",
-    "figli",
     "genitori",
     "parenti",
     "famiglia",
@@ -1228,20 +1248,16 @@
    "chiave": "corpo",
    "voce": "Il corpo",
    "situazioni": [
+    "sessualita",
     "desiderio",
     "malattia",
+    "stanchezza",
+    "ascolto",
+    "tensione",
+    "dolore",
     "corpo-cambia",
     "fragilita",
     "contatto"
-   ]
-  },
-  {
-   "chiave": "lavoro",
-   "voce": "Lavoro e tempo",
-   "situazioni": [
-    "lavoro",
-    "reggere",
-    "fermarsi"
    ]
   },
   {
@@ -1255,6 +1271,15 @@
     "colpa",
     "gelosia",
     "solitudine"
+   ]
+  },
+  {
+   "chiave": "lavoro",
+   "voce": "Lavoro e tempo",
+   "situazioni": [
+    "lavoro",
+    "reggere",
+    "fermarsi"
    ]
   }
  ],
@@ -1331,8 +1356,8 @@
    "capitolo": "8 — E a letto?",
    "voce": "E a letto?",
    "situazioni": [
-    "tradimento",
-    "desiderio"
+    "sessualita",
+    "tradimento"
    ],
    "corpo": [],
    "capitolo_pdf": null,
@@ -1771,6 +1796,57 @@
    ]
   },
   {
+   "id": "duau-dolore",
+   "libro": "duau",
+   "capitolo": "13 — La fragilità",
+   "voce": "Il dolore mi ferma",
+   "situazioni": [
+    "dolore",
+    "fragilita"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Quando non puoi",
+    "sollevare.",
+    "Quando non puoi",
+    "correre.",
+    "Quando non puoi",
+    "guidare.",
+    "Quando non puoi",
+    "lavorare.",
+    "Quando devi",
+    "stare fermo.",
+    "Stare fermo.",
+    "Per alcuni uomini",
+    "è quasi più difficile",
+    "del dolore.",
+    "Perché stare fermo",
+    "significa non fare.",
+    "E quando non fai,",
+    "chi sei?",
+    "È una domanda",
+    "che può sembrare",
+    "esagerata.",
+    "Eppure può arrivare.",
+    "Se sei abituato",
+    "a sentirti utile",
+    "attraverso quello",
+    "che fai,",
+    "un periodo",
+    "in cui non puoi fare",
+    "può lasciarti",
+    "senza un appiglio."
+   ],
+   "domanda": [
+    "Non sempre",
+    "puoi scegliere",
+    "come arriverà.",
+    "Puoi scegliere",
+    "cosa farne?"
+   ]
+  },
+  {
    "id": "duau-ex",
    "libro": "duau",
    "capitolo": "9 — La relazione che resta",
@@ -1884,8 +1960,9 @@
    "capitolo": "2 — Vivere il corpo come uno strumento, non come un luogo",
    "voce": "Se mi fermo, perdo tempo",
    "situazioni": [
+    "ascolto",
     "fermarsi",
-    "reggere"
+    "tensione"
    ],
    "corpo": [
     "sonno",
@@ -2090,6 +2167,7 @@
    "capitolo": "14 — L'invecchiamento",
    "voce": "Non recupero più",
    "situazioni": [
+    "stanchezza",
     "corpo-cambia"
    ],
    "corpo": [
@@ -2143,7 +2221,7 @@
    "id": "duau-lavoro-tempo",
    "libro": "duau",
    "capitolo": "5 — Il ruolo che impara",
-   "voce": "Il lavoro mi mangia",
+   "voce": "Vado avanti comunque",
    "situazioni": [
     "lavoro",
     "reggere"
@@ -2984,8 +3062,9 @@
    "capitolo": "4 — Un posto dove non devi fare niente",
    "voce": "Non so stare senza fare",
    "situazioni": [
+    "tensione",
     "fermarsi",
-    "reggere"
+    "ascolto"
    ],
    "corpo": [
     "spalle",
@@ -3032,6 +3111,7 @@
    "capitolo": "6 — Quando il corpo chiede",
    "voce": "Il corpo mi chiede qualcosa",
    "situazioni": [
+    "ascolto",
     "contatto",
     "fermarsi"
    ],
@@ -3235,8 +3315,9 @@
    "capitolo": "13 — Il dolore cronico",
    "voce": "Il dolore non passa mai",
    "situazioni": [
-    "malattia",
-    "fragilita"
+    "dolore",
+    "tensione",
+    "malattia"
    ],
    "corpo": [
     "schiena",
@@ -3767,6 +3848,65 @@
    ]
   },
   {
+   "id": "sv-sbalzi-di-umore",
+   "libro": "sv",
+   "capitolo": "18 — Sbalzi di umore",
+   "voce": "Triste senza un motivo",
+   "situazioni": [
+    "tristezza",
+    "stanchezza"
+   ],
+   "corpo": [
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Ti svegli già stanca.",
+    "Non è successo niente.",
+    "Eppure qualcosa è storto.",
+    "Una parola detta male ti graffia.",
+    "Un rumore ti attraversa.",
+    "Un pensiero ti fa scattare.",
+    "Non sei triste.",
+    "Non sei arrabbiata.",
+    "Sei troppo.",
+    "E non sai perché.",
+    "Ti dicono che sei «nervosa».",
+    "Che è l’età.",
+    "Che passerà.",
+    "Ti dicono:",
+    "«È normale.»",
+    "Come se normale volesse dire sopportabile.",
+    "Come se bastasse.",
+    "Ma la verità è un’altra.",
+    "Più semplice.",
+    "Più scomoda.",
+    "Non stai cambiando umore.",
+    "Sta cambiando la soglia.",
+    "Per anni hai tenuto.",
+    "Hai regolato.",
+    "Hai compensato.",
+    "Ora no.",
+    "Il corpo non riesce più a filtrare tutto.",
+    "E quello che prima passava sotto traccia",
+    "ora emerge.",
+    "Non perché sei fragile.",
+    "Ma perché sei stanca di reggere."
+   ],
+   "domanda": [
+    "Lascia cadere le spalle.",
+    "Non sistemarle.",
+    "Lasciale.",
+    "Porta una mano sul petto o sulla pancia.",
+    "Dove viene.",
+    "Fai tre respiri.",
+    "Non profondi.",
+    "Non corretti.",
+    "Non cambiare niente.",
+    "Resta."
+   ]
+  },
+  {
    "id": "sv-separarsi",
    "libro": "sv",
    "capitolo": "83 — Separarsi / divorziare: il corpo senza ruolo",
@@ -3826,6 +3966,7 @@
    "capitolo": "73 — Sessualità che diventa compito",
    "voce": "Lo faccio senza esserci",
    "situazioni": [
+    "sessualita",
     "desiderio",
     "coppia-lunga"
    ],

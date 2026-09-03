@@ -29,6 +29,8 @@
   };
   LIBRI.alce = {titolo:"L'Alce", cover:"", sotto:"Un viaggio dentro la perdita di una certezza.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   LIBRI.exnemico = {titolo:"L'ex non è un nemico", cover:"", sotto:"Quando la separazione finisce, ma la guerra continua.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
+  LIBRI.rocco = {titolo:"Non sei Rocco", cover:"", sotto:"La prestazione sessuale: quando il letto diventa un esame.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
+  LIBRI.banana = {titolo:"La banana guarda in giù", cover:"", sotto:"Quando non si alza, e la testa ci va a vivere.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   function libroCantiere(chiave){ for (var i = 0; i < (dati.cantiere || []).length; i++) if (dati.cantiere[i].chiave === chiave) return dati.cantiere[i]; return null; }
   function urlAvvisami(titolo){ return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Ciao Davide, avvisami quando esce «" + titolo + "»."); }
   var TEMI_DIMMI = ["Sessualità","Lavoro","Amore","Malattia","I figli","L'ex","Solitudine","Il padre","Il corpo"];
