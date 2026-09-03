@@ -317,6 +317,30 @@
       if(el === mostra) el.removeAttribute("hidden");
       else el.setAttribute("hidden", "");
     });
+
+    /* ---------- 4c. IL PDF GIUSTO, NON SEMPRE IL TRADIMENTO ------
+       Dentro la variante "capitolo" c'è un link diretto al PDF, per
+       chi non vuole aspettare l'email. Deve seguire l'ORIGINE, non
+       essere sempre lo stesso file: un mancato incrocio qui offre
+       il capitolo sbagliato a chi ne ha chiesto un altro. ---- */
+    var PDF_DIRETTI = {
+      "capitolo-tradimento": ["capitoli/da-uomo-a-uomo-capitolo-tradimento.pdf", "il PDF del capitolo sul tradimento"],
+      "capitolo-separarsi":  ["capitoli/da-uomo-a-uomo-capitolo-separarsi.pdf",  "il PDF del capitolo su Separarsi"],
+      "capitolo-senza-veli": ["capitoli/senza-veli-capitolo-la-donna-che-regge-tutto.pdf", "il PDF del capitolo"],
+      "estratto-carezze":    ["capitoli/prenditi-a-carezze-estratto.pdf", "il PDF dell'estratto"]
+    };
+    var pdfRiga  = document.getElementById("grazie-pdf-diretto");
+    var pdfLink  = document.getElementById("grazie-pdf-link");
+    if(pdfRiga && pdfLink){
+      var pdf = PDF_DIRETTI[da];
+      if(pdf){
+        pdfLink.setAttribute("href", pdf[0]);
+        pdfLink.textContent = "scarica subito " + pdf[1];
+        pdfRiga.removeAttribute("hidden");
+      } else {
+        pdfRiga.setAttribute("hidden", "");
+      }
+    }
   })();
 
   /* ---------- 5. CONDIVIDERE UNA PAGINA --------------------
