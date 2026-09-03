@@ -20,9 +20,7 @@
            cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"",
            ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook},
     vds:  {titolo:"Vestirsi di sé", cover:"../img/vestirsi.jpg", coverL:700, coverA:1052,
-           // gli altri tre hanno una pagina propria sul sito, questo no:
-           // si passa la home all'altezza dei libri.
-           pagina:"#libri",
+           pagina:"vestirsi-di-se.html",
            sotto:"Il primo libro: l'auto-massaggio consapevole, con gli esercizi per tutto il corpo.",
            cartaceo:C.amazon.vdsCartaceo, prezzoCartaceo:"11,40 €",
            ebook:C.amazon.vdsEbook, prezzoEbook:"4,99 €", ebookDalSito:false},
