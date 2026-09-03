@@ -232,7 +232,7 @@
 
   function vistaLibri(){
     var ordine = ["duau", "sv", "pac", "vds"];
-    return '<section class="sez"><div class="testata"><p class="lbl">I libri</p><h1>Tre libri, un solo posto</h1><p class="sotto">Il corpo, e quello che ha imparato a reggere per essere amato.</p></div>' +
+    return '<section class="sez"><div class="testata"><p class="lbl">I libri</p><h1>I libri, in un solo posto</h1><p class="sotto">Il corpo, e quello che ha imparato a reggere per essere amato.</p></div>' +
       ordine.map(function(k){ var L = LIBRI[k];
         return '<div class="libro' + (L.cover ? '' : ' senza-cover') + '">' + (L.cover ? '<img src="' + esc(L.cover) + '" alt="La copertina di ' + esc(L.titolo) + '" width="600" height="960" loading="lazy">' : '') + '<div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
       }).join("") +
