@@ -383,7 +383,10 @@
       whatsapp: "https://wa.me/?text=" + encodeURIComponent(titolo + "\n" + url),
       facebook: "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url),
       twitter:  "https://twitter.com/intent/tweet?text=" + encodeURIComponent(titolo) + "&url=" + encodeURIComponent(url),
-      email:    "mailto:?subject=" + encodeURIComponent(titolo) + "&body=" + encodeURIComponent(testo + "\n\n" + url)
+      email:    "mailto:?subject=" + encodeURIComponent(titolo) + "&body=" + encodeURIComponent(testo + "\n\n" + url),
+      // Instagram non accetta un link da fuori: si apre e basta, il
+      // link lo mettiamo negli appunti (vedi più sotto).
+      instagram: "https://www.instagram.com/"
     };
 
     // negli appunti, con un cenno sul bottone che l'ha chiesto
@@ -405,8 +408,10 @@
         campo.style.position = "fixed";
         campo.style.opacity = "0";
         document.body.appendChild(campo);
+        campo.focus();
         campo.select();
-        try { document.execCommand("copy"); cenno(); } catch(e){}
+        campo.setSelectionRange(0, campo.value.length);
+        try { if(document.execCommand("copy")){ cenno(); } } catch(e){}
         document.body.removeChild(campo);
       }
       if(navigator.clipboard && navigator.clipboard.writeText){
@@ -428,17 +433,16 @@
       if(indirizzo){
         b.href = indirizzo;
         if(canale.id !== "email"){ b.target = "_blank"; b.rel = "noopener"; }
-      } else if(canale.id === "instagram"){
-        // Instagram non accetta link da fuori: si copia e si apre l'app,
-        // così il link è già pronto da incollare nella storia.
-        b.type = "button";
-        b.setAttribute("title", "Copia il link e apri Instagram");
-        b.setAttribute("aria-label", "Copia il link e apri Instagram");
-        b.addEventListener("click", function(){
-          // la finestra si apre nel gesto, se no il browser la blocca
-          window.open("https://www.instagram.com/", "_blank", "noopener");
-          copiaNegliAppunti(b);
-        });
+        if(canale.id === "instagram"){
+          // Instagram si apre come un link normale (una finestra aperta a
+          // mano finiva bloccata dal browser) e intanto il link va negli
+          // appunti, già pronto da incollare nella storia. L'ordine conta:
+          // appena la scheda nuova prende il fuoco il browser rifiuta di
+          // scrivere negli appunti, quindi si copia prima di partire.
+          b.setAttribute("title", "Copia il link e apri Instagram");
+          b.setAttribute("aria-label", "Copia il link e apri Instagram");
+          b.addEventListener("click", function(){ copiaNegliAppunti(b); });
+        }
       } else {
         b.type = "button";
         b.addEventListener("click", function(){
