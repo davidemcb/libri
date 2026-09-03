@@ -11,19 +11,22 @@
   var EMAIL = C.emailPubblica || "davidescuderi1981@gmail.com";
 
   var LIBRI = {
-    duau: {titolo:"Da uomo a uomo", cover:"../img/duau.jpg",
+    duau: {titolo:"Da uomo a uomo", cover:"../img/duau.jpg", pagina:"da-uomo-a-uomo.html",
            sotto:"Per gli uomini che dicono «tutto a posto» e intanto reggono.",
            cartaceo:C.amazon.duauCartaceo, prezzoCartaceo:"14,90 €",
            ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoEbook:"5,99 €", ebookDalSito:!!C.gumroad.duauEbook},
-    sv:   {titolo:"Senza veli", cover:"../img/senzaveli.jpg",
+    sv:   {titolo:"Senza veli", cover:"../img/senzaveli.jpg", pagina:"senza-veli.html",
            sotto:"Per la donna che regge tutto.",
            cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"",
            ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook},
     vds:  {titolo:"Vestirsi di sé", cover:"../img/vestirsi.jpg", coverL:700, coverA:1052,
+           // gli altri tre hanno una pagina propria sul sito, questo no:
+           // si passa la home all'altezza dei libri.
+           pagina:"#libri",
            sotto:"Il primo libro: l'auto-massaggio consapevole, con gli esercizi per tutto il corpo.",
            cartaceo:C.amazon.vdsCartaceo, prezzoCartaceo:"11,40 €",
            ebook:C.amazon.vdsEbook, prezzoEbook:"4,99 €", ebookDalSito:false},
-    pac:  {titolo:"Prenditi a carezze", cover:"../img/prenditi.jpg",
+    pac:  {titolo:"Prenditi a carezze", cover:"../img/prenditi.jpg", pagina:"prenditi-a-carezze.html",
            sotto:"Una pratica semplice, nessun metodo da imparare.",
            cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"",
            ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"", ebookDalSito:!!C.gumroad.pacEbook}
@@ -87,12 +90,15 @@
   function urlPost(s, n){ return URL_APP + "#post/" + s.inizio + "/" + n; }
   function urlSettimana(s){ return URL_APP + "#settimana/" + s.inizio; }
 
-  function condividi(titolo, testo, url){
+  function condividi(titolo, testo, url, etichetta){
     if (navigator.share) {
       navigator.share({title:titolo, text:testo, url:url}).catch(function(){});
       return;
     }
     var f = document.getElementById("foglio");
+    // «Passala» per una pagina, «Passalo» per un libro: lo dice chi chiama.
+    var lbl = f.querySelector(".lbl");
+    if (lbl) lbl.textContent = etichetta || "Passala a qualcuno";
     var tutto = testo + "\n" + url;
     document.getElementById("cond-wa").href = "https://wa.me/?text=" + encodeURIComponent(tutto);
     document.getElementById("cond-tg").href = "https://t.me/share/url?url=" + encodeURIComponent(url) + "&text=" + encodeURIComponent(testo);
@@ -126,6 +132,13 @@
     } else if (tipo === "trovata") {
       var pg = trovaPagina(b.getAttribute("data-id"));
       if (pg) condividi("Davide Scuderi", pg.pagina.slice(0, 6).join("\n") + (pg.pagina.length > 6 ? "\n[…]" : "") + "\n\n— Davide Scuderi, «" + libroDi(pg).titolo + "»" + (libroDi(pg).inLavorazione ? " (in lavorazione)" : "") + ", " + capBreve(pg), URL_APP + "#pagina/" + pg.id);
+    } else if (tipo === "libro") {
+      var Lc = LIBRI[b.getAttribute("data-libro")];
+      // il testo deve reggersi da solo: il foglio dell'app manda testo e link,
+      // il titolo lo guarda solo il foglio di sistema del telefono.
+      if (Lc) condividi(Lc.titolo + " — Davide Scuderi",
+        "«" + Lc.titolo + "», di Davide Scuderi.\n" + Lc.sotto, BASE_SITO + (Lc.pagina || ""),
+        "Passalo a qualcuno");
     } else if (tipo === "capitolo") {
       condividi("Un capitolo per te",
         "Ti mando un capitolo di un libro. Leggilo con calma, senza obbligo di arrivare in fondo.\n«" + libroDi(s).titolo + "», di Davide Scuderi, " + capBreve(s) + ".",
@@ -245,7 +258,9 @@
     var ordine = ["duau", "sv", "pac", "vds"];
     return '<section class="sez"><div class="testata"><p class="lbl">I libri</p><h1>I libri, in un solo posto</h1><p class="sotto">Il corpo, e quello che ha imparato a reggere per essere amato.</p></div>' +
       ordine.map(function(k){ var L = LIBRI[k];
-        return '<div class="libro' + (L.cover ? '' : ' senza-cover') + '">' + immagineCover(L, "") + '<div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) + '</div></div>';
+        return '<div class="libro' + (L.cover ? '' : ' senza-cover') + '">' + immagineCover(L, "") + '<div><h3>' + esc(L.titolo) + '</h3><p class="muted piccolo">' + esc(L.sotto) + '</p>' + bottoniLibro(L, true) +
+          '<div class="azioni-mini"><button class="btn btn-linea" type="button" data-condividi="libro" data-libro="' + esc(k) + '">Passalo a qualcuno</button></div>' +
+          '</div></div>';
       }).join("") +
       '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB, con l\'email dell\'acquirente stampata. Il cartaceo lo stampa Amazon.</p></section>' +
       sezioneCantiere() + piede();

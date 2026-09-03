@@ -1,10 +1,10 @@
 /* Davide Scuderi — service worker. Tiene in cache il guscio dell'app così si apre
    anche senza rete; i contenuti li chiede sempre prima alla rete, e se la rete
    manca mostra l'ultima copia. Per pubblicare un guscio nuovo si alza VERSIONE. */
-var VERSIONE = "davide-scuderi-v17";
-var GUSCIO = ["./", "./index.html", "./app.css?v=8", "./app.js?v=16", "./manifest.webmanifest",
+var VERSIONE = "davide-scuderi-v18";
+var GUSCIO = ["./", "./index.html", "./app.css?v=9", "./app.js?v=17", "./manifest.webmanifest",
   "../assets/config.js", "./icona-192.png", "./icona-512.png",
-  "../img/duau.jpg", "../img/senzaveli.jpg", "../img/prenditi.jpg"];
+  "../img/duau.jpg", "../img/senzaveli.jpg", "../img/prenditi.jpg", "../img/vestirsi.jpg"];
 
 self.addEventListener("install", function(e){
   e.waitUntil(caches.open(VERSIONE).then(function(c){ return c.addAll(GUSCIO); }).then(function(){ return self.skipWaiting(); }));

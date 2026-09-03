@@ -94,6 +94,7 @@ button{font:inherit;color:inherit}
 .libro img{width:100%;height:auto;display:block;box-shadow:0 8px 18px -10px rgba(58,49,40,.45)}
 .libro h3{font-size:1.4rem;line-height:1.2}
 .libro .azioni{margin-top:.8rem}
+.libro .azioni-mini{display:flex;gap:1.2rem;margin-top:.6rem}
 .libro .btn{font-size:.76rem;padding:.65rem .9rem}
 .cover-piccola{width:5.2rem;height:auto;display:block;box-shadow:0 8px 18px -10px rgba(58,49,40,.45)}
 .regalo{display:grid;grid-template-columns:5.2rem 1fr;gap:1.1rem;align-items:start}
