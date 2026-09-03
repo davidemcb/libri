@@ -169,3 +169,7 @@ audio{margin-block:.3rem}
 
 .cantiere-libro{display:grid;gap:.3rem;padding:1rem 0;border-bottom:1px solid var(--line)}
 .cantiere-libro .titolo{font-size:1.35rem}
+
+.scala{border-left:0;padding:0 0 .2rem;margin-bottom:-.6rem}
+.scala a{color:var(--accent);text-decoration:none}
+.lista .blocco .titolo{line-height:1.25}

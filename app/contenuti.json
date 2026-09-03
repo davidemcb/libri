@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-02 23:58",
+ "generato": "2026-09-03 00:28",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -916,6 +916,59 @@
   {
    "chiave": "vergogna",
    "voce": "Mi vergogno"
+  }
+ ],
+ "aree": [
+  {
+   "chiave": "amore",
+   "voce": "Amore e coppia",
+   "situazioni": [
+    "tradimento",
+    "sospetto",
+    "ex",
+    "separazione",
+    "coppia-lunga",
+    "desiderio"
+   ]
+  },
+  {
+   "chiave": "figli",
+   "voce": "Figli e famiglia",
+   "situazioni": [
+    "figli",
+    "padre",
+    "famiglia",
+    "lutto"
+   ]
+  },
+  {
+   "chiave": "lavoro",
+   "voce": "Lavoro e tempo",
+   "situazioni": [
+    "lavoro",
+    "reggere",
+    "fermarsi"
+   ]
+  },
+  {
+   "chiave": "corpo",
+   "voce": "Il corpo",
+   "situazioni": [
+    "malattia",
+    "corpo-cambia",
+    "fragilita",
+    "contatto"
+   ]
+  },
+  {
+   "chiave": "dentro",
+   "voce": "Quello che senti",
+   "situazioni": [
+    "rabbia",
+    "paura",
+    "vergogna",
+    "solitudine"
+   ]
   }
  ],
  "corpo": [
