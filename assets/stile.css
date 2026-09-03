@@ -354,6 +354,12 @@ footer{background:var(--b-bg);color:var(--b-text);border-top:1px solid var(--b-l
 .testo ul{padding-left:1.1rem;display:grid;gap:.5rem;margin:.8rem 0 0}
 .testo .muted{color:var(--a-muted)}
 
+/* ---------- salto mobile: sulle pagine-capitolo, un bottone in cima
+   porta subito al modulo, per chi non vuole scorrere tutta la pagina
+   sul telefono. Su schermi larghi non serve: resta nascosto. ---------- */
+.salta-mobile{display:none}
+@media(max-width:700px){.salta-mobile{display:inline-flex;margin-top:1.6rem}}
+
 /* ---------- il trittico: le tre copertine insieme, in apertura ---------- */
 .trittico{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;align-items:end}
 .trittico a{display:block;transition:transform .25s ease}
