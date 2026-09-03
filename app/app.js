@@ -426,10 +426,23 @@
     if (!dati.pratiche || !dati.pratiche.length) return "";
     return '<section class="sez invito"><p class="lbl">Se vuoi, un minuto col corpo</p>' +
       (pr ? '<p>Una pratica di un minuto: una mano sul punto del corpo che hai toccato, e niente altro da fare. La voce di Davide ti accompagna.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica/' + esc(pr.corpo) + '">' + esc(pr.titolo) + '</a></div>'
-          : '<p>Undici pratiche di un minuto: una mano sul punto del corpo che senti tirare, e niente altro da fare. Con la voce di Davide.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica">Scegli il punto del corpo</a></div>') +
+          : '<p>Sedici pratiche di un minuto: una mano sul punto del corpo che senti tirare, e niente altro da fare. Con la voce di Davide.</p><div class="azioni"><a class="btn btn-vuoto" href="#pratica">Scegli il punto del corpo</a></div>') +
       '</section>';
   }
   function vistaPratica(chiave){
+    if (!dati.pratiche || !dati.pratiche.length) return nonTrovato();
+    if (!chiave) {   // la lista: prima l'ascolto intero, poi i punti
+      var intero = dati.pratiche.filter(function(x){ return x.corpo === "tutto"; });
+      var punti = dati.pratiche.filter(function(x){ return x.corpo !== "tutto"; });
+      function riga(x){
+        return '<li><a class="blocco" href="#pratica/' + esc(x.corpo) + '"><p class="titolo">' + esc(voceCorpo(x.corpo)) + '</p>' +
+          '<p class="muted piccolo">' + esc(x.titolo) + (x.audio ? " · con la voce di Davide" : "") + '</p></a></li>';
+      }
+      return '<section class="sez"><div class="testata"><p class="lbl">Un minuto col corpo</p><h1>Da dove cominci?</h1>' +
+        '<p class="sotto">Una mano dove senti, e un minuto. Non è una cura: è quello che il libro chiede di fare.</p></div>' +
+        (intero.length ? '<ul class="lista">' + intero.map(riga).join("") + '</ul><p class="lbl" style="margin-top:1.6rem">Oppure un punto solo</p>' : "") +
+        '<ul class="lista">' + punti.map(riga).join("") + '</ul></section>' + piede();
+    }
     var pr = trovaPratica(chiave);
     if (!pr) return nonTrovato();
     var testo = pr.copione.map(function(r){ return r.trim() ? '<span>' + esc(r) + '</span>' : '<span class="pausa"></span>'; }).join("\n");
