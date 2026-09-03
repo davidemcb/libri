@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-03 02:28",
+ "generato": "2026-09-03 02:32",
  "pratiche": [
   {
    "corpo": "cranio",
@@ -860,6 +860,24 @@
    "titolo": "Mamma contro moglie",
    "sotto": "Famiglia e coppia",
    "stato": "cantiere"
+  },
+  {
+   "chiave": "yogurt",
+   "titolo": "Donne yogurt",
+   "sotto": "Perché nella coppia ci si diventa acidi",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "faccio-io",
+   "titolo": "Faccio io",
+   "sotto": "L'uomo che deve risolvere tutto",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "cinque-minuti",
+   "titolo": "I cinque minuti in macchina",
+   "sotto": "La solitudine che nessuno vede",
+   "stato": "cantiere"
   }
  ],
  "settimane": [
@@ -1164,7 +1182,7 @@
   },
   {
    "chiave": "malattia",
-   "voce": "Il corpo non risponde"
+   "voce": "Mi sono ammalato"
   },
   {
    "chiave": "corpo-cambia",
@@ -2316,6 +2334,59 @@
     "a un certo punto:",
     "“Quali di queste cose",
     "sono davvero mie?”"
+   ]
+  },
+  {
+   "id": "duau-malattia",
+   "libro": "duau",
+   "capitolo": "13 — La fragilità",
+   "voce": "Mi sono ammalato",
+   "situazioni": [
+    "malattia",
+    "fragilita"
+   ],
+   "corpo": [
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Poi può arrivare",
+    "un momento",
+    "in cui qualcosa cambia.",
+    "Ti fai male.",
+    "Ti ammali.",
+    "Hai un intervento.",
+    "Ti rompi qualcosa.",
+    "Hai un problema",
+    "che non puoi",
+    "semplicemente",
+    "ignorare.",
+    "Oppure",
+    "non succede niente",
+    "di così evidente.",
+    "Semplicemente",
+    "il corpo",
+    "comincia a chiederti",
+    "un’altra misura.",
+    "Più tempo.",
+    "Più riposo.",
+    "Più attenzione.",
+    "E questa cosa",
+    "può essere difficile",
+    "da accettare.",
+    "Non soltanto",
+    "per quello che comporta."
+   ],
+   "domanda": [
+    "Se c’è qualcosa",
+    "da aggiustare,",
+    "ti muovi.",
+    "Se non c’è niente",
+    "da aggiustare,",
+    "devi restare.",
+    "E restare",
+    "può essere",
+    "molto più difficile."
    ]
   },
   {
@@ -3542,6 +3613,56 @@
     "Resta 30 secondi.",
     "Senza aggiustare il respiro.",
     "Senza fare bene."
+   ]
+  },
+  {
+   "id": "sv-malattia",
+   "libro": "sv",
+   "capitolo": "7 — Il corpo che presenta il conto",
+   "voce": "È arrivata una diagnosi",
+   "situazioni": [
+    "malattia",
+    "corpo-cambia"
+   ],
+   "corpo": [
+    "cuore",
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Il corpo non recupera più come prima.",
+    "Una caduta fa più danno.",
+    "Un’influenza dura di più.",
+    "Una diagnosi cambia il ritmo dei giorni.",
+    "Non è solo stanchezza.",
+    "È consapevolezza.",
+    "Il tempo non è più infinito.",
+    "La massa muscolare diminuisce.",
+    "Le ossa diventano più fragili.",
+    "Il metabolismo rallenta.",
+    "La pressione può salire.",
+    "La glicemia oscillare.",
+    "Il cuore chiedere attenzione.",
+    "E poi può arrivare una parola che cambia tutto:",
+    "tumore.",
+    "ictus.",
+    "frattura.",
+    "diagnosi.",
+    "Il corpo non è diventato nemico.",
+    "Sta mostrando i punti che hanno retto di più.",
+    "E ora si fanno sentire.",
+    "Per anni hai compensato.",
+    "Adesso compensare non basta."
+   ],
+   "domanda": [
+    "Fermati.",
+    "Anche se c’è dolore.",
+    "Anche se c’è diagnosi.",
+    "Appoggia una mano dove puoi.",
+    "Non per guarire.",
+    "Non per migliorare.",
+    "Solo per dire:",
+    "«Ci sono.»"
    ]
   },
   {
