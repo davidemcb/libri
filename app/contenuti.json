@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-03 00:42",
+ "generato": "2026-09-03 00:47",
  "pratiche": [
   {
    "corpo": "cuore",
@@ -855,7 +855,7 @@
   },
   {
    "chiave": "desiderio",
-   "voce": "Il desiderio è sparito"
+   "voce": "Il desiderio non c'è più"
   },
   {
    "chiave": "figli",
@@ -924,26 +924,30 @@
  ],
  "aree": [
   {
-   "chiave": "amore",
-   "voce": "Amore e coppia",
+   "chiave": "famiglia",
+   "voce": "Famiglia e amore",
    "situazioni": [
     "tradimento",
     "sospetto",
     "ex",
     "separazione",
     "coppia-lunga",
-    "desiderio"
-   ]
-  },
-  {
-   "chiave": "figli",
-   "voce": "Figli e famiglia",
-   "situazioni": [
     "figli",
     "genitori",
     "parenti",
     "famiglia",
     "lutto"
+   ]
+  },
+  {
+   "chiave": "corpo",
+   "voce": "Il corpo",
+   "situazioni": [
+    "desiderio",
+    "malattia",
+    "corpo-cambia",
+    "fragilita",
+    "contatto"
    ]
   },
   {
@@ -956,18 +960,8 @@
    ]
   },
   {
-   "chiave": "corpo",
-   "voce": "Il corpo",
-   "situazioni": [
-    "malattia",
-    "corpo-cambia",
-    "fragilita",
-    "contatto"
-   ]
-  },
-  {
-   "chiave": "dentro",
-   "voce": "Quello che senti",
+   "chiave": "emozioni",
+   "voce": "Le emozioni",
    "situazioni": [
     "rabbia",
     "paura",
@@ -1020,6 +1014,26 @@
   {
    "chiave": "vuoto",
    "voce": "Non sento niente"
+  },
+  {
+   "chiave": "piedi",
+   "voce": "I piedi per terra"
+  },
+  {
+   "chiave": "occhi",
+   "voce": "Gli occhi stanchi"
+  },
+  {
+   "chiave": "viso",
+   "voce": "La faccia tesa"
+  },
+  {
+   "chiave": "cranio",
+   "voce": "La testa piena"
+  },
+  {
+   "chiave": "tutto",
+   "voce": "Tutto il corpo"
   }
  ],
  "pagine": [
@@ -2573,8 +2587,7 @@
    "capitolo": "3 — Sempre in ritardo",
    "voce": "Sono sempre in ritardo",
    "situazioni": [
-    "fermarsi",
-    "lavoro"
+    "fermarsi"
    ],
    "corpo": [
     "stanchezza",
@@ -3001,6 +3014,58 @@
     "Lascia che il peso cada di mezzo centimetro.",
     "Non di più.",
     "Solo questo."
+   ]
+  },
+  {
+   "id": "sv-parenti",
+   "libro": "sv",
+   "capitolo": "35 — Se non diventa madre: il pranzo di famiglia",
+   "voce": "Non mi lasciano in pace",
+   "situazioni": [
+    "parenti"
+   ],
+   "corpo": [
+    "spalle"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è una scena rumorosa.",
+    "È una pausa che pesa.",
+    "Un pranzo.",
+    "Una domanda che arriva «per affetto».",
+    "Un silenzio che dura mezzo secondo in più del necessario.",
+    "Il corpo lo sa prima della testa.",
+    "Si irrigidisce senza farsi vedere.",
+    "Regge.",
+    "Sorride.",
+    "Passa oltre.",
+    "Ma qualcosa resta acceso.",
+    "Come una luce che non si spegne mai.",
+    "Se non diventa madre, la donna non viene lasciata in pace.",
+    "Neanche quando nessuno dice niente.",
+    "Il giudizio è ovunque.",
+    "Nei commenti casuali.",
+    "Nei racconti delle altre.",
+    "Nelle celebrazioni che non ti riguardano.",
+    "Nelle frasi dette come verità naturali.",
+    "«Un giorno capirai.»",
+    "«È l’esperienza più grande.»",
+    "«Quando avrai un figlio, vedrai.»",
+    "Il messaggio è semplice.",
+    "Crudele perché non sembra crudele.",
+    "Se non sei madre, ti manca qualcosa.",
+    "Se non sei madre, sei incompleta.",
+    "Se non sei madre, sei rimasta indietro."
+   ],
+   "domanda": [
+    "Adesso, dove sei.",
+    "Nota come stai seduta.",
+    "Il petto alto.",
+    "Le spalle a posto.",
+    "La pancia tenuta.",
+    "Non correggerle: guardale.",
+    "Poi, per 30 secondi,",
+    "lascia andare una cosa sola."
    ]
   },
   {
