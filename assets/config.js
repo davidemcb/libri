@@ -19,7 +19,7 @@ window.SITO = {
   amazon: {
     duauCartaceo: "https://www.amazon.it/dp/B0HHC3W8MX", // Da uomo a uomo — cartaceo (19,90 €)
     duauEbook:    "https://www.amazon.it/dp/B0HHC4PXBR", // Da uomo a uomo — ebook Kindle
-    pacCartaceo:  "https://www.amazon.it/dp/B0HHC7238K", // Prenditi a carezze — cartaceo (5"×8")
+    pacCartaceo:  "https://www.amazon.it/dp/B0HHC7238K", // Prenditi a carezze — cartaceo (5"×8", 9,90 €)
     pacEbook:     "https://www.amazon.it/dp/B0GL769877", // Prenditi a carezze — ebook Kindle
     svCartaceo:   "https://www.amazon.it/dp/B0HHKCLBR3", // Senza veli — cartaceo (19,90 €, dal 02/09)
     svEbook:      "https://www.amazon.it/dp/B0HHC8Y46W", // Senza veli — ebook Kindle

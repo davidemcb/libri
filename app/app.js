@@ -26,8 +26,8 @@
            ebook:C.amazon.vdsEbook, prezzoEbook:"4,99 €", ebookDalSito:false},
     pac:  {titolo:"Prenditi a carezze", cover:"../img/prenditi.jpg", pagina:"prenditi-a-carezze.html",
            sotto:"Una pratica semplice, nessun metodo da imparare.",
-           cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"",
-           ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"", ebookDalSito:!!C.gumroad.pacEbook}
+           cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"9,90 €",
+           ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.pacEbook}
   };
   LIBRI.alce = {titolo:"L'Alce", cover:"", sotto:"Un viaggio dentro la perdita di una certezza.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   LIBRI.exnemico = {titolo:"L'ex non è un nemico", cover:"", sotto:"Quando la separazione finisce, ma la guerra continua.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
