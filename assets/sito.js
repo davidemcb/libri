@@ -258,6 +258,22 @@
     }
   }
 
+  /* Ripensarci: il link «rivedi le tue scelte» nell'informativa.
+     Cancella la scelta e rimostra la fascetta; se in questa pagina
+     la fascetta non c'è, porta alla home, dove c'è. */
+  document.addEventListener("click", function(e){
+    var l = e.target.closest ? e.target.closest("[data-cookie=rivedi]") : null;
+    if(!l) return;
+    e.preventDefault();
+    try { localStorage.removeItem(CHIAVE); } catch(err){}
+    if(avviso && (C.pixelMeta || C.googleAds)){
+      avviso.classList.add("visibile");
+      avviso.scrollIntoView({behavior:"smooth",block:"nearest"});
+    } else {
+      location.href = "index.html";
+    }
+  });
+
   /* ---------- 4. LA FRASE DEL GIORNO -----------------------
      Ruota sul giorno dell'anno: uguale per tutti, cambia da sé.
   ---------------------------------------------------------- */
