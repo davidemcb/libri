@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cosa ti sta succedendo? — Davide Scuderi</title>
+<meta name="description" content="Scrivi quello che ti sta succedendo. Rispondono le pagine dei libri di Davide Scuderi.">
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --fondo:     #14110E;
+    --fondo-alt: #1B1714;
+    --riga:      #2F2822;
+    --testo:     #F0E9DC;
+    --quieto:    #B9AC97;
+    --teal:      #6FA39D;
+    --allarme:   #C08466;
+
+    --serif: "EB Garamond", Palatino, "Palatino Linotype", Georgia, serif;
+    --sans:  "Karla", "Helvetica Neue", Arial, sans-serif;
+    --colonna: 34rem;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --fondo: #F6EFE8; --fondo-alt: #EFE5DA; --riga: #DCD0C1;
+      --testo: #14110E; --quieto: #6B5F52; --teal: #3D6F69; --allarme: #8E4A33;
+    }
+  }
+  :root[data-theme="light"] {
+    --fondo: #F6EFE8; --fondo-alt: #EFE5DA; --riga: #DCD0C1;
+    --testo: #14110E; --quieto: #6B5F52; --teal: #3D6F69; --allarme: #8E4A33;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--testo);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .foglio {
+    max-width: var(--colonna);
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+  }
+
+  .segno { display: block; width: 46px; height: 34px; }
+  .segno .barra-teal   { fill: var(--teal); }
+  .segno .barra-avorio { fill: var(--quieto); }
+  .segno .linea        { fill: var(--testo); opacity: .5; }
+
+  .apertura { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.1rem, 7vw, 2.9rem);
+    line-height: 1.1;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .sottotitolo {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--quieto);
+    margin: 0;
+  }
+
+  .soglia {
+    border-top: 1px solid var(--riga);
+    border-bottom: 1px solid var(--riga);
+    padding: 1.75rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .occhiello {
+    font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--teal); margin: 0;
+  }
+
+  .righe { display: flex; flex-direction: column; gap: .8rem; }
+  .righe p { margin: 0; color: var(--quieto); }
+  .righe strong { color: var(--testo); font-weight: 500; }
+  .eta { font-size: .88rem; font-style: italic; }
+
+  .numeri {
+    display: flex; flex-wrap: wrap; gap: .35rem 1.1rem;
+    font-size: .92rem; color: var(--allarme) !important;
+  }
+  .numeri b { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  button {
+    font-family: var(--sans); font-size: .95rem; font-weight: 500;
+    color: var(--fondo); background: var(--teal);
+    border: 0; border-radius: 2px; padding: .8rem 1.4rem;
+    cursor: pointer; align-self: flex-start; transition: opacity .15s ease;
+  }
+  button:hover { opacity: .85; }
+  button:disabled { opacity: .4; cursor: default; }
+  button.quieto { background: transparent; color: var(--quieto); border: 1px solid var(--riga); }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+  .conversazione { display: flex; flex-direction: column; gap: 2.25rem; }
+
+  .turno-mio {
+    font-size: .98rem; color: var(--quieto);
+    border-left: 2px solid var(--riga); padding-left: 1.1rem;
+    white-space: pre-wrap;
+  }
+  .turno-libri {
+    font-family: var(--serif); font-size: 1.28rem; line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .attesa {
+    font-size: .78rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--quieto);
+  }
+  .attesa::after { content: "· · ·"; animation: punti 1.6s steps(4, end) infinite; }
+  @keyframes punti { 0% { content: ""; } 25% { content: "·"; } 50% { content: "· ·"; } 75% { content: "· · ·"; } }
+  @media (prefers-reduced-motion: reduce) { .attesa::after { animation: none; } }
+
+  .avviso {
+    font-size: .92rem; color: var(--allarme);
+    border-left: 2px solid var(--allarme); padding-left: 1.1rem;
+    white-space: pre-wrap;
+  }
+
+  .campo { display: flex; flex-direction: column; gap: .9rem; }
+
+  textarea {
+    font-family: var(--sans); font-size: 1rem; line-height: 1.55;
+    color: var(--testo); background: var(--fondo-alt);
+    border: 1px solid var(--riga); border-radius: 2px;
+    padding: 1rem 1.1rem; width: 100%; min-height: 8.5rem; resize: vertical;
+  }
+  textarea::placeholder { color: var(--quieto); opacity: .7; }
+  textarea:focus { border-color: var(--teal); outline: none; }
+
+  .bottoni { display: flex; gap: .7rem; align-items: center; flex-wrap: wrap; }
+
+  .piede {
+    border-top: 1px solid var(--riga); padding-top: 1.5rem;
+    display: flex; flex-direction: column; gap: .7rem;
+    font-size: .84rem; color: var(--quieto);
+  }
+  .piede p { margin: 0; }
+  .piede a { color: var(--quieto); text-decoration: underline; text-underline-offset: 3px; }
+  .piede a:hover { color: var(--teal); }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="foglio">
+
+  <header class="apertura">
+    <svg class="segno" viewBox="0 0 46 34" role="img" aria-label="Due barre che si fermano su una linea">
+      <rect class="barra-teal"   x="14" y="2" width="4" height="24"></rect>
+      <rect class="barra-avorio" x="26" y="9" width="4" height="17"></rect>
+      <rect class="linea"        x="4" y="27" width="38" height="1.5"></rect>
+    </svg>
+
+    <h1>Cosa ti sta succedendo?</h1>
+
+    <p class="sottotitolo">Scrivilo come viene. Non serve che sia in ordine, e non serve che sia importante.</p>
+  </header>
+
+  <section class="soglia" id="soglia">
+    <p class="occhiello">Prima di cominciare, cinque righe</p>
+    <div class="righe">
+      <p><strong>Qui stai scrivendo a un programma, non a una persona.</strong></p>
+      <p>Non è una seduta e non è terapia: non facciamo diagnosi, non parliamo di malattie, non curiamo niente.</p>
+      <p>Quello che facciamo è ascoltarti, farti qualche domanda, e portarti alla pagina di un libro di Davide Scuderi in cui quella cosa è già scritta. Alla fine ti proponiamo i suoi libri: li vendiamo noi.</p>
+      <p><strong>Quello che scrivi non lo conserviamo.</strong> Resta in questa pagina finché è aperta. Chiudila, e non resta niente da nessuna parte.</p>
+      <p>Se di mezzo c'è violenza, o stai pensando di farti del male, questo non è il posto:</p>
+      <p class="numeri">
+        <span><b>112</b> emergenza</span>
+        <span><b>1522</b> antiviolenza e stalking</span>
+        <span>Telefono Amico <b>02 2327 2327</b></span>
+      </p>
+      <p class="eta">Serve essere maggiorenni.</p>
+    </div>
+    <button id="entra" type="button">Ho capito, cominciamo</button>
+  </section>
+
+  <main class="conversazione" id="conversazione" hidden></main>
+
+  <section class="campo" id="campo" hidden>
+    <label class="occhiello" for="scrivi">Raccontamelo</label>
+    <textarea id="scrivi" placeholder="Come viene. Non serve che sia in ordine."></textarea>
+    <div class="bottoni">
+      <button id="manda" type="button">Manda</button>
+      <button id="ferma" type="button" class="quieto" hidden>Ferma</button>
+    </div>
+  </section>
+
+  <footer class="piede">
+    <p>Qui rispondono le pagine dei libri di Davide Scuderi, non Davide in tempo reale. È un programma automatico e può sbagliare: non prenderlo per verità.</p>
+    <p>Non è un servizio di emergenza. <b>112</b> · <b>1522</b> · Telefono Amico <b>02 2327 2327</b>.</p>
+    <p><a href="../index.html">I libri</a> · <a href="../privacy.html">Come trattiamo quello che scrivi</a></p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // L'indirizzo del pezzo in mezzo. Si riempie quando il worker è in piedi:
+  // lo stampa `npx wrangler deploy`. Vedi ACCENSIONE.md, passo 4.
+  var SERVIZIO = "https://conversazione.davidescuderi1981.workers.dev";
+
+  // La parola dell'invito, presa dal link: ...parliamone.html?p=gloria
+  var PAROLA = new URLSearchParams(location.search).get("p") || "";
+
+  var soglia = document.getElementById("soglia");
+  var conv   = document.getElementById("conversazione");
+  var campo  = document.getElementById("campo");
+  var scrivi = document.getElementById("scrivi");
+  var manda  = document.getElementById("manda");
+  var ferma  = document.getElementById("ferma");
+
+  var turni = [];       // vive solo qui: niente localStorage, niente cronologia, niente server
+  var attesa = null;
+  var controllo = null;
+
+  document.getElementById("entra").addEventListener("click", function () {
+    soglia.hidden = true;
+    conv.hidden = false;
+    campo.hidden = false;
+    scrivi.focus();
+  });
+
+  function blocco(classe, testo) {
+    var d = document.createElement("div");
+    d.className = classe;
+    d.textContent = testo;
+    conv.appendChild(d);
+    d.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    return d;
+  }
+
+  function chiudiAttesa() {
+    if (attesa) { attesa.remove(); attesa = null; }
+    ferma.hidden = true;
+    manda.disabled = false;
+    controllo = null;
+  }
+
+  ferma.addEventListener("click", function () { if (controllo) controllo.abort(); });
+  manda.addEventListener("click", invia);
+  scrivi.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) invia();
+  });
+
+  async function invia() {
+    var testo = scrivi.value.trim();
+    if (!testo || manda.disabled) return;
+
+    scrivi.value = "";
+    manda.disabled = true;
+    blocco("turno-mio", testo);
+
+    turni.push({ role: "user", content: testo });
+    while (turni.length > 20) turni.splice(0, 2);   // si buttano i giri vecchi, non il presente
+
+    attesa = blocco("attesa", "Un momento ");
+    ferma.hidden = false;
+    controllo = new AbortController();
+
+    var risposta = null;
+    var raccolto = "";
+
+    try {
+      var r = await fetch(SERVIZIO, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ parola: PAROLA, turni: turni }),
+        signal: controllo.signal,
+      });
+
+      if (!r.ok) {
+        var dettaglio = await r.json().catch(function () { return {}; });
+        chiudiAttesa();
+        turni.pop();
+        blocco("avviso", dettaglio.errore || "Non riesco a rispondere adesso. Riprova fra poco.");
+        return;
+      }
+
+      var lettore = r.body.getReader();
+      var testoDec = new TextDecoder();
+      var avanzo = "";
+
+      while (true) {
+        var pezzo = await lettore.read();
+        if (pezzo.done) break;
+
+        avanzo += testoDec.decode(pezzo.value, { stream: true });
+        var righe = avanzo.split("\n");
+        avanzo = righe.pop();
+
+        for (var i = 0; i < righe.length; i++) {
+          if (righe[i].indexOf("data: ") !== 0) continue;
+          var dato;
+          try { dato = JSON.parse(righe[i].slice(6)); } catch (e) { continue; }
+          if (!dato.testo) continue;
+
+          if (attesa) { attesa.remove(); attesa = null; }
+          if (!risposta) risposta = blocco("turno-libri", "");
+          raccolto += dato.testo;
+          risposta.textContent = raccolto;
+        }
+      }
+
+      chiudiAttesa();
+      if (raccolto) turni.push({ role: "assistant", content: raccolto });
+      else { turni.pop(); blocco("avviso", "Non è uscito niente. Prova a scrivere un po' meno per volta."); }
+      scrivi.focus();
+
+    } catch (e) {
+      chiudiAttesa();
+      if (e && e.name === "AbortError") {
+        if (raccolto) turni.push({ role: "assistant", content: raccolto });
+        else { if (risposta) risposta.remove(); turni.pop(); }
+        return;
+      }
+      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); }
+      else { if (risposta) risposta.remove(); turni.pop(); }
+      blocco("avviso", "Si è interrotto per strada. Riprova.");
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
