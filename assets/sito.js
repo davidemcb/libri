@@ -342,6 +342,9 @@
     var PDF_DIRETTI = {
       "capitolo-tradimento": ["capitoli/da-uomo-a-uomo-capitolo-tradimento.pdf", "il PDF del capitolo sul tradimento"],
       "capitolo-separarsi":  ["capitoli/da-uomo-a-uomo-capitolo-separarsi.pdf",  "il PDF del capitolo su Separarsi"],
+      "capitolo-figli":      ["capitoli/da-uomo-a-uomo-capitolo-figli.pdf",      "il PDF del capitolo sui figli"],
+      "capitolo-solitudine": ["capitoli/da-uomo-a-uomo-capitolo-solitudine.pdf", "il PDF del capitolo sulla solitudine"],
+      "capitolo-padre":      ["capitoli/da-uomo-a-uomo-capitolo-padre.pdf",      "il PDF del capitolo sulla famiglia d'origine"],
       "capitolo-senza-veli": ["capitoli/senza-veli-capitolo-la-donna-che-regge-tutto.pdf", "il PDF del capitolo"],
       "estratto-carezze":    ["capitoli/prenditi-a-carezze-estratto.pdf", "il PDF dell'estratto"]
     };
@@ -474,4 +477,66 @@
       scatola.appendChild(b);
     });
   });
+
+  /* ---------- 6. L'INDICE CHE SI SCEGLIE -------------------
+     Sulla pagina di «Da uomo a uomo» i diciassette luoghi sono
+     bottoni: si tocca quello che riguarda la persona e sotto
+     compare la risposta. Cinque capitoli si aprono per intero
+     (data-pdf sulla riga), gli altri rimandano al libro.
+     Nessuna pagina nuova, nessun modulo di mezzo: chi arriva
+     cercando «tradimento» o «separazione» entra da lì e legge.
+  ---------------------------------------------------------- */
+  (function(){
+    var pannello = document.getElementById("scelta");
+    var righe    = document.querySelectorAll(".luoghi .luogo");
+    if(!pannello || !righe.length) return;
+
+    var titolo  = document.getElementById("scelta-titolo");
+    var sotto   = document.getElementById("scelta-sotto");
+    var gratis  = document.getElementById("scelta-gratis");
+    var libro   = document.getElementById("scelta-libro");
+    var pagine  = document.getElementById("scelta-pagine");
+    var pdf     = document.getElementById("scelta-pdf");
+
+    righe.forEach(function(riga){
+      riga.addEventListener("click", function(){
+        var scelto = riga.getAttribute("aria-expanded") === "true";
+
+        righe.forEach(function(altra){ altra.setAttribute("aria-expanded", "false"); });
+
+        if(scelto){                       // secondo tocco sulla stessa riga: chiude
+          pannello.hidden = true;
+          return;
+        }
+        riga.setAttribute("aria-expanded", "true");
+
+        titolo.textContent = riga.dataset.tit;
+        var sottotitolo = riga.dataset.sot || "";
+        sotto.textContent = sottotitolo;
+        sotto.hidden = !sottotitolo;
+
+        var file = riga.dataset.pdf;
+        gratis.hidden = !file;
+        libro.hidden  = !!file;
+        if(file){
+          pdf.href = file;
+          pagine.textContent = riga.dataset.pagine || "";
+        }
+
+        pannello.hidden = false;
+        pannello.scrollIntoView({ behavior:"smooth", block:"nearest" });
+
+        // quale luogo tocca la gente è la cosa più utile da sapere di
+        // questa pagina: l'evento parte solo col consenso già dato.
+        var consenso = null;
+        try { consenso = localStorage.getItem("consenso-misurazione"); } catch(e){}
+        if(consenso === "si" && window.gtag){
+          window.gtag("event", "select_content", {
+            content_type: "capitolo",
+            item_id: "duau-" + riga.dataset.cap
+          });
+        }
+      });
+    });
+  })();
 })();

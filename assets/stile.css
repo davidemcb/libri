@@ -257,6 +257,27 @@ nav a[aria-current="page"]{color:var(--a-text);border-bottom-color:var(--a-accen
 .b .cit{border-color:var(--b-line)}
 .b .cit span{color:var(--b-muted)}
 
+/* ---------- l'indice che si sceglie ---------- */
+.luoghi .luogo{
+  all:unset;                    /* torna una riga dell'indice, non un bottone */
+  grid-column:1 / -1;           /* la riga intera: dentro rifà le sue colonne */
+  display:grid;grid-template-columns:2.6rem 1fr auto;gap:1rem;align-items:baseline;
+  width:100%;cursor:pointer;
+}
+.luoghi .luogo:hover .tit,.luoghi .luogo:focus-visible .tit{color:var(--a-accent)}
+.luoghi .luogo:focus-visible{outline:2px solid var(--a-accent);outline-offset:4px}
+.luoghi .luogo[aria-expanded="true"] .tit{color:var(--a-accent)}
+.bollo{
+  font-family:Archivo,system-ui,sans-serif;font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--a-accent);border:1px solid currentColor;
+  padding:.16rem .42rem;white-space:nowrap;align-self:center;
+}
+.scelta{
+  margin:2.6rem 0 0;border-left:2px solid var(--terra);padding:.2rem 0 .2rem 1.5rem;
+}
+.scelta h3{font-size:clamp(1.35rem,2.6vw,1.7rem);margin-top:.5rem}
+.scelta #scelta-sotto{font-style:italic;margin-top:.3rem}
+
 /* ---------- chi l'ha letto: le voci dei lettori ---------- */
 .voci{display:grid;gap:2.6rem;grid-template-columns:1fr;margin-top:2.4rem}
 @media(min-width:820px){.voci{grid-template-columns:1fr 1fr;gap:3rem}}
