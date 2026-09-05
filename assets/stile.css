@@ -278,23 +278,23 @@ nav a[aria-current="page"]{color:var(--a-text);border-bottom-color:var(--a-accen
 .scelta h3{font-size:clamp(1.35rem,2.6vw,1.7rem);margin-top:.5rem}
 .scelta #scelta-sotto{font-style:italic;margin-top:.3rem}
 
-/* ---------- chi l'ha letto: le voci dei lettori ---------- */
-.voci{display:grid;gap:2.6rem;grid-template-columns:1fr;margin-top:2.4rem}
-@media(min-width:820px){.voci{grid-template-columns:1fr 1fr;gap:3rem}}
-.voce{margin:0;max-width:34rem}
-.voce .stelle{
+/* ---------- chi l'ha letto: le recensioni vere (.voce e' un'altra cosa, sopra) ---------- */
+.recensioni{display:grid;gap:2.6rem;grid-template-columns:1fr;margin-top:2.4rem}
+@media(min-width:820px){.recensioni{grid-template-columns:1fr 1fr;gap:3rem}}
+.recensione{margin:0;max-width:34rem}
+.recensione .stelle{
   font-family:Archivo,system-ui,sans-serif;font-size:.8rem;letter-spacing:.22em;
   color:var(--a-accent);display:block;
 }
-.b .voce .stelle{color:var(--b-accent)}
-.voce h3{font-size:1.1rem;margin:.5rem 0 .9rem;line-height:1.35}
-.voce p{font-size:1.02rem;line-height:1.62;font-style:italic}
-.voce p + p{margin-top:.85rem}
-.voce cite{
+.b .recensione .stelle{color:var(--b-accent)}
+.recensione h3{font-size:1.1rem;margin:.5rem 0 .9rem;line-height:1.35}
+.recensione p{font-size:1.02rem;line-height:1.62;font-style:italic}
+.recensione p + p{margin-top:.85rem}
+.recensione cite{
   display:block;margin-top:1.1rem;font-style:normal;font-family:Archivo,system-ui,sans-serif;
   font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a-muted);line-height:1.7;
 }
-.b .voce cite{color:var(--b-muted)}
+.b .recensione cite{color:var(--b-muted)}
 /* testo che vedono solo i lettori di schermo (le stelle lette a voce) */
 .per-lettore-schermo{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
