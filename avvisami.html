@@ -140,11 +140,16 @@
     if (titolo && (L.titolo.toLowerCase() === titolo || (L.alias || []).indexOf(titolo) >= 0)) { libro = L; break; }
   }
   var modulo = document.getElementById("avv-modulo");
+  // Il foglio di stile dà al modulo un display suo: «hidden» da solo non basta.
+  function viaIlModulo() {
+    modulo.hidden = true; modulo.style.display = "none";
+    var priv = document.querySelector(".privacy"); if (priv) priv.style.display = "none";
+  }
   if (!libro) {
     document.getElementById("avv-etichetta").textContent = "Quale libro?";
     document.getElementById("avv-titolo").textContent = "Avvisami quando esce";
     document.getElementById("avv-manca").hidden = false;
-    modulo.hidden = true;
+    viaIlModulo();
     document.title = "Avvisami quando esce — Davide Scuderi";
     return;
   }
@@ -155,7 +160,7 @@
   if (libro.vendita) {
     document.getElementById("avv-etichetta").textContent = "È già uscito";
     document.getElementById("avv-sotto").textContent = "Questo libro c'è già.";
-    modulo.hidden = true;
+    viaIlModulo();
     var v = document.getElementById("avv-vendita");
     v.hidden = false;
     var A = (window.SITO && window.SITO.amazon) || {};
