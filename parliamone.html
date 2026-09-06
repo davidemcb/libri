@@ -229,8 +229,7 @@
 (function () {
   "use strict";
 
-  // L'indirizzo del pezzo in mezzo. Si riempie quando il worker è in piedi:
-  // lo stampa `npx wrangler deploy`. Vedi ACCENSIONE.md, passo 4.
+  // L'indirizzo del pezzo in mezzo. Vedi ACCENSIONE.md.
   var SERVIZIO = "https://conversazione.davidescuderi1981.workers.dev";
 
   // La parola dell'invito, presa dal link: ...parliamone.html?p=gloria
@@ -247,6 +246,12 @@
   var attesa = null;
   var controllo = null;
 
+  // La chiave del cassetto: nasce qui, resta qui. Il server la usa per chiudere la risposta e
+  // non la conserva. Serve perché sul telefono chi cambia app mentre aspetta perdeva la risposta.
+  var chiave = null;        // CryptoKey
+  var chiaveBase64 = "";
+  var haCrypto = !!(window.crypto && window.crypto.subtle && window.isSecureContext);
+
   document.getElementById("entra").addEventListener("click", function () {
     soglia.hidden = true;
     conv.hidden = false;
@@ -259,7 +264,30 @@
       "Non ti dirò cosa fare.\n" +
       "Cosa ti sta succedendo?");
     scrivi.focus();
+    preparaChiave();
   });
+
+  function preparaChiave() {
+    if (!haCrypto) return;
+    window.crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["decrypt"]).then(function (k) {
+      chiave = k;
+      return window.crypto.subtle.exportKey("raw", k);
+    }).then(function (grezza) {
+      chiaveBase64 = aBase64(new Uint8Array(grezza));
+    }).catch(function () { chiave = null; chiaveBase64 = ""; });
+  }
+
+  function aBase64(byte) {
+    var s = "";
+    for (var i = 0; i < byte.length; i++) s += String.fromCharCode(byte[i]);
+    return btoa(s);
+  }
+  function daBase64(testo) {
+    var s = atob(testo);
+    var fuori = new Uint8Array(s.length);
+    for (var i = 0; i < s.length; i++) fuori[i] = s.charCodeAt(i);
+    return fuori;
+  }
 
   function blocco(classe, testo) {
     var d = document.createElement("div");
@@ -276,6 +304,20 @@
     manda.disabled = false;
     controllo = null;
   }
+
+  function pausa(ms, segnale) {
+    return new Promise(function (ok, no) {
+      var t = setTimeout(ok, ms);
+      if (segnale) segnale.addEventListener("abort", function () { clearTimeout(t); no(abortato()); }, { once: true });
+    });
+  }
+  function abortato() { var e = new Error("fermato"); e.name = "AbortError"; return e; }
+
+  // Quando la persona torna sulla pagina, si va subito a vedere se la risposta è pronta.
+  var sveglia = null;
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && sveglia) sveglia();
+  });
 
   ferma.addEventListener("click", function () { if (controllo) controllo.abort(); });
   manda.addEventListener("click", invia);
@@ -294,7 +336,8 @@
     turni.push({ role: "user", content: testo });
     while (turni.length > 20) turni.splice(0, 2);   // si buttano i giri vecchi, non il presente
 
-    attesa = blocco("attesa", "Un momento, resta qui ");
+    var colCassetto = !!(chiave && chiaveBase64);
+    attesa = blocco("attesa", colCassetto ? "Un momento. Puoi anche cambiare app: la risposta ti aspetta qui " : "Un momento, resta qui ");
     ferma.hidden = false;
     controllo = new AbortController();
 
@@ -302,10 +345,13 @@
     var raccolto = "";
 
     try {
+      var corpo = { parola: PAROLA, turni: turni };
+      if (colCassetto) corpo.chiave = chiaveBase64;
+
       var r = await fetch(SERVIZIO, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ parola: PAROLA, turni: turni }),
+        body: JSON.stringify(corpo),
         signal: controllo.signal,
       });
 
@@ -313,53 +359,92 @@
         var dettaglio = await r.json().catch(function () { return {}; });
         chiudiAttesa();
         turni.pop();
+        scrivi.value = testo;
         blocco("avviso", dettaglio.errore || "Non riesco a rispondere adesso. Riprova fra poco.");
         return;
       }
 
-      var lettore = r.body.getReader();
-      var testoDec = new TextDecoder();
-      var avanzo = "";
+      var tipo = r.headers.get("content-type") || "";
 
-      while (true) {
-        var pezzo = await lettore.read();
-        if (pezzo.done) break;
-
-        avanzo += testoDec.decode(pezzo.value, { stream: true });
-        var righe = avanzo.split("\n");
-        avanzo = righe.pop();
-
-        for (var i = 0; i < righe.length; i++) {
-          if (righe[i].indexOf("data: ") !== 0) continue;
-          var dato;
-          try { dato = JSON.parse(righe[i].slice(6)); } catch (e) { continue; }
-          if (!dato.testo) continue;
-
-          if (attesa) { attesa.remove(); attesa = null; }
-          if (!risposta) risposta = blocco("turno-libri", "");
-          raccolto += dato.testo;
-          risposta.textContent = raccolto;
+      if (tipo.indexOf("application/json") === 0) {
+        // Il biglietto: la risposta arriva nel cassetto, e la si va a ritirare.
+        var b = await r.json();
+        if (b.testo) { raccolto = b.testo; }
+        else if (b.biglietto) { raccolto = await ritira(b.biglietto, controllo.signal); }
+        if (raccolto) { risposta = blocco("turno-libri", raccolto); }
+      } else {
+        // Il flusso, parola per parola (la strada vecchia, se la pagina non ha la chiave).
+        var lettore = r.body.getReader();
+        var testoDec = new TextDecoder();
+        var avanzo = "";
+        while (true) {
+          var pezzo = await lettore.read();
+          if (pezzo.done) break;
+          avanzo += testoDec.decode(pezzo.value, { stream: true });
+          var righe = avanzo.split("\n");
+          avanzo = righe.pop();
+          for (var i = 0; i < righe.length; i++) {
+            if (righe[i].indexOf("data: ") !== 0) continue;
+            var dato;
+            try { dato = JSON.parse(righe[i].slice(6)); } catch (e) { continue; }
+            if (!dato.testo) continue;
+            if (attesa) { attesa.remove(); attesa = null; }
+            if (!risposta) risposta = blocco("turno-libri", "");
+            raccolto += dato.testo;
+            risposta.textContent = raccolto;
+          }
         }
       }
 
       chiudiAttesa();
       if (raccolto) turni.push({ role: "assistant", content: raccolto });
-      else { turni.pop(); blocco("avviso", "Non è uscito niente. Prova a scrivere un po' meno per volta."); }
+      else { turni.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
       scrivi.focus();
 
     } catch (e) {
       chiudiAttesa();
       if (e && e.name === "AbortError") {
         if (raccolto) turni.push({ role: "assistant", content: raccolto });
-        else { if (risposta) risposta.remove(); turni.pop(); }
+        else { if (risposta) risposta.remove(); turni.pop(); scrivi.value = testo; }
         return;
       }
-      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); }
-      else { if (risposta) risposta.remove(); turni.pop(); scrivi.value = testo; }
-      blocco("avviso", raccolto
-        ? "Si è interrotto per strada. Riprova."
-        : "Si è interrotto per strada: succede se si cambia app mentre aspetta. Il tuo messaggio è tornato nella casella: premi Manda e resta qui.");
+      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); blocco("avviso", "Si è interrotto per strada. Riprova."); }
+      else {
+        if (risposta) risposta.remove();
+        turni.pop();
+        scrivi.value = testo;
+        blocco("avviso", (e && e.name === "TimeoutError")
+          ? "La risposta non è arrivata in tempo. Il tuo messaggio è tornato nella casella: premi Manda."
+          : "Si è interrotto per strada. Il tuo messaggio è tornato nella casella: premi Manda.");
+      }
     }
+  }
+
+  // Si torna a bussare al cassetto finché la risposta è pronta (o passano tre minuti).
+  async function ritira(biglietto, segnale) {
+    var inizio = Date.now();
+    while (Date.now() - inizio < 180000) {
+      if (segnale.aborted) throw abortato();
+      if (document.visibilityState === "visible") {
+        var r = await fetch(SERVIZIO + "/risposta?b=" + biglietto, { signal: segnale, cache: "no-store" });
+        if (r.ok) {
+          var d = await r.json();
+          if (d.pronta) {
+            var chiaro = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: daBase64(d.iv) }, chiave, daBase64(d.dati));
+            return new TextDecoder().decode(chiaro);
+          }
+        }
+        await pausa(1500, segnale);
+      } else {
+        // In secondo piano non si bussa: si aspetta il ritorno, e si riprende subito.
+        await new Promise(function (ok, no) {
+          sveglia = function () { sveglia = null; ok(); };
+          var t = setTimeout(function () { sveglia = null; ok(); }, 5000);
+          segnale.addEventListener("abort", function () { clearTimeout(t); sveglia = null; no(abortato()); }, { once: true });
+        });
+      }
+    }
+    var e = new Error("tempo"); e.name = "TimeoutError"; throw e;
   }
 })();
 </script>
