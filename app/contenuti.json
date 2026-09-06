@@ -1,5 +1,5 @@
 {
- "generato": "2026-09-03 02:32",
+ "generato": "2026-09-06 07:54",
  "pratiche": [
   {
    "corpo": "cranio",
@@ -878,6 +878,42 @@
    "titolo": "I cinque minuti in macchina",
    "sotto": "La solitudine che nessuno vede",
    "stato": "cantiere"
+  },
+  {
+   "chiave": "amiche",
+   "titolo": "Sono uscita con le amiche",
+   "sotto": "Cosa succede a una donna quando tradisce",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "comodino",
+   "titolo": "Il cassetto del comodino",
+   "sotto": "Intervista a una promoter: il piacere femminile",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "coraggio",
+   "titolo": "Non è coraggio che ti manca",
+   "sotto": "Ha già deciso di chiudere e non sa come dirlo",
+   "stato": "lavorazione"
+  },
+  {
+   "chiave": "feste",
+   "titolo": "Dopo le feste",
+   "sotto": "La donna che aspetta un uomo sposato",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "stanza",
+   "titolo": "La stanza in più",
+   "sotto": "Uno vuole un figlio e l'altro no",
+   "stato": "cantiere"
+  },
+  {
+   "chiave": "madre",
+   "titolo": "Non sei mia madre",
+   "sotto": "I figli del compagno non la accettano",
+   "stato": "cantiere"
   }
  ],
  "settimane": [
@@ -1125,156 +1161,390 @@
  ],
  "situazioni": [
   {
-   "chiave": "tradimento",
-   "voce": "Mi ha tradito"
-  },
-  {
-   "chiave": "sospetto",
-   "voce": "Controllo il telefono"
-  },
-  {
-   "chiave": "separazione",
-   "voce": "Ci siamo separati"
-  },
-  {
-   "chiave": "ex",
-   "voce": "L'ex, ancora"
-  },
-  {
-   "chiave": "coppia-lunga",
-   "voce": "Insieme da anni, e…"
-  },
-  {
-   "chiave": "desiderio",
-   "voce": "Il desiderio non c'è più"
+   "chiave": "famiglia",
+   "voce": "Casa mia, da piccolo",
+   "nodo": "Da dove vengo"
   },
   {
    "chiave": "figli",
-   "voce": "Mio figlio"
+   "voce": "Mio figlio",
+   "nodo": "I figli che crescono"
   },
   {
    "chiave": "genitori",
-   "voce": "I miei invecchiano"
+   "voce": "I miei invecchiano",
+   "nodo": "I miei invecchiano"
   },
   {
    "chiave": "lutto",
-   "voce": "È morto qualcuno"
-  },
-  {
-   "chiave": "solitudine",
-   "voce": "Nessuno a cui dirlo"
-  },
-  {
-   "chiave": "paura",
-   "voce": "Ho paura e non lo dico"
-  },
-  {
-   "chiave": "rabbia",
-   "voce": "Mi arrabbio per niente"
-  },
-  {
-   "chiave": "reggere",
-   "voce": "Reggo tutto io"
-  },
-  {
-   "chiave": "fragilita",
-   "voce": "Non ce la faccio più"
-  },
-  {
-   "chiave": "malattia",
-   "voce": "Mi sono ammalato"
-  },
-  {
-   "chiave": "corpo-cambia",
-   "voce": "Non mi riconosco più"
-  },
-  {
-   "chiave": "lavoro",
-   "voce": "Il lavoro mi mangia"
-  },
-  {
-   "chiave": "fermarsi",
-   "voce": "Non riesco a fermarmi"
-  },
-  {
-   "chiave": "contatto",
-   "voce": "Non so più farmi toccare"
-  },
-  {
-   "chiave": "famiglia",
-   "voce": "Casa mia, da piccolo"
+   "voce": "È morto qualcuno",
+   "nodo": "I miei invecchiano"
   },
   {
    "chiave": "parenti",
-   "voce": "Tutti dicono la loro"
+   "voce": "Tutti dicono la loro",
+   "nodo": "Chi dice la sua"
   },
   {
-   "chiave": "vergogna",
-   "voce": "Mi vergogno"
+   "chiave": "carico-casa",
+   "voce": "Faccio tutto io in casa",
+   "nodo": "La casa, ogni giorno"
   },
   {
-   "chiave": "tristezza",
-   "voce": "Mi viene da piangere"
+   "chiave": "ricominciare-a-cinquanta",
+   "voce": "Ricominciare a cinquant'anni",
+   "nodo": "Cominciare, o riprovarci"
   },
   {
-   "chiave": "colpa",
-   "voce": "È colpa mia"
+   "chiave": "coppia-lunga",
+   "voce": "Insieme da anni, e…",
+   "nodo": "Insieme da anni"
   },
   {
-   "chiave": "gelosia",
-   "voce": "Penso a lui, a lei"
+   "chiave": "non-mi-vede",
+   "voce": "Non mi vede più",
+   "nodo": "Insieme da anni"
   },
   {
-   "chiave": "sessualita",
-   "voce": "Il sesso non va più"
+   "chiave": "litighiamo",
+   "voce": "Litighiamo sempre uguale",
+   "nodo": "Insieme da anni"
   },
   {
-   "chiave": "stanchezza",
-   "voce": "Sono sempre stanco"
+   "chiave": "sospetto",
+   "voce": "Controllo il telefono",
+   "nodo": "Il sospetto e il colpo"
   },
   {
-   "chiave": "ascolto",
-   "voce": "Non ascolto il mio corpo"
+   "chiave": "tradimento",
+   "voce": "Mi ha tradito",
+   "nodo": "Il sospetto e il colpo"
   },
   {
-   "chiave": "tensione",
-   "voce": "Le spalle rigide"
+   "chiave": "separazione",
+   "voce": "Ci siamo separati",
+   "nodo": "Finisce"
+  },
+  {
+   "chiave": "ex",
+   "voce": "L'ex, ancora",
+   "nodo": "Dopo la fine"
+  },
+  {
+   "chiave": "padre-separato",
+   "voce": "Vedo i miei figli a giorni",
+   "nodo": "Dopo la fine"
+  },
+  {
+   "chiave": "ricominciare-da-se",
+   "voce": "Devo ritrovarmi",
+   "nodo": "Dopo la fine"
+  },
+  {
+   "chiave": "lavoro",
+   "voce": "Il lavoro mi mangia",
+   "nodo": "Il lavoro mi mangia"
+  },
+  {
+   "chiave": "fermarsi",
+   "voce": "Non riesco a fermarmi",
+   "nodo": "Il tempo che non c'è"
+  },
+  {
+   "chiave": "reggere",
+   "voce": "Reggo tutto io",
+   "nodo": "Il tempo che non c'è"
+  },
+  {
+   "chiave": "niente-per-me",
+   "voce": "Non ho un'ora mia",
+   "nodo": "Il tempo che non c'è"
+  },
+  {
+   "chiave": "sempre-adeguata",
+   "voce": "Devo andare bene per tutti",
+   "nodo": "Cosa vuol dire essere una donna"
+  },
+  {
+   "chiave": "corpo-pubblico",
+   "voce": "Il mio corpo è degli altri",
+   "nodo": "Cosa vuol dire essere una donna"
+  },
+  {
+   "chiave": "rabbia-non-permessa",
+   "voce": "Se mi arrabbio sono isterica",
+   "nodo": "Cosa vuol dire essere una donna"
+  },
+  {
+   "chiave": "confronto-con-gli-altri",
+   "voce": "Sono rimasto indietro",
+   "nodo": "Gli altri ce la fanno"
+  },
+  {
+   "chiave": "psicologo",
+   "voce": "Dovrei farmi aiutare",
+   "nodo": "Chiedere aiuto a qualcuno"
+  },
+  {
+   "chiave": "malattia",
+   "voce": "Mi sono ammalato",
+   "nodo": "Il corpo non mi risponde più"
+  },
+  {
+   "chiave": "fragilita",
+   "voce": "Non ce la faccio più",
+   "nodo": "Il corpo non mi risponde più"
   },
   {
    "chiave": "dolore",
-   "voce": "Il dolore non passa"
+   "voce": "Il dolore non passa",
+   "nodo": "Il dolore"
+  },
+  {
+   "chiave": "tensione",
+   "voce": "Le spalle rigide",
+   "nodo": "Il dolore"
+  },
+  {
+   "chiave": "stanchezza",
+   "voce": "Sono sempre stanco",
+   "nodo": "La stanchezza e il sonno"
+  },
+  {
+   "chiave": "sonno",
+   "voce": "Non dormo",
+   "nodo": "La stanchezza e il sonno"
+  },
+  {
+   "chiave": "corpo-cambia",
+   "voce": "Non mi riconosco più",
+   "nodo": "Il corpo che cambia"
+  },
+  {
+   "chiave": "ormoni-donna",
+   "voce": "La menopausa",
+   "nodo": "Il corpo che cambia"
+  },
+  {
+   "chiave": "ormoni-uomo",
+   "voce": "Non sono più quello di prima",
+   "nodo": "Il corpo che cambia"
+  },
+  {
+   "chiave": "ascolto",
+   "voce": "Non ascolto il mio corpo",
+   "nodo": "Non lo ascolto"
+  },
+  {
+   "chiave": "contatto",
+   "voce": "Non so più farmi toccare",
+   "nodo": "Il contatto"
+  },
+  {
+   "chiave": "rabbia",
+   "voce": "Mi arrabbio per niente",
+   "nodo": "La rabbia"
+  },
+  {
+   "chiave": "paura",
+   "voce": "Ho paura e non lo dico",
+   "nodo": "La paura"
+  },
+  {
+   "chiave": "tristezza",
+   "voce": "Mi viene da piangere",
+   "nodo": "La tristezza"
+  },
+  {
+   "chiave": "chi-sono",
+   "voce": "Non so più chi sono",
+   "nodo": "Il vuoto"
+  },
+  {
+   "chiave": "vergogna",
+   "voce": "Mi vergogno",
+   "nodo": "La vergogna e la colpa"
+  },
+  {
+   "chiave": "colpa",
+   "voce": "È colpa mia",
+   "nodo": "La vergogna e la colpa"
+  },
+  {
+   "chiave": "non-abbastanza",
+   "voce": "Non mi sento abbastanza",
+   "nodo": "La vergogna e la colpa"
+  },
+  {
+   "chiave": "solitudine",
+   "voce": "Nessuno a cui dirlo",
+   "nodo": "La solitudine"
+  },
+  {
+   "chiave": "sola-in-due",
+   "voce": "Sono sola pur essendo in due",
+   "nodo": "La solitudine"
+  },
+  {
+   "chiave": "gelosia",
+   "voce": "Penso a lui, a lei",
+   "nodo": "La gelosia"
+  },
+  {
+   "chiave": "durata",
+   "voce": "Finisco troppo presto",
+   "nodo": "Devo funzionare"
+  },
+  {
+   "chiave": "devo-farla-godere",
+   "voce": "Devo farla godere",
+   "nodo": "Devo funzionare"
+  },
+  {
+   "chiave": "misure-confronto",
+   "voce": "Non sono come dovrei",
+   "nodo": "Devo funzionare"
+  },
+  {
+   "chiave": "sessualita",
+   "voce": "Il sesso non va più",
+   "nodo": "Il corpo non risponde"
+  },
+  {
+   "chiave": "erezione",
+   "voce": "Non si alza",
+   "nodo": "Il corpo non risponde"
+  },
+  {
+   "chiave": "non-arrivo",
+   "voce": "Non arrivo",
+   "nodo": "Il corpo non risponde"
+  },
+  {
+   "chiave": "desiderio",
+   "voce": "Il desiderio non c'è più",
+   "nodo": "Il desiderio non c'è"
+  },
+  {
+   "chiave": "sesso-doloroso",
+   "voce": "Mi fa male",
+   "nodo": "Il desiderio non c'è"
+  },
+  {
+   "chiave": "non-mi-tocca",
+   "voce": "Non mi tocca da mesi",
+   "nodo": "Non ci tocchiamo più"
+  },
+  {
+   "chiave": "rifiuto",
+   "voce": "Mi dice sempre no",
+   "nodo": "Non ci tocchiamo più"
+  },
+  {
+   "chiave": "letti-separati",
+   "voce": "Dormiamo in due stanze",
+   "nodo": "Non ci tocchiamo più"
+  },
+  {
+   "chiave": "porno",
+   "voce": "Il porno",
+   "nodo": "Da solo"
+  },
+  {
+   "chiave": "masturbazione",
+   "voce": "Quello che faccio da solo",
+   "nodo": "Da solo"
+  },
+  {
+   "chiave": "fantasie",
+   "voce": "Le fantasie",
+   "nodo": "Da solo"
+  },
+  {
+   "chiave": "non-gliel-ho-mai-detto",
+   "voce": "Non gliel'ho mai detto",
+   "nodo": "Dirlo, o non dirlo"
+  },
+  {
+   "chiave": "il-suo-no",
+   "voce": "Quando uno dei due non vuole",
+   "nodo": "Dirlo, o non dirlo"
+  },
+  {
+   "chiave": "sesso-dopo-i-sessanta",
+   "voce": "Alla nostra età",
+   "nodo": "Più avanti"
+  },
+  {
+   "chiave": "sesso-dopo-malattia",
+   "voce": "Dopo l'operazione",
+   "nodo": "Più avanti"
   }
  ],
  "aree": [
   {
    "chiave": "famiglia",
-   "voce": "Famiglia e amore",
+   "voce": "Famiglia",
    "situazioni": [
+    "famiglia",
     "figli",
+    "genitori",
+    "lutto",
+    "parenti",
+    "carico-casa"
+   ]
+  },
+  {
+   "chiave": "relazioni",
+   "voce": "Relazioni",
+   "situazioni": [
+    "ricominciare-a-cinquanta",
+    "coppia-lunga",
+    "non-mi-vede",
+    "litighiamo",
+    "sospetto",
+    "tradimento",
     "separazione",
     "ex",
-    "tradimento",
-    "sospetto",
-    "coppia-lunga",
-    "genitori",
-    "parenti",
-    "famiglia",
-    "lutto"
+    "padre-separato",
+    "ricominciare-da-se"
+   ]
+  },
+  {
+   "chiave": "lavoro",
+   "voce": "Lavoro e soldi",
+   "situazioni": [
+    "lavoro",
+    "fermarsi",
+    "reggere",
+    "niente-per-me"
+   ]
+  },
+  {
+   "chiave": "societa",
+   "voce": "Società",
+   "situazioni": [
+    "sempre-adeguata",
+    "corpo-pubblico",
+    "rabbia-non-permessa",
+    "confronto-con-gli-altri",
+    "psicologo"
    ]
   },
   {
    "chiave": "corpo",
    "voce": "Il corpo",
    "situazioni": [
-    "sessualita",
-    "desiderio",
     "malattia",
-    "stanchezza",
-    "ascolto",
-    "tensione",
-    "dolore",
-    "corpo-cambia",
     "fragilita",
+    "dolore",
+    "tensione",
+    "stanchezza",
+    "sonno",
+    "corpo-cambia",
+    "ormoni-donna",
+    "ormoni-uomo",
+    "ascolto",
     "contatto"
    ]
   },
@@ -1285,19 +1555,37 @@
     "rabbia",
     "paura",
     "tristezza",
+    "chi-sono",
     "vergogna",
     "colpa",
-    "gelosia",
-    "solitudine"
+    "non-abbastanza",
+    "solitudine",
+    "sola-in-due",
+    "gelosia"
    ]
   },
   {
-   "chiave": "lavoro",
-   "voce": "Lavoro e tempo",
+   "chiave": "sessualita",
+   "voce": "Sessualità",
    "situazioni": [
-    "lavoro",
-    "reggere",
-    "fermarsi"
+    "durata",
+    "devo-farla-godere",
+    "misure-confronto",
+    "sessualita",
+    "erezione",
+    "non-arrivo",
+    "desiderio",
+    "sesso-doloroso",
+    "non-mi-tocca",
+    "rifiuto",
+    "letti-separati",
+    "porno",
+    "masturbazione",
+    "fantasie",
+    "non-gliel-ho-mai-detto",
+    "il-suo-no",
+    "sesso-dopo-i-sessanta",
+    "sesso-dopo-malattia"
    ]
   }
  ],
@@ -1515,6 +1803,47 @@
    ]
   },
   {
+   "id": "alce-non-abbastanza",
+   "libro": "alce",
+   "capitolo": "7 — Cosa aveva lui che io non ho?",
+   "voce": "Non mi sento abbastanza",
+   "situazioni": [
+    "non-abbastanza"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Le sei e dieci del mattino.",
+    "Sei in palestra.",
+    "Non ci venivi da due anni.",
+    "Da tre settimane ci vieni tutti i giorni, prima del lavoro, e non hai ancora detto a nessuno perché.",
+    "Nemmeno a te.",
+    "Corri sul tapis roulant e guardi il tuo riflesso nel vetro.",
+    "E la domanda è lì, che corre con te.",
+    "Cosa aveva lui che io non ho?",
+    "Questa è forse la domanda più pericolosa del libro.",
+    "Perché sembra logica.",
+    "Se ha scelto lui, deve esserci qualcosa che lui ha e io no.",
+    "Un’equazione elementare.",
+    "E parte l’inventario.",
+    "Fisico.",
+    "Sesso.",
+    "Personalità.",
+    "Soldi.",
+    "Carisma.",
+    "Altezza.",
+    "Capelli.",
+    "Ironia."
+   ],
+   "domanda": [
+    "Il tapis roulant rallenta.",
+    "Scendi.",
+    "Sei sudato, e per una volta non sai per chi.",
+    "E magari è proprio da qui che, tra qualche mese, nascerà una frase più interessante di tutte quelle dell’inventario:",
+    "«Non ho bisogno di essere migliore di lui per sapere quanto valgo.»"
+   ]
+  },
+  {
    "id": "alce-non-ci-credo",
    "libro": "alce",
    "capitolo": "1 — Non ci credo",
@@ -1554,6 +1883,33 @@
     "Perché il tradimento è quello che è successo tra due persone.",
     "La ferita è quello che comincia a succedere dentro di te.",
     "E sono due cose diverse."
+   ]
+  },
+  {
+   "id": "alce-non-era-il-tuo-valore",
+   "libro": "alce",
+   "capitolo": "21 — Non era il tuo valore",
+   "voce": "Sono rimasto indietro",
+   "situazioni": [
+    "confronto-con-gli-altri"
+   ],
+   "corpo": [
+    "viso",
+    "spalle"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non «cosa c'è che non va».",
+    "Nemmeno «vado bene».",
+    "La guardi e basta.",
+    "È la faccia di uno a cui è successa una cosa.",
+    "Non la faccia di una cosa.",
+    "E oggi, con la camicia, va anche abbastanza bene."
+   ],
+   "domanda": [
+    "Quanto valgo?",
+    "Le scelte degli altri sono un pessimo strumento di misura per te.",
+    "Come pesarsi con il termometro."
    ]
   },
   {
@@ -1600,6 +1956,53 @@
     "C’è verità, adesso, anche quando è scomoda?",
     "C’è volontà di entrambi, o ce l’ho solo io?",
     "Ci sono comportamenti nuovi, o solo parole nuove?"
+   ]
+  },
+  {
+   "id": "alce-ricominciare",
+   "libro": "alce",
+   "capitolo": "19 — Ricominciare",
+   "voce": "Devo ritrovarmi",
+   "situazioni": [
+    "ricominciare-da-se"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Ricominciare è una parola strana.",
+    "Sembra che prima ci fosse una lavagna.",
+    "Cancelli.",
+    "E riparti, con il gesso nuovo.",
+    "Ma la vita non ha la lavagna.",
+    "Ha un quaderno.",
+    "Quello che hai scritto resta scritto, e puoi solo continuare alla pagina dopo.",
+    "Ricominciare significa portarsi dietro quello che hai imparato.",
+    "Da qui in poi ci sono due strade, e questo libro non sceglie per te.",
+    "Le percorre tutte e due.",
+    "La prima.",
+    "Lo stesso tavolo di cucina.",
+    "La stessa tazza.",
+    "Ma la conversazione è un’altra.",
+    "Lei ti chiede com’è andata la giornata e aspetta davvero la risposta.",
+    "Tu le dici una cosa che un anno fa avresti tenuto per te, perché ti sembrava una debolezza.",
+    "Non è la relazione di prima.",
+    "Quella è finita la sera del quiz, e nessuno dei due la può resuscitare.",
+    "Questa è una relazione nuova, tra due persone che si conoscono meglio, e che hanno visto di cosa sono capaci, nel bene e nel peggio.",
+    "Non è più cieca.",
+    "Non è più comoda.",
+    "Forse, per la prima volta, è vera.",
+    "La seconda.",
+    "Un appartamento più piccolo, al terzo piano senza ascensore.",
+    "Tre scatoloni ancora chiusi in mezzo al soggiorno.",
+    "Il cane, che è venuto con te, gira intorno agli scatoloni e non capisce dove sia la sua cuccia.",
+    "Nemmeno tu lo sai."
+   ],
+   "domanda": [
+    "Ricominciare non significa tornare quello che eri.",
+    "Quello ha già dato.",
+    "Significa capire chi vuoi essere adesso.",
+    "Al tavolo di sempre, con una conversazione nuova.",
+    "O al terzo piano, con tre scatoloni e un cane che ha già scelto."
    ]
   },
   {
@@ -1707,6 +2110,284 @@
     "Vuoi sapere.",
     "Poi sai.",
     "E vorresti non sapere."
+   ]
+  },
+  {
+   "id": "banana-dormiamo-separati",
+   "libro": "banana",
+   "capitolo": "17 — Faccio finta di niente",
+   "voce": "Dormiamo separati",
+   "situazioni": [
+    "letti-separati"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Il divano ha preso la tua forma.",
+    "Da qualche settimana, la sera, è lì che finisci: la partita, poi il telegiornale, poi un documentario sui ponti che non ti interessa.",
+    "Lei passa in corridoio.",
+    "«Vieni a letto?»",
+    "«Arrivo.»",
+    "Non arrivi.",
+    "Arrivi quando la luce sotto la porta della camera è spenta da un pezzo, e ti infili sotto le coperte piano, come un ladro che ruba in casa sua.",
+    "Hai imparato i tempi, tra l’altro.",
+    "Alle undici lei è sveglia e legge.",
+    "Alle undici e mezza ha spento, ma non dorme.",
+    "A mezzanotte dorme.",
+    "Sali a mezzanotte.",
+    "È un orario che non hai mai deciso e che rispetti come un treno.",
+    "«Faccio finta di niente.»",
+    "È una strategia molto umana.",
+    "«Se non ne parlo, magari passa.»",
+    "«Se non ci penso, magari torna tutto come prima.»",
+    "«Se evito la situazione, almeno non devo scoprire se succederà di nuovo.»",
+    "Il problema è che evitare può funzionare benissimo per una sera.",
+    "Poi diventa un’abitudine.",
+    "E l’abitudine comincia a organizzare la vita."
+   ],
+   "domanda": [
+    "Ma dire qualcosa è diverso da sparire.",
+    "Perché il silenzio protegge il momento.",
+    "La parola può proteggere la relazione."
+   ]
+  },
+  {
+   "id": "banana-erezione",
+   "libro": "banana",
+   "capitolo": "2 — Non si alza",
+   "voce": "Non si alza",
+   "situazioni": [
+    "erezione"
+   ],
+   "corpo": [
+    "cuore",
+    "stomaco",
+    "sonno"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Sono le tre meno un quarto.",
+    "Lei dorme, o fa finta, e tu sei in cucina con la porta del frigorifero aperta senza sapere cosa ci sei venuto a prendere.",
+    "La luce del frigo è l'unica accesa in casa.",
+    "Da quando sei sceso dal letto hai già pensato dodici cose, e nessuna era «ho sete».",
+    "Sei sceso piano, saltando il terzo gradino che scricchiola, come a diciassette anni quando rientravi tardi.",
+    "Solo che stavolta non stai rientrando da nessuna parte.",
+    "Il primo pensiero raramente è elegante.",
+    "È spesso immediato.",
+    "«Perché non si alza?»",
+    "Non hai ancora capito niente e già vuoi una spiegazione.",
+    "Il corpo, però, non ti consegna un comunicato stampa.",
+    "Non dice: «Oggi è successo questo per questo motivo.»",
+    "Semplicemente non risponde come ti aspettavi.",
+    "Ed è proprio questa mancanza di spiegazione immediata a fare paura."
+   ],
+   "domanda": [
+    "Una volta non è una biografia.",
+    "Una serata non è una diagnosi."
+   ]
+  },
+  {
+   "id": "banana-farsi-vedere",
+   "libro": "banana",
+   "capitolo": "25 — Andare a farsi vedere",
+   "voce": "Dovrei farmi aiutare",
+   "situazioni": [
+    "psicologo"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "La telefonata l’hai rimandata due mesi.",
+    "Non per mancanza di tempo: hai avuto il tempo di cambiare le gomme, di andare a un matrimonio, di leggere un foglietto illustrativo.",
+    "Il numero ce l’avevi salvato in rubrica sotto una parola neutra, «studio», come se in casa qualcuno frugasse nella tua rubrica.",
+    "Poi un giovedì hai chiamato, e la voce dall’altra parte ti ha dato un giorno e un’ora, ha detto «va bene», ha riattaccato, e tu sei rimasto con il telefono in mano a chiederti perché non fosse successo niente.",
+    "Il giorno arriva.",
+    "In macchina, ai semafori, prepari la frase.",
+    "La ripeti due volte, a voce alta, con la radio spenta.",
+    "«Da qualche mese ho un problema con…»",
+    "La seconda volta ti fermi allo stesso punto della prima, dopo «con», e il semaforo diventa verde, e la frase resta lì.",
+    "Poi c’è il corridoio.",
+    "Un calendario di un’azienda di serramenti, fermo al mese scorso, e un estintore che qualcuno ha controllato a marzo.",
+    "Leggi tutto, perché leggere è l’unica cosa che si può fare in un corridoio senza sembrare uno che aspetta.",
+    "Una porta con una targhetta, la maniglia che abbassi, una sedia davanti a una scrivania, con il cappotto che non sai dove mettere e che ti tieni sulle ginocchia.",
+    "Ti dicono di sederti, e ti siedi, ed è la prima cosa che oggi fai bene al primo colpo.",
+    "E la frase preparata in macchina, quella con il «con», non esce.",
+    "Esce un’altra.",
+    "«È per un controllo.»",
+    "Ecco cosa dici, quando entri."
+   ],
+   "domanda": [
+    "Non hai una risposta.",
+    "Hai una domanda fatta ad alta voce, davanti a qualcuno, e stamattina non ce l’avevi."
+   ]
+  },
+  {
+   "id": "banana-la-pancia",
+   "libro": "banana",
+   "capitolo": "13 — La pancia",
+   "voce": "Non sono più quello di prima",
+   "situazioni": [
+    "ormoni-uomo"
+   ],
+   "corpo": [
+    "respiro",
+    "viso"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "I pantaloni del vestito buono hanno due bottoni.",
+    "Uno dentro, uno fuori.",
+    "Il primo si chiude.",
+    "Il secondo no.",
+    "Sei in piedi davanti all'armadio, con la camicia già stirata sul letto e il matrimonio alle undici, e tiri la pancia dentro come fanno tutti, e per un secondo il bottone entra nell'asola, e poi tu respiri, ed esce.",
+    "Non è una tragedia.",
+    "C'è la cintura.",
+    "La cintura la conosci: cinque anni fa stava al terzo buco.",
+    "Poi al quarto.",
+    "Adesso al quinto, e il quinto non era previsto da chi l'ha fatta, perché è l'ultimo, e la punta della cintura resta corta, e sporge poco, e lo sai solo tu."
+   ],
+   "domanda": [
+    "Il corpo tiene il conto.",
+    "Non tiene il rancore."
+   ]
+  },
+  {
+   "id": "banana-non-arrivo",
+   "libro": "banana",
+   "capitolo": "7 — Non vengo",
+   "voce": "Parte e non arriva",
+   "situazioni": [
+    "non-arrivo"
+   ],
+   "corpo": [
+    "respiro",
+    "cuore"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "È luglio, e la finestra è aperta perché con questo caldo non si può fare altrimenti.",
+    "La tenda si muove ogni tanto, quando decide lei.",
+    "Dal cortile arriva la televisione di quelli del piano di sotto: un quiz, con gli applausi registrati che partono ogni trenta secondi.",
+    "E stasera, per una volta, parte tutto.",
+    "Non ti sei guardato.",
+    "Non hai aspettato.",
+    "Il corpo ha risposto come una volta, e tu hai pensato, per un attimo, che il libro potesse finire qui.",
+    "Poi il tempo si allunga.",
+    "All'inizio non te ne accorgi, perché stai bene, e stare bene non ha un orologio.",
+    "Poi te ne accorgi.",
+    "Il quiz di sotto ha cambiato concorrente.",
+    "Gli applausi sono partiti tre volte, quattro."
+   ],
+   "domanda": [
+    "E se il corpo parte e non arriva?"
+   ]
+  },
+  {
+   "id": "banana-non-ci-tocchiamo",
+   "libro": "banana",
+   "capitolo": "18 — Stasera ho mal di testa",
+   "voce": "Non ci tocchiamo più",
+   "situazioni": [
+    "non-mi-tocca"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Sei sulla porta della camera.",
+    "Una mano sullo stipite, l’altra in tasca, come se stessi passando di lì per caso.",
+    "Le dita sullo stipite stringono, e non c’è nessun motivo per stringere uno stipite.",
+    "Lei è già a letto, con il libro aperto e gli occhiali che mette solo per leggere.",
+    "Alza la testa.",
+    "E tu dici la frase.",
+    "«Stasera ho mal di testa.»",
+    "La dici bene, tra l’altro.",
+    "Con il tono giusto, un po’ stanco, una mano che sale alla tempia.",
+    "Se ci fosse un premio per la recitazione domestica, saresti in lizza.",
+    "Ti accorgi anche che stai facendo la voce.",
+    "Quella un po’ più bassa, che usi al telefono con il cliente quando dici che il pezzo non è ancora arrivato.",
+    "Lei ti guarda sopra gli occhiali.",
+    "«Vuoi che spenga?»",
+    "«No, no. Leggi.»",
+    "All’inizio la scusa sembra perfetta.",
+    "È credibile.",
+    "È semplice.",
+    "Non richiede spiegazioni.",
+    "Ha una lunga tradizione alle spalle, anche se nelle barzellette la diceva sempre lei.",
+    "Poi succede di nuovo.",
+    "E ancora.",
+    "Il martedì è il mal di testa, il giovedì è la schiena, il sabato è che hai mangiato troppo."
+   ],
+   "domanda": [
+    "Ti siedi sul bordo del letto, invece, dalla sua parte.",
+    "Non dici ancora tutto.",
+    "Ma non dici nemmeno «meglio».",
+    "E quando riesci a nominare quello che succede, almeno non c’è più da inventare ogni volta una nuova versione.",
+    "La porta della camera, stasera, resta aperta."
+   ]
+  },
+  {
+   "id": "banana-non-gliel-ho-detto",
+   "libro": "banana",
+   "capitolo": "16 — Non glielo posso dire",
+   "voce": "Non gliel'ho mai detto",
+   "situazioni": [
+    "non-gliel-ho-mai-detto"
+   ],
+   "corpo": [
+    "gola",
+    "mani"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Tornate da una cena.",
+    "Sono le undici e mezza, la tangenziale è vuota, la radio è bassa.",
+    "Lei guarda fuori dal finestrino.",
+    "Tu guardi la strada.",
+    "Da un paio di mesi, in macchina, c'è questo silenzio nuovo: non quello comodo di chi non ha bisogno di parlare, l'altro.",
+    "Quello con dentro una cosa.",
+    "Al semaforo lei si gira.",
+    "«Tutto bene?»",
+    "«Sì. Stanco.»",
+    "Verde.",
+    "Riparti.",
+    "E la frase che avevi in gola torna giù, dov'era, per la ventesima volta.",
+    "Hai la destra sul cambio, e la destra è sudata.",
+    "La sposti sul ginocchio, come se fosse una scelta.",
+    "La difficoltà non è soltanto quello che succede al corpo.",
+    "A volte è il fatto di doverlo raccontare a qualcuno."
+   ],
+   "domanda": [
+    "Perché una cosa che riguarda entrambi la sto portando da solo?"
+   ]
+  },
+  {
+   "id": "banana-pastiglie",
+   "libro": "banana",
+   "capitolo": "12 — Le pastiglie che prendo per altro",
+   "voce": "Le medicine che prendo",
+   "situazioni": [
+    "sesso-dopo-malattia"
+   ],
+   "corpo": [
+    "occhi",
+    "mani"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Il foglietto illustrativo è piegato in dodici.",
+    "Lo sai perché lo hai aperto adesso, a letto, e ogni piega ha fatto il suo rumore, e lei ha detto «cosa fai» senza girarsi.",
+    "«Niente.»",
+    "È scritto in un carattere che non è fatto per essere letto: è fatto per esserci.",
+    "Prendi i suoi occhiali dal comodino, quelli che mette solo per leggere, e te li infili, e per un attimo sei un uomo di cinquant'anni con gli occhiali della moglie che legge un foglietto alle undici di sera.",
+    "Lo spieghi sul comodino, sotto la lampada.",
+    "È lungo come una tovaglia.",
+    "Salti come si salta sempre, verso il fondo.",
+    "E lì, in mezzo alle altre, c'è una riga.",
+    "Una riga sola, tra venti che non ti riguardano.",
+    "La leggi due volte."
+   ],
+   "domanda": [
+    "Perché nessuno me lo aveva detto?"
    ]
   },
   {
@@ -2909,6 +3590,81 @@
    ]
   },
   {
+   "id": "exnemico-identita",
+   "libro": "exnemico",
+   "capitolo": "24 — La separazione non deve diventare la tua identità",
+   "voce": "Non so più chi sono",
+   "situazioni": [
+    "chi-sono"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "All’inizio racconti tutto.",
+    "Perché ne hai bisogno.",
+    "Poi racconti tutto perché ti chiedono.",
+    "Poi racconti tutto perché ormai è diventata la tua storia.",
+    "«Sono separato.»",
+    "«La mia ex…»",
+    "«Quando ci siamo lasciati…»",
+    "«Mio figlio vive…»",
+    "«L’avvocato dice…»",
+    "«Lei ha fatto…»",
+    "«Io ho fatto…»",
+    "E un giorno ti accorgi di una cosa strana.",
+    "Quando qualcuno ti chiede:",
+    "«Come stai?»",
+    "non sai più rispondere senza parlare di lei."
+   ],
+   "domanda": [
+    "E allora forse la separazione non sarà più il centro della storia.",
+    "Sarà un capitolo.",
+    "Importante.",
+    "Doloroso.",
+    "A volte assurdo.",
+    "A volte persino ridicolo.",
+    "Ma un capitolo.",
+    "Non il libro intero."
+   ]
+  },
+  {
+   "id": "exnemico-litighiamo",
+   "libro": "exnemico",
+   "capitolo": "2 — L'ultimo litigio non è mai l'ultimo",
+   "voce": "Litighiamo sempre uguale",
+   "situazioni": [
+    "litighiamo"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "«Questa è l’ultima volta che ne parliamo.»",
+    "Lo dice convinto.",
+    "Questa volta davvero.",
+    "Ha anche quel tono particolare che si usa quando si vuole dare solennità a una frase che, in realtà, verrà smentita entro quarantotto ore.",
+    "«Non voglio più discutere.»",
+    "L’altra persona risponde:",
+    "«Nemmeno io.»",
+    "Bene.",
+    "Pace.",
+    "Fine.",
+    "Sipario.",
+    "Cinque minuti dopo arriva:",
+    "«Però una cosa te la devo dire.»",
+    "Ed è ricominciata.",
+    "È una delle caratteristiche più curiose delle separazioni: spesso si continua a litigare anche quando non c’è più niente da salvare."
+   ],
+   "domanda": [
+    "Lo leggi.",
+    "Ti viene una risposta.",
+    "La scrivi.",
+    "La rileggi.",
+    "La cancelli.",
+    "Metti il telefono sul tavolo.",
+    "E torni a fare quello che stavi facendo."
+   ]
+  },
+  {
    "id": "exnemico-mia-madre",
    "libro": "exnemico",
    "capitolo": "11 — Mia madre dice che dovrei…",
@@ -2995,6 +3751,39 @@
    ]
   },
   {
+   "id": "exnemico-papa-viene",
+   "libro": "exnemico",
+   "capitolo": "8 — Papà viene o non viene?",
+   "voce": "Vedo i figli a giorni",
+   "situazioni": [
+    "padre-separato"
+   ],
+   "corpo": [
+    "stomaco",
+    "gola"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "«Papà viene?»",
+    "La domanda arriva alle 16:47.",
+    "L'appuntamento era alle 17.",
+    "Il bambino è già vestito.",
+    "Scarpe.",
+    "Giacca.",
+    "Zaino.",
+    "Ha persino scelto quale videogioco portare.",
+    "«Papà viene?»",
+    "E tu guardi il telefono.",
+    "Nessun messaggio.",
+    "Ultimo accesso.",
+    "Niente."
+   ],
+   "domanda": [
+    "Un figlio non dovrebbe scoprire quanto sono affidabili i suoi genitori attraverso il loro conflitto.",
+    "Dovrebbe poterlo scoprire attraverso la loro presenza."
+   ]
+  },
+  {
    "id": "exnemico-postino",
    "libro": "exnemico",
    "capitolo": "6 — Diglielo tu a papà",
@@ -3035,6 +3824,43 @@
     "Perché alla fine il problema non è soltanto cosa diciamo ai figli.",
     "È il ruolo nel quale li costringiamo a entrare.",
     "E quando un bambino diventa il ponte tra due adulti che non vogliono più parlarsi, prima o poi il ponte comincia a tremare."
+   ]
+  },
+  {
+   "id": "exnemico-primo-appuntamento",
+   "libro": "exnemico",
+   "capitolo": "19 — Il primo appuntamento dopo l'apocalisse",
+   "voce": "Ricominciare a cinquant'anni",
+   "situazioni": [
+    "ricominciare-a-cinquanta"
+   ],
+   "corpo": [
+    "cuore",
+    "stomaco",
+    "viso"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "«Stasera esco con una.»",
+    "«Una cosa seria?»",
+    "«Non lo so.»",
+    "«Dove andate?»",
+    "«A bere qualcosa.»",
+    "«E se va male?»",
+    "«Torno a casa.»",
+    "«E se va bene?»",
+    "Silenzio.",
+    "«Non lo so.»",
+    "Ecco.",
+    "Dopo una separazione arriva anche questo momento.",
+    "La prima volta che qualcuno ti piace."
+   ],
+   "domanda": [
+    "Dopo una separazione non devi ricostruire immediatamente una famiglia.",
+    "Puoi ricominciare da una conversazione.",
+    "Da una risata.",
+    "Da una passeggiata.",
+    "Da una persona che non sa ancora nulla della tua storia."
    ]
   },
   {
@@ -3274,6 +4100,318 @@
    ]
   },
   {
+   "id": "rocco-devo-farla-godere",
+   "libro": "rocco",
+   "capitolo": "3 — Devo farla godere",
+   "voce": "Devo farla godere",
+   "situazioni": [
+    "devo-farla-godere"
+   ],
+   "corpo": [
+    "viso",
+    "cuore",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "«È stato bello.»",
+    "Lo dice lei, al buio, con la faccia sul cuscino.",
+    "Tre parole.",
+    "E tu, invece di sentirle, cominci ad analizzarle.",
+    "Bello quanto?",
+    "Bello come le altre volte o bello di meno?",
+    "L'ha detto subito o ci ha pensato?",
+    "L'ha detto perché lo pensa o perché è gentile?",
+    "Nel giro di dieci secondi hai trasformato una carezza in una pagella, e stai cercando il voto scritto in piccolo, in fondo.",
+    "Ti sale il caldo in faccia, al buio, dove nessuno lo vede.",
+    "«Scusa.»",
+    "Ti esce così, a bassa voce.",
+    "«Di cosa?»",
+    "«Niente.»"
+   ],
+   "domanda": [
+    "Il piacere dell'altra persona è un risultato che devo ottenere?"
+   ]
+  },
+  {
+   "id": "rocco-durata",
+   "libro": "rocco",
+   "capitolo": "2 — Quanto deve durare un uomo?",
+   "voce": "Finisco troppo presto",
+   "situazioni": [
+    "durata"
+   ],
+   "corpo": [
+    "cuore",
+    "respiro",
+    "cranio"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Sulla sveglia c'è scritto 23:14.",
+    "Non l'hai guardata apposta.",
+    "È lì, con i suoi numeri rossi, e gli occhi ci sono finiti da soli mentre cambiavate posizione.",
+    "Non è successo niente.",
+    "Solo un'occhiata.",
+    "Poi, dopo, mentre lei si alza per andare in bagno, gli occhi ci tornano.",
+    "23:31.",
+    "E senza volerlo hai fatto la sottrazione.",
+    "Diciassette.",
+    "Non sai nemmeno se sia tanto o poco, perché nessuno ti ha mai dato la tabella.",
+    "Ma lo sai lo stesso, e quello che sai è: poteva essere di più.",
+    "Il sesso ha una cosa che può diventare molto scomoda: non ha un tempo ufficiale.",
+    "Eppure molti uomini vivono come se ce l'avesse."
+   ],
+   "domanda": [
+    "Chi ha deciso che esiste un tempo al quale bisogna arrivare?"
+   ]
+  },
+  {
+   "id": "rocco-fantasie",
+   "libro": "rocco",
+   "capitolo": "10 — Le fantasie",
+   "voce": "Le fantasie",
+   "situazioni": [
+    "fantasie"
+   ],
+   "corpo": [
+    "cranio",
+    "viso"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Il clacson, dietro.",
+    "Il semaforo è verde da un pezzo.",
+    "Riparti con la faccia di uno che è stato visto, e nessuno ti ha visto: eri fermo a un incrocio con la testa da un'altra parte, e la parte era una che non racconti.",
+    "Non ti chiedo cosa.",
+    "Non me lo dici nemmeno tu.",
+    "È la regola di questo capitolo: qui si parla dell'esistenza delle cose, non delle cose.",
+    "Ci sono pensieri che ti passano per la testa e che non hai mai detto a nessuno.",
+    "Non all'amico più stretto.",
+    "Non a lei.",
+    "Non a te stesso ad alta voce, che sarebbe già qualcosa.",
+    "Arrivano al semaforo, sotto la doccia, in una riunione noiosa, nel mezzo di una serata normale.",
+    "Non li hai chiamati.",
+    "Sono venuti."
+   ],
+   "domanda": [
+    "Quello che mi passa per la testa dice chi sono?"
+   ]
+  },
+  {
+   "id": "rocco-il-suo-no",
+   "libro": "rocco",
+   "capitolo": "13 — Non posso dire che non mi va",
+   "voce": "Non posso dire di no",
+   "situazioni": [
+    "il-suo-no"
+   ],
+   "corpo": [
+    "stanchezza",
+    "gola"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Divano, terzo episodio, le undici passate.",
+    "Lei ti mette una mano sulla coscia.",
+    "Non è una domanda: è una mano.",
+    "Ma tu la leggi come una domanda, e la risposta che ti sale è una che non dici mai.",
+    "«Non mi va.»",
+    "Sei stanco.",
+    "Hai avuto una giornata di quelle in cui parli con tutti e non dici niente.",
+    "Ti va di stare lì, con la sua mano lì, e basta.",
+    "E invece dici: «Vieni.»",
+    "Ti alzi.",
+    "A metà corridoio ti accorgi che stai camminando come uno che va a fare una cosa.",
+    "Non come uno che ha voglia.",
+    "Come uno che ha detto che sarebbe andato."
+   ],
+   "domanda": [
+    "Posso non avere voglia senza che significhi qualcosa di me?"
+   ]
+  },
+  {
+   "id": "rocco-masturbazione",
+   "libro": "rocco",
+   "capitolo": "7 — Da solo",
+   "voce": "Quello che faccio da solo",
+   "situazioni": [
+    "masturbazione"
+   ],
+   "corpo": [
+    "mani",
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Giri la chiave.",
+    "In casa non c'è nessuno.",
+    "Eppure giri la chiave.",
+    "Non lo decidi: lo fa la mano, con lo stesso gesto di quando avevi quattordici anni e quella porta era l'unica cosa tra te e il corridoio.",
+    "È il gesto che hai imparato prima di tutti gli altri.",
+    "Prima del bacio.",
+    "Prima di sapere dove mettere le mani su qualcun altro.",
+    "Prima di tutto quello che poi è diventato «sesso», c'è stato questo: da solo, in silenzio, di fretta, con un orecchio al corridoio.",
+    "Nessuno te l'ha insegnato.",
+    "Nessuno te ne ha parlato.",
+    "Questo l'hai imparato da solo, e da solo hai imparato anche il resto: che si fa in fretta, che non si dice, che dopo si esce dalla stanza con la faccia normale.",
+    "La fretta è rimasta.",
+    "Trent'anni dopo, in una casa vuota, con la porta chiusa a chiave per nessuno, il corpo fa ancora in fretta."
+   ],
+   "domanda": [
+    "Quello che faccio da solo conta?"
+   ]
+  },
+  {
+   "id": "rocco-misure-confronto",
+   "libro": "rocco",
+   "capitolo": "12 — Quanti ne ha avuti",
+   "voce": "Quelli prima di me",
+   "situazioni": [
+    "misure-confronto"
+   ],
+   "corpo": [
+    "stomaco",
+    "mandibola"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Tangenziale, sera, i tergicristalli al minimo.",
+    "Lei sta raccontando del matrimonio di una collega, quello di sabato, e a un certo punto dice un nome, uno di quelli che tu non conosci, e aggiunge: «Ci siamo frequentati un po', prima di te.»",
+    "Lo dice così.",
+    "Come si dice che una volta abitava in un'altra via.",
+    "E tu, invece di lasciare quella via dov'è, fai la domanda.",
+    "«Ma tu, prima di me… quanti?»",
+    "La rimpiangi prima del punto interrogativo.",
+    "È già uscita, però.",
+    "E le domande, in macchina, non si possono riprendere: c'è poco spazio e non ci sono angoli.",
+    "Lei ci pensa un secondo.",
+    "Risponde.",
+    "Un numero."
+   ],
+   "domanda": [
+    "Devo competere con uomini che non ho mai visto?"
+   ]
+  },
+  {
+   "id": "rocco-porno",
+   "libro": "rocco",
+   "capitolo": "9 — Il porno non era così",
+   "voce": "Il porno",
+   "situazioni": [
+    "porno"
+   ],
+   "corpo": [
+    "occhi",
+    "cranio"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Lo schermo si spegne e la stanza torna nera.",
+    "Per un secondo ci vedi dentro la tua faccia, riflessa.",
+    "È il momento più onesto di tutto il video.",
+    "Perché sullo schermo, fino a un attimo fa, nessuno aveva paura.",
+    "Nessuno inciampava.",
+    "Nessuno chiedeva: «va bene così?»",
+    "Nessuno aveva la testa piena del lavoro del giorno dopo.",
+    "Il corpo sembrava avere sempre la risposta pronta.",
+    "Poi lo schermo si è spento e sei rimasto tu, con la tua faccia dentro il nero.",
+    "Hai il collo rigido e non te n'eri accorto.",
+    "A un certo punto della storia molti uomini hanno imparato il sesso guardando il sesso.",
+    "Non il sesso reale.",
+    "Una rappresentazione del sesso.",
+    "Le immagini sono costruite per mostrare.",
+    "La realtà è costruita per essere vissuta."
+   ],
+   "domanda": [
+    "Perché il mio sesso non è così?"
+   ]
+  },
+  {
+   "id": "rocco-rifiuto",
+   "libro": "rocco",
+   "capitolo": "21 — Quando dice di no",
+   "voce": "Mi dice sempre no",
+   "situazioni": [
+    "rifiuto"
+   ],
+   "corpo": [
+    "sonno",
+    "stomaco",
+    "cuore"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "«Stasera no.»",
+    "L'ha detto prima che tu dicessi niente.",
+    "Eri appena uscito dal bagno, con i denti lavati e quella faccia, e lei l'ha letta e ha risposto alla domanda che non avevi ancora fatto.",
+    "Due parole.",
+    "Ti giri verso il tuo lato.",
+    "«Va bene.»",
+    "Anche tu due parole, e delle quattro, in quella stanza, nessuna è vera.",
+    "Il suo no dura due parole.",
+    "Il tuo ne dura tutta la notte.",
+    "Perché è così che funziona, un no, nella testa di un uomo che si sente sotto esame: non resta delle dimensioni con cui è stato detto.",
+    "Si allarga.",
+    "Prende il letto, poi la stanza, poi la settimana.",
+    "Alle undici era «stasera no».",
+    "A mezzanotte era «non mi vuole».",
+    "All'una era «da quanto non mi vuole?».",
+    "Alle due stai rifacendo il conto degli ultimi due mesi, e trovi tutto quello che cerchi, perché a quell'ora si trova sempre."
+   ],
+   "domanda": [
+    "Un no è una sentenza?"
+   ]
+  },
+  {
+   "id": "sv-carico-mentale",
+   "libro": "sv",
+   "capitolo": "28 — Ricordare tutto, prevedere tutto, gestire tutti",
+   "voce": "Faccio tutto io",
+   "situazioni": [
+    "carico-casa",
+    "niente-per-me"
+   ],
+   "corpo": [
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è stanchezza normale.",
+    "È quel fondo sempre acceso.",
+    "Anche quando sei ferma, qualcosa in te lavora.",
+    "Tiene il conto.",
+    "Fa l’elenco.",
+    "Controlla che nulla manchi.",
+    "Non lo hai deciso.",
+    "È partito molto prima.",
+    "E non si è più spento.",
+    "Il carico mentale non nasce perché sei brava.",
+    "Nasce perché qualcuno doveva farlo.",
+    "E quasi sempre sei stata tu.",
+    "Ricordare.",
+    "Prevedere.",
+    "Anticipare.",
+    "Mettere insieme i pezzi prima che cadano.",
+    "Non per potere.",
+    "Per necessità.",
+    "Se tu non lo fai, qualcosa si rompe.",
+    "Se tu non ci pensi, nessuno lo farà.",
+    "Così il tuo corpo ha imparato una funzione silenziosa:",
+    "tenere tutto insieme.",
+    "Non è altruismo.",
+    "È sopravvivenza organizzata."
+   ],
+   "domanda": [
+    "«Se smetto io, crolla tutto.»",
+    "«È più semplice se ci penso io.»",
+    "«Non ho tempo di spiegare.»",
+    "«Faccio prima.»",
+    "E soprattutto:",
+    "«Non posso mollare.»"
+   ]
+  },
+  {
    "id": "sv-colpa",
    "libro": "sv",
    "capitolo": "41 — La lentezza diventa colpa",
@@ -3381,6 +4519,51 @@
    ]
   },
   {
+   "id": "sv-corpo-pubblico",
+   "libro": "sv",
+   "capitolo": "1 — Il corpo diventa presto pubblico",
+   "voce": "Il corpo non è mio",
+   "situazioni": [
+    "corpo-pubblico"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Il corpo delle bambine non resta a lungo privato.",
+    "Diventa linguaggio comune.",
+    "Oggetto di frase.",
+    "Tema aperto.",
+    "«Che bella.»",
+    "«Che carina.»",
+    "«Che magra.»",
+    "«Che cosce.»",
+    "«Che pancina.»",
+    "«Che seno presto.»",
+    "Non c’è cattiveria esplicita.",
+    "C’è abitudine.",
+    "Il corpo viene visto prima di essere sentito.",
+    "Nominato prima di essere abitato.",
+    "Valutato prima di essere conosciuto.",
+    "Così impari una cosa precisa:",
+    "che il tuo corpo non è solo tuo.",
+    "È qualcosa che può essere guardato.",
+    "Detto.",
+    "Misurato.",
+    "Confrontato.",
+    "E tu impari a stare dentro quello sguardo.",
+    "Ad anticiparlo.",
+    "A regolarti.",
+    "Non perché vuoi.",
+    "Perché conviene."
+   ],
+   "domanda": [
+    "Nessuno ti ha chiesto:",
+    "«Com’è per te abitare questo corpo?»",
+    "Nessuno ha chiesto se volevi essere vista.",
+    "Nessuno ha chiesto se ti andava di essere nominata."
+   ]
+  },
+  {
    "id": "sv-dolore-cronico",
    "libro": "sv",
    "capitolo": "13 — Il dolore cronico",
@@ -3432,6 +4615,48 @@
     "Vicino.",
     "Respira senza voler sciogliere nulla.",
     "Resta 30 secondi."
+   ]
+  },
+  {
+   "id": "sv-essere-bella",
+   "libro": "sv",
+   "capitolo": "46 — Essere bella ma non troppo",
+   "voce": "Devo andare bene per tutti",
+   "situazioni": [
+    "sempre-adeguata"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Ti prepari.",
+    "Non per piacerti.",
+    "Per non sbagliare.",
+    "Controlli il tono.",
+    "La postura.",
+    "L’intensità.",
+    "Bella, sì.",
+    "Ma non abbastanza da disturbare.",
+    "Non così tanto da creare attrito.",
+    "Il corpo lo sa prima della testa.",
+    "Si muove come su un filo.",
+    "In equilibrio forzato.",
+    "Essere donna, spesso, non è essere.",
+    "È regolare.",
+    "Regolare quanto brilli.",
+    "Quanto occupi spazio.",
+    "Quanto desiderio puoi permetterti.",
+    "Bella, ma accessibile.",
+    "Curata, ma non vanitosa.",
+    "Sensuale, ma non consapevole.",
+    "La performance è continua.",
+    "Non solo quando entri in una stanza.",
+    "Anche quando stai zitta."
+   ],
+   "domanda": [
+    "«Se mi rilasso, esagero.»",
+    "«Se mi mostro davvero, perdo valore.»",
+    "«Se sono troppo bella, poi devo reggere le conseguenze.»",
+    "«Se mi sento bene nel corpo, qualcuno me lo farà pagare.»"
    ]
   },
   {
@@ -3666,6 +4891,53 @@
    ]
   },
   {
+   "id": "sv-menopausa",
+   "libro": "sv",
+   "capitolo": "80 — Caldo improvviso",
+   "voce": "La menopausa",
+   "situazioni": [
+    "ormoni-donna",
+    "corpo-cambia"
+   ],
+   "corpo": [
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "C’è un momento in cui non sta succedendo niente.",
+    "Sei ferma. O stai parlando. O stai ascoltando.",
+    "Poi arriva.",
+    "Un’ondata.",
+    "Dal centro verso fuori.",
+    "La pelle si accende.",
+    "Il respiro cambia senza chiedere permesso.",
+    "Come se qualcuno avesse alzato il termostato solo per te.",
+    "Non è febbre.",
+    "Non è emozione riconoscibile.",
+    "È il corpo che prende parola senza preavviso.",
+    "Il nodo non è il caldo.",
+    "Il nodo è che nessuno ti aveva detto che sarebbe arrivato così.",
+    "Ti avevano parlato di «cambiamenti».",
+    "Di «fase».",
+    "Di «età».",
+    "Nessuno ti aveva detto:",
+    "potresti sentirti attraversata.",
+    "potresti perdere per un attimo il controllo dell’immagine.",
+    "potresti non sapere dove mettere il corpo.",
+    "E allora fai quello che hai sempre fatto.",
+    "Ti sistemi.",
+    "Apri una finestra.",
+    "Ti togli una giacca.",
+    "Fai finta di niente.",
+    "Continui a parlare mentre dentro stai bruciando."
+   ],
+   "domanda": [
+    "E quando il caldo arriva,",
+    "non chiedi: che succede?",
+    "Ti chiedi: si vede?"
+   ]
+  },
+  {
    "id": "sv-non-mi-riconosco",
    "libro": "sv",
    "capitolo": "79 — «Non mi riconosco»",
@@ -3712,6 +4984,57 @@
     "Lascia che il corpo senta",
     "com’è stare qui",
     "senza cercare un’immagine migliore."
+   ]
+  },
+  {
+   "id": "sv-non-mi-vede",
+   "libro": "sv",
+   "capitolo": "82 — La relazione lunga: eros che si spegne",
+   "voce": "Non mi vede più",
+   "situazioni": [
+    "non-mi-vede",
+    "non-mi-tocca",
+    "desiderio"
+   ],
+   "corpo": [
+    "respiro"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "All’inizio ti guardava.",
+    "Non nel modo teatrale.",
+    "Nel modo che ti faceva esistere.",
+    "Ti prendeva dentro lo sguardo.",
+    "E tu, per un attimo, smettevi di essere «quella che regge».",
+    "Poi succede una cosa semplice.",
+    "Succede piano.",
+    "Non ti tradisce.",
+    "Non sparisce.",
+    "Non fa un disastro.",
+    "Smette di vederti.",
+    "E tu resti lì.",
+    "Presente.",
+    "Fedele.",
+    "Funzionante.",
+    "Ma non più toccata dalla sua attenzione.",
+    "La relazione lunga non si rompe sempre con un urlo.",
+    "A volte si svuota con una frase detta senza cattiveria:",
+    "«Dai, lo sai che ti amo.»",
+    "Sì.",
+    "Lo sai.",
+    "Ma non lo senti.",
+    "Perché l’amore, quando non ti vede, diventa un concetto.",
+    "E il desiderio non vive nei concetti.",
+    "Il desiderio vive dove tu sei reale."
+   ],
+   "domanda": [
+    "Non glielo dici così, ma dentro suona così:",
+    "«Non mi desideri più. Mi usi.»",
+    "«Mi sei vicino, ma non ci sei.»",
+    "«Mi tocchi come si tocca una cosa di casa.»",
+    "«Mi parli come si parla a una collega.»",
+    "«Io sono qui… ma non mi prendi.»",
+    "«Sto diventando trasparente.»"
    ]
   },
   {
@@ -3859,6 +5182,43 @@
     "Senti il movimento sotto le mani.",
     "Non chiedere che la paura sparisca.",
     "Chiedi solo di restare."
+   ]
+  },
+  {
+   "id": "sv-perdita-del-centro",
+   "libro": "sv",
+   "capitolo": "27 — Perdita del centro",
+   "voce": "Non so più chi sono",
+   "situazioni": [
+    "chi-sono"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Diventare madre non è solo aggiungere.",
+    "È togliere senza che nessuno lo dica.",
+    "Togli tempo.",
+    "Togli sguardo.",
+    "Togli diritto di essere confusa.",
+    "Il mondo ti rinomina.",
+    "Non più per quello che senti,",
+    "ma per quello che servi.",
+    "La donna resta.",
+    "Ma in secondo piano.",
+    "Sempre pronta a rientrare dopo.",
+    "E se provi a restare davanti,",
+    "anche solo un po’,",
+    "ti senti fuori posto.",
+    "Come se stessi rubando qualcosa",
+    "che non ti spetta più."
+   ],
+   "domanda": [
+    "«Ho bisogno di stare da sola.»",
+    "«Non ce la faccio oggi.»",
+    "«Non voglio essere solo madre.»",
+    "«Mi manco.»",
+    "«Non so più dove finisco io.»",
+    "«Ho paura che non torni.»"
    ]
   },
   {
@@ -4028,6 +5388,54 @@
    ]
   },
   {
+   "id": "sv-se-ti-arrabbi",
+   "libro": "sv",
+   "capitolo": "4 — Se ti arrabbi sei cattiva",
+   "voce": "Se mi arrabbio sono cattiva",
+   "situazioni": [
+    "rabbia-non-permessa",
+    "rabbia"
+   ],
+   "corpo": [
+    "mani",
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "L’idea nasce presto.",
+    "Troppo presto per difendersi.",
+    "Quando una bambina mostra rabbia, non viene ascoltata.",
+    "Viene corretta.",
+    "Ridimensionata.",
+    "Rimessa al suo posto.",
+    "La rabbia non è vista come un segnale.",
+    "È vista come un problema.",
+    "Così lei impara una cosa semplice e crudele:",
+    "se sente troppo, sbaglia.",
+    "Se reagisce, esagera.",
+    "Se si oppone, perde amore.",
+    "Non smette di arrabbiarsi.",
+    "Impara a non farsi vedere mentre succede.",
+    "La rabbia non sparisce.",
+    "Cambia forma.",
+    "Il corpo trattiene.",
+    "Impara a stringere senza chiudere i pugni.",
+    "A irrigidirsi senza muoversi.",
+    "A stare composta mentre dentro qualcosa spinge.",
+    "La rabbia non esplode.",
+    "Sedimenta.",
+    "Diventa stanchezza cronica.",
+    "Un nodo che non ha nome.",
+    "Una pressione che non trova uscita."
+   ],
+   "domanda": [
+    "Se mi arrabbio, mi lasci.",
+    "Se dico no, divento sbagliata.",
+    "Se mi oppongo, rovino tutto.",
+    "Se mostro quello che sento, perdo valore."
+   ]
+  },
+  {
    "id": "sv-separarsi",
    "libro": "sv",
    "capitolo": "83 — Separarsi / divorziare: il corpo senza ruolo",
@@ -4082,6 +5490,73 @@
    ]
   },
   {
+   "id": "sv-sesso-doloroso",
+   "libro": "sv",
+   "capitolo": "19 — Secchezza",
+   "voce": "Mi fa male",
+   "situazioni": [
+    "sesso-doloroso",
+    "sessualita"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Nel corpo la secchezza è una ritrazione.",
+    "Un passo indietro.",
+    "La pelle perde elasticità.",
+    "Le mucose diventano più sensibili, più esposte.",
+    "Il piacere non arriva spontaneo.",
+    "Il contatto può bruciare.",
+    "Il rapporto può diventare faticoso.",
+    "Il semplice sfioramento può risultare troppo.",
+    "Non è rifiuto.",
+    "È protezione.",
+    "Il corpo non dice «no».",
+    "Dice: così non più.",
+    "È come se avesse bisogno di tempo.",
+    "Di lentezza.",
+    "Di verità."
+   ],
+   "domanda": [
+    "Quello che non dici è questo:",
+    "Non voglio essere toccata se non ci sono anch’io.",
+    "Non voglio fare finta che va bene.",
+    "Non voglio adattarmi ancora."
+   ]
+  },
+  {
+   "id": "sv-sesso-piu-avanti",
+   "libro": "sv",
+   "capitolo": "11 — Sessualità tra i 70 e gli 80",
+   "voce": "Alla nostra età",
+   "situazioni": [
+    "sesso-dopo-i-sessanta",
+    "contatto"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Non è più impulso.",
+    "È scelta.",
+    "Non devi più sedurre.",
+    "Non devi dimostrare nulla.",
+    "Se desideri, è perché vuoi.",
+    "Non perché devi.",
+    "Il tempo di risposta è più lungo.",
+    "La sensibilità cambia.",
+    "Ma il bisogno di contatto non sparisce.",
+    "La pelle resta organo relazionale.",
+    "Il tatto resta linguaggio.",
+    "Il corpo non cerca performance.",
+    "Cerca presenza."
+   ],
+   "domanda": [
+    "«Ha senso ancora?»",
+    "«Non è ridicolo?»",
+    "«Non è troppo tardi?»"
+   ]
+  },
+  {
    "id": "sv-sessualita-compito",
    "libro": "sv",
    "capitolo": "73 — Sessualità che diventa compito",
@@ -4132,6 +5607,103 @@
     "Chiediti, senza rispondere:",
     "«Sono qui o sto facendo?»",
     "Resta."
+   ]
+  },
+  {
+   "id": "sv-sola-in-due",
+   "libro": "sv",
+   "capitolo": "30 — Solitudine anche con un partner presente",
+   "voce": "Sono sola anche in due",
+   "situazioni": [
+    "sola-in-due",
+    "solitudine"
+   ],
+   "corpo": [],
+   "capitolo_pdf": null,
+   "pagina": [
+    "È sera.",
+    "Lui è lì.",
+    "Seduto, occupato, vicino abbastanza da sfiorarti.",
+    "Eppure il tuo corpo fa una cosa precisa.",
+    "Si ritira.",
+    "Non scappa.",
+    "Non protesta.",
+    "Resta.",
+    "Ma smette di aspettarsi.",
+    "Quella solitudine non arriva quando sei sola.",
+    "Arriva quando sei in due",
+    "e nessuno ti sta davvero incontrando.",
+    "Non è l’assenza dell’altro.",
+    "È la tua presenza non raccolta.",
+    "Sei cresciuta imparando a stare.",
+    "A reggere.",
+    "A non disturbare.",
+    "Hai imparato che se lui è stanco, confuso, chiuso",
+    "tocca a te capire.",
+    "Tocca a te aspettare.",
+    "Tocca a te non chiedere troppo.",
+    "Così fai spazio.",
+    "Riduci il volume.",
+    "Ti fai meno larga.",
+    "La relazione continua.",
+    "La casa è abitata.",
+    "Il letto condiviso.",
+    "Ma tu, piano, diventi una stanza chiusa",
+    "dentro una casa piena."
+   ],
+   "domanda": [
+    "«Se chiedo di più, lo perdo.»",
+    "«Se dico quello che sento, creo un problema.»",
+    "«Se mi mostro davvero, divento troppo.»"
+   ]
+  },
+  {
+   "id": "sv-sonno",
+   "libro": "sv",
+   "capitolo": "70 — Sonno disturbato",
+   "voce": "Non dormo",
+   "situazioni": [
+    "sonno"
+   ],
+   "corpo": [
+    "sonno",
+    "stanchezza"
+   ],
+   "capitolo_pdf": null,
+   "pagina": [
+    "Ti sdrai.",
+    "Il corpo è stanco.",
+    "Ma non si spegne.",
+    "Chiudi gli occhi.",
+    "La giornata è finita, sulla carta.",
+    "Dentro no.",
+    "Il corpo resta in guardia.",
+    "Come se dovesse ancora succedere qualcosa.",
+    "Come se qualcuno dovesse ancora arrivare.",
+    "O spiegarsi.",
+    "O cambiare.",
+    "Non dormi perché hai imparato a restare sveglia.",
+    "Sveglia per capire.",
+    "Sveglia per aspettare.",
+    "Sveglia per tenere insieme i pezzi.",
+    "Sveglia per non perdere il controllo quando l’altro si perde.",
+    "Hai chiamato questo stato responsabilità.",
+    "Maturità.",
+    "Amore.",
+    "Ma è vigilanza.",
+    "È allerta appresa.",
+    "Il corpo ha capito prima della testa",
+    "che se abbassi la guardia,",
+    "nessuno la tiene al posto tuo.",
+    "E così la notte —",
+    "che dovrebbe essere resa,",
+    "diventa turno di sorveglianza."
+   ],
+   "domanda": [
+    "«Se mi rilasso, succede qualcosa.»",
+    "«Se dormo davvero, perdo il controllo.»",
+    "«Se mi lascio andare, poi devo rimettere insieme tutto.»",
+    "«Meglio restare a metà. Pronta.»"
    ]
   },
   {
@@ -4261,5 +5833,9 @@
     "«Se non mi mostro, non esisto.»"
    ]
   }
- ]
+ ],
+ "conversazione": {
+  "aperta": false,
+  "pagina": "../parliamone.html"
+ }
 }

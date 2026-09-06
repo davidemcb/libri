@@ -176,3 +176,8 @@ audio{margin-block:.3rem}
 .lista .blocco .titolo{line-height:1.25}
 
 .libro.senza-cover{grid-template-columns:1fr}
+
+/* la conversazione dentro l'app: la pagina del sito in una cornice alta quanto lo schermo */
+.parla{gap:.8rem}
+.cornice{display:block;width:100%;height:calc(100vh - 13rem);min-height:30rem;border:1px solid var(--line);border-radius:6px;background:transparent}
+@supports (height:100dvh){.cornice{height:calc(100dvh - 13rem)}}

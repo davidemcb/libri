@@ -215,6 +215,10 @@
     a { color: inherit; }
   }
 
+  /* Dentro l'app (…?dentro=1): la testata la mette l'app, qui resta la soglia e la conversazione. */
+  .dentro .apertura { display: none; }
+  .dentro .foglio { padding-top: 1rem; }
+
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -287,6 +291,9 @@
 
   // La parola dell'invito, presa dal link: ...parliamone.html?p=gloria
   var PAROLA = new URLSearchParams(location.search).get("p") || "";
+  // Dentro l'app (…?dentro=1): niente testata, e i link dell'app aprono l'app, non una scheda nuova.
+  var DENTRO = new URLSearchParams(location.search).get("dentro") === "1";
+  if (DENTRO) document.documentElement.classList.add("dentro");
 
   var soglia = document.getElementById("soglia");
   var conv   = document.getElementById("conversazione");
@@ -724,7 +731,7 @@
       var link3 = el("div", "fine-link");
       corpo.forEach(function (segno) {
         var a = el("a", null, segno.voce + (segno.audio ? " · con la voce di Davide" : ""));
-        a.href = "app/#pratica/" + segno.chiave; a.target = "_blank"; a.rel = "noopener";
+        a.href = "app/#pratica/" + segno.chiave; a.target = DENTRO ? "_top" : "_blank"; a.rel = "noopener";
         link3.appendChild(a);
       });
       s3.appendChild(link3);
@@ -753,7 +760,7 @@
       var p5 = el("p", "fine-nota", "");
       p5.appendChild(document.createTextNode("Ci sono anche domani. Intanto c'è "));
       var a5 = el("a", null, "la pagina della settimana");
-      a5.href = "app/#settimana"; a5.target = "_blank"; a5.rel = "noopener";
+      a5.href = "app/#settimana"; a5.target = DENTRO ? "_top" : "_blank"; a5.rel = "noopener";
       p5.appendChild(a5);
       p5.appendChild(document.createTextNode(": un tema a settimana, dai libri, con una riga al giorno."));
       s5.appendChild(p5);

@@ -40,6 +40,21 @@
   var vista = document.getElementById("vista");
   var dati = null;
 
+  /* ---------- la conversazione (deciso da Davide il 06/09/2026: «mettilo») ----------
+     La parola d'invito arriva dal link (…/app/?p=parola) e resta nel telefono, così l'app
+     installata la ritrova. Il server non sa chi è la persona: conta la parola, non lei.
+     Quando il servizio sarà aperto a tutti (contenuti.json → conversazione.aperta) la parola
+     non serve più. */
+  var parola = "";
+  try {
+    var mp = /[?&]p=([^&#]+)/.exec(location.search);
+    if (mp) { parola = decodeURIComponent(mp[1]); localStorage.setItem("parola", parola); }
+    else parola = localStorage.getItem("parola") || "";
+  } catch (e) { parola = ""; }
+  function conversazioneAperta(){ return !!parola || !!(dati && dati.conversazione && dati.conversazione.aperta); }
+  function dimenticaParola(){ try { localStorage.removeItem("parola"); } catch (e) {} parola = ""; location.hash = "#trova"; mostra(); }
+  document.addEventListener("click", function(e){ if (e.target.closest && e.target.closest("[data-dimentica]")) dimenticaParola(); });
+
   /* ---------- utilità ---------- */
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
@@ -378,8 +393,15 @@
 
     // primo livello: le aree
     if (!a1) {
-      return '<section class="sez"><div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
-        '<p class="sotto">Qui c\'è un bibliotecario che conosce a memoria i libri di Davide. Non dà risposte. Ti accompagna fino alla pagina in cui il tuo problema è già scritto, e lì si fa da parte: la risposta, se c\'è, è tua.</p></div>' +
+      // Davanti la conversazione (se la porta è aperta per questa persona), sotto l'albero da toccare.
+      var testata = conversazioneAperta()
+        ? '<div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
+          '<p class="sotto">Scrivilo come viene. Ti fa qualche domanda sui fatti e ti porta alla pagina di un libro in cui quella cosa è già scritta. È un programma, non una persona.</p></div>' +
+          '<div class="azioni"><a class="btn btn-pieno" href="#parla">Raccontamelo</a></div>' +
+          '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Oppure cerca da solo</p><p class="sotto">Tocca l\'argomento: ti accompagno fino alla pagina senza scrivere niente.</p></div>'
+        : '<div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
+          '<p class="sotto">Qui c\'è un bibliotecario che conosce a memoria i libri di Davide. Non dà risposte. Ti accompagna fino alla pagina in cui il tuo problema è già scritto, e lì si fa da parte: la risposta, se c\'è, è tua.</p></div>';
+      return '<section class="sez">' + testata +
         '<ul class="lista">' + dati.aree.map(function(ar){
           return '<li><a class="blocco" href="#trova/' + esc(ar.chiave) + '"><p class="titolo">' + esc(ar.voce) + '</p><p class="muted piccolo">' +
             esc(ar.situazioni.map(voceSituazione).slice(0, 3).join(" · ")) + (ar.situazioni.length > 3 ? " · …" : "") + '</p></a></li>';
@@ -405,7 +427,7 @@
     if (!pagine.length) {
       return '<section class="sez">' + scale([{voce:"Il bibliotecario", href:"#trova"}, {voce:area.voce, href:"#trova/" + area.chiave}, {voce:voceSituazione(a2)}]) +
         '<div class="testata"><h1>Per questo non ho una pagina.</h1><p class="sotto">Non voglio darti una frase per riempire il vuoto. Se vuoi, c\'è la pagina della settimana; e il WhatsApp di Davide legge tutto.</p></div>' +
-        '<div class="azioni"><a class="btn btn-vuoto" href="#settimana">La pagina della settimana</a><a class="btn btn-vuoto" href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">Scrivi a Davide</a></div></section>' + piede();
+        '<div class="azioni">' + (conversazioneAperta() ? '<a class="btn btn-pieno" href="#parla">Raccontamelo</a>' : '') + '<a class="btn btn-vuoto" href="#settimana">La pagina della settimana</a><a class="btn btn-vuoto" href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">Scrivi a Davide</a></div></section>' + piede();
     }
 
     // una sola pagina: si apre
@@ -420,6 +442,20 @@
           '<p class="muted piccolo">«' + esc(L.titolo) + '»' + (L.inLavorazione ? ", in lavorazione" : "") + ' · ' + esc(capBreve(pg)) + '</p></a></li>';
       }).join("") + '</ul>' +
       '<div class="azioni"><a class="btn btn-linea" href="#trova/' + esc(area.chiave) + '">Un\'altra cosa</a></div></section>' + piede();
+  }
+
+  /* La conversazione vive in parliamone.html, che è la stessa pagina del sito: qui entra in una
+     cornice, così ogni correzione vale in tutti e due i posti. Con `dentro=1` la pagina nasconde
+     la sua testata e apre i link dell'app nell'app. */
+  function vistaParla(){
+    if (!conversazioneAperta()) return vistaTrova();
+    var src = ((dati.conversazione && dati.conversazione.pagina) || "../parliamone.html") + "?dentro=1" + (parola ? "&p=" + encodeURIComponent(parola) : "");
+    return '<section class="sez parla">' + scale([{voce:"Il bibliotecario", href:"#trova"}, {voce:"Raccontamelo"}]) +
+      '<iframe class="cornice" src="' + esc(src) + '" title="Cosa ti sta succedendo?" allow="web-share; clipboard-write"></iframe>' +
+      (parola && !(dati.conversazione && dati.conversazione.aperta)
+        ? '<p class="muted piccolo">Sei entrato con una parola d\'invito e il telefono se la ricorda. <button class="btn btn-linea" type="button" data-dimentica>Dimenticala</button></p>'
+        : '') +
+      '</section>';
   }
 
   function paginaTrovata(pg, perche){
@@ -530,7 +566,7 @@
       case "trova": html = vistaTrova(h[1], h[2]); break;
       case "pagina": html = vistaPagina((h[1] || "").split("?")[0]); break;
       case "pratica": html = vistaPratica(h[1]); break;
-      case "pratica": html = vistaPratica(h[1]); break;
+      case "parla": html = vistaParla(); break;
       case "libri": html = vistaLibri(); break;
       case "dimmi": html = vistaDimmi(); break;
       case "installa": html = vistaInstalla(); break;
@@ -539,7 +575,7 @@
     vista.innerHTML = html;
     document.querySelectorAll(".barra a").forEach(function(a){
       var mia = a.getAttribute("data-sez");
-      var attiva = mia === sez || (mia === "settimana" && (sez === "post" || sez === "archivio")) || (mia === "trova" && (sez === "pagina" || sez === "pratica"));
+      var attiva = mia === sez || (mia === "settimana" && (sez === "post" || sez === "archivio")) || (mia === "trova" && (sez === "pagina" || sez === "pratica" || sez === "parla"));
       if (attiva) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
     window.scrollTo(0, 0);
