@@ -408,6 +408,23 @@
 
     var risposta = null;
     var raccolto = "";
+    var biglietto = "";
+    var inizio = Date.now();
+    var finito = false;
+
+    function mostra(t) {
+      if (attesa) { attesa.remove(); attesa = null; }
+      if (!risposta) risposta = blocco("turno-libri", "");
+      raccolto = t;
+      risposta.textContent = raccolto;
+    }
+
+    function concludi() {
+      chiudiAttesa();
+      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
+      else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
+      if (!chiusoPerOggi) scrivi.focus();
+    }
 
     try {
       var corpo = { parola: PAROLA, turni: turni };
@@ -429,44 +446,55 @@
         return;
       }
 
-      var tipo = r.headers.get("content-type") || "";
+      biglietto = r.headers.get("x-biglietto") || "";
 
-      if (tipo.indexOf("application/json") === 0) {
-        // Il biglietto: la risposta arriva nel cassetto, e la si va a ritirare.
-        var b = await r.json();
-        if (b.testo) { raccolto = b.testo; }
-        else if (b.biglietto) { raccolto = await ritira(b.biglietto, controllo.signal); }
-        if (raccolto) { risposta = blocco("turno-libri", raccolto); }
-      } else {
-        // Il flusso, parola per parola (la strada vecchia, se la pagina non ha la chiave).
-        var lettore = r.body.getReader();
-        var testoDec = new TextDecoder();
-        var avanzo = "";
-        while (true) {
-          var pezzo = await lettore.read();
-          if (pezzo.done) break;
-          avanzo += testoDec.decode(pezzo.value, { stream: true });
-          var righe = avanzo.split("\n");
-          avanzo = righe.pop();
-          for (var i = 0; i < righe.length; i++) {
-            if (righe[i].indexOf("data: ") !== 0) continue;
-            var dato;
-            try { dato = JSON.parse(righe[i].slice(6)); } catch (e) { continue; }
-            if (!dato.testo) continue;
-            if (attesa) { attesa.remove(); attesa = null; }
-            if (!risposta) risposta = blocco("turno-libri", "");
-            raccolto += dato.testo;
-            risposta.textContent = raccolto;
-          }
+      // Il flusso, parola per parola.
+      var lettore = r.body.getReader();
+      var testoDec = new TextDecoder();
+      var avanzo = "";
+      while (true) {
+        var pezzo = await lettore.read();
+        if (pezzo.done) break;
+        avanzo += testoDec.decode(pezzo.value, { stream: true });
+        var righe = avanzo.split("\n");
+        avanzo = righe.pop();
+        for (var i = 0; i < righe.length; i++) {
+          if (righe[i] === "event: fine") { finito = true; continue; }
+          if (righe[i].indexOf("data: ") !== 0) continue;
+          var dato;
+          try { dato = JSON.parse(righe[i].slice(6)); } catch (e) { continue; }
+          if (!dato.testo) continue;
+          mostra(raccolto + dato.testo);
         }
       }
 
-      chiudiAttesa();
-      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
-      else { turni.pop(); tutti.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
-      if (!chiusoPerOggi) scrivi.focus();
+      if (!finito && biglietto) {
+        // La copia della pagina si è fermata prima della fine: si ritira quella del cassetto.
+        mostra(await ritira(biglietto, inizio, controllo.signal));
+      } else if (finito && biglietto) {
+        svuota(biglietto);
+      }
+      concludi();
 
     } catch (e) {
+      if (e && e.name === "AbortError") {
+        chiudiAttesa();
+        if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
+        else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; }
+        return;
+      }
+      if (biglietto && !finito) {
+        // Il telefono ha tagliato la richiesta (di solito: si è cambiata app). La risposta
+        // però è nel cassetto: si va a ritirarla.
+        try {
+          if (!attesa) attesa = blocco("attesa", "La risposta ti aspetta nel cassetto: la sto ritirando ");
+          mostra(await ritira(biglietto, inizio, controllo.signal));
+          concludi();
+          return;
+        } catch (e2) {
+          e = e2;
+        }
+      }
       chiudiAttesa();
       if (e && e.name === "AbortError") {
         if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
@@ -485,14 +513,22 @@
     }
   }
 
-  // Si torna a bussare al cassetto finché la risposta è pronta (o passano tre minuti).
-  async function ritira(biglietto, segnale) {
-    var inizio = Date.now();
-    while (Date.now() - inizio < 180000) {
+  // La risposta è arrivata intera dal flusso: la copia nel cassetto non serve più, si svuota.
+  function svuota(biglietto) {
+    setTimeout(function () {
+      fetch(SERVIZIO + "/risposta?b=" + biglietto, { cache: "no-store" }).catch(function () {});
+    }, 4000);
+  }
+
+  // Si ritira dal cassetto. Non si bussa prima di mezzo minuto dall'inizio: il contatore di
+  // Cloudflare tiene a mente per un minuto un «non c'è», e bussare troppo presto lo ritarda.
+  // Al ritorno sulla pagina la «sveglia» fa bussare subito.
+  async function ritira(biglietto, inizio, segnale) {
+    if (Date.now() - inizio > 600000) { var scaduto = new Error("scaduto"); scaduto.name = "TimeoutError"; throw scaduto; }
+    var primo = inizio + 30000 - Date.now();
+    if (primo > 0) await pausa(primo, segnale);
+    while (Date.now() - inizio < 240000) {
       if (segnale.aborted) throw abortato();
-      // Si bussa sempre, anche se il browser dice di essere in secondo piano (alcuni lo dicono
-      // a torto): in secondo piano il telefono rallenta da solo i timer, e al ritorno la
-      // «sveglia» fa bussare subito.
       try {
         var r = await fetch(SERVIZIO + "/risposta?b=" + biglietto, { signal: segnale, cache: "no-store" });
         if (r.ok) {
@@ -507,8 +543,8 @@
         // rete caduta un attimo: si ribussa
       }
       await new Promise(function (ok, no) {
+        var t = setTimeout(function () { sveglia = null; ok(); }, document.visibilityState === "hidden" ? 5000 : 2000);
         sveglia = function () { sveglia = null; clearTimeout(t); ok(); };
-        var t = setTimeout(function () { sveglia = null; ok(); }, document.visibilityState === "hidden" ? 5000 : 1500);
         segnale.addEventListener("abort", function () { clearTimeout(t); sveglia = null; no(abortato()); }, { once: true });
       });
     }
