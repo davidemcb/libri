@@ -34,7 +34,9 @@
   LIBRI.rocco = {titolo:"Non sei Rocco", cover:"", sotto:"La prestazione sessuale: quando il letto diventa un esame.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   LIBRI.banana = {titolo:"La banana guarda in giù", cover:"", sotto:"Quando non si alza, e la testa ci va a vivere.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   function libroCantiere(chiave){ for (var i = 0; i < (dati.cantiere || []).length; i++) if (dati.cantiere[i].chiave === chiave) return dati.cantiere[i]; return null; }
-  function urlAvvisami(titolo){ return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Ciao Davide, avvisami quando esce «" + titolo + "»."); }
+  // La pagina dell'avviso sul sito: lascia l'email e Brevo se lo segna (MARKETING/NURTURE/AVVISO-LIBRO.md).
+  // Prima andava su WhatsApp, cioè sul tempo di Davide: il sistema deve andare da solo.
+  function urlAvvisami(titolo){ return "../avvisami.html?titolo=" + encodeURIComponent(titolo); }
   var TEMI_DIMMI = ["Sessualità","Lavoro","Amore","Malattia","I figli","L'ex","Solitudine","Il padre","Il corpo"];
 
   var vista = document.getElementById("vista");

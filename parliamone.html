@@ -690,7 +690,7 @@
       if (cartaceo) fuori.push({ testo: "Cartaceo su Amazon", href: cartaceo });
       if (PAGINE_LIBRO[libro.config]) fuori.push({ testo: "La pagina del libro", href: PAGINE_LIBRO[libro.config] });
     } else {
-      fuori.push({ testo: "Sta per uscire · lasciami l'email e ti avviso", href: "index.html#pagine" });
+      fuori.push({ testo: "Sta per uscire · lasciami l'email e ti avviso", href: "avvisami.html?libro=" + encodeURIComponent(libro.chiave) });
     }
     return fuori;
   }

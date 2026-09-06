@@ -169,6 +169,8 @@
         dati.append(k, C.campiExtra[k]);
       });
       dati.append("ORIGINE", origine || "sito");     // da quale pagina è arrivato
+      var attesa = f.querySelector('input[name=LIBRO_ATTESO]');   // avvisami.html: il titolo del libro che aspetta
+      if(attesa && attesa.value) dati.append("LIBRO_ATTESO", attesa.value);
       Object.keys(MAPPA_UTM).forEach(function(nomeCampo){
         dati.append(nomeCampo, leggiUTM(MAPPA_UTM[nomeCampo]));   // vuoto se non c'è
       });
@@ -323,7 +325,7 @@
 
     var da = new URLSearchParams(location.search).get("da") || "";
     var mostra;
-    if(da === "avviso-senza-veli") mostra = avvisoEl;
+    if(da === "avviso-senza-veli" || da.indexOf("avviso-") === 0) mostra = avvisoEl;
     else if(da === "capitolo" || da.indexOf("capitolo-") === 0 || da === "estratto-carezze") mostra = capitoloEl;
     else if(da === "pagine") mostra = pagineEl;
     else mostra = percorsoEl;   // manca il parametro, o non è riconosciuto
@@ -333,6 +335,14 @@
       if(el === mostra) el.removeAttribute("hidden");
       else el.setAttribute("hidden", "");
     });
+
+    // ?da=avviso-<chiave>: il titolo del libro che la persona aspetta, dal catalogo
+    if(mostra === avvisoEl && da.indexOf("avviso-") === 0 && window.CATALOGO){
+      var chiaveLibro = da.slice("avviso-".length);
+      var libroAtteso = (window.CATALOGO.libri || []).filter(function(L){ return L.chiave === chiaveLibro; })[0];
+      var titoloEl = document.getElementById("grazie-avviso-titolo");
+      if(libroAtteso && titoloEl) titoloEl.textContent = libroAtteso.titolo;
+    }
 
     /* ---------- 4c. IL PDF GIUSTO, NON SEMPRE IL TRADIMENTO ------
        Dentro la variante "capitolo" c'è un link diretto al PDF, per

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Avvisami quando esce — Davide Scuderi</title>
+<meta name="description" content="Lascia l'email: ti scrivo io quando esce il libro, una volta. Intanto una pagina ogni lunedì.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%232C6C68'/%3E%3Ctext x='50' y='70' font-family='Georgia,serif' font-size='58' fill='%23F2E7D0' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="marchio" href="index.html">Davide Scuderi</a>
+    <nav>
+      <a href="index.html">Il progetto</a>
+      <a href="index.html#libri" aria-current="page">I libri</a>
+      <a href="percorso.html">Il percorso</a>
+      <a href="app/">L'app</a>
+      <a href="chi-sono.html">Chi sono</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ══════════════ AVVISAMI QUANDO ESCE ══════════════
+       Una pagina sola per tutti i libri che stanno per uscire. Si apre con
+         avvisami.html?libro=alce        (la chiave del libro in assets/catalogo.js)
+         avvisami.html?titolo=L'Alce     (dall'app, che conosce solo il titolo)
+       Ci arrivano: il foglio di fine conversazione (parliamone.html), l'app, le pagine.
+       L'iscrizione va a Brevo con ORIGINE = avviso-<chiave> e LIBRO_ATTESO = <titolo>:
+       è così che, quando il libro esce, si sa a chi scriverlo. Procedura in
+       MARKETING/NURTURE/AVVISO-LIBRO.md. -->
+  <section class="b" style="padding-block:clamp(2.4rem,5vw,3.5rem)">
+    <div class="wrap">
+      <div class="col" style="margin-inline:auto;text-align:center;max-width:32rem">
+        <p class="lbl" id="avv-etichetta">Sta per uscire</p>
+        <h1 id="avv-titolo" style="font-size:clamp(1.9rem,4.6vw,2.8rem);line-height:1.15;margin-top:.9rem">Un libro</h1>
+        <p class="muted" id="avv-sotto" style="margin-top:.8rem">Ti scrivo io quando esce. Una volta, senza tirarla per le lunghe. Intanto, se vuoi, una pagina vera dai libri ogni lunedì alle sette.</p>
+
+        <form class="modulo colonna" id="avv-modulo" data-modulo="avviso" novalidate style="margin-top:1.4rem;text-align:left">
+          <label class="lbl" for="mail-avviso" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>
+          <input id="mail-avviso" name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email">
+          <input type="hidden" name="email_address_check" value="">
+          <input type="hidden" name="locale" value="it">
+          <input type="hidden" name="html_type" value="simple">
+          <input type="hidden" name="ORIGINE" value="avviso">
+          <input type="hidden" name="LIBRO_ATTESO" id="avv-libro" value="">
+          <input type="hidden" name="UTM_SOURCE" value="">
+          <input type="hidden" name="UTM_CAMPAIGN" value="">
+          <input type="hidden" name="UTM_CONTENUTO" value="">
+          <label class="consenso">
+            <input type="checkbox" name="OPT_IN" required>
+            <span>Sì, avvisami quando esce. Intanto una pagina ogni lunedì. Posso cancellarmi con un clic. <a href="privacy.html">Come tratto i dati</a>.</span>
+          </label>
+          <button class="btn btn-pieno" type="submit" style="margin-top:1.2rem">Avvisami quando esce</button>
+        </form>
+        <p class="esito">Fatto. Ti scrivo io quando esce.</p>
+        <p class="errore"></p>
+        <p class="privacy">Una mail quando esce, e una pagina il lunedì. Nient'altro. Un clic per cancellarti, in fondo a ogni messaggio.</p>
+
+        <!-- Se il libro è già in vendita, non c'è niente da aspettare. -->
+        <div id="avv-vendita" hidden style="margin-top:1.4rem">
+          <p class="muted">Questo libro è già in vendita: non c'è niente da aspettare.</p>
+          <p style="margin-top:1rem"><a class="btn btn-pieno" id="avv-link-libro" href="index.html#libri">Il libro</a></p>
+        </div>
+
+        <!-- Se il libro non si trova, si torna all'elenco. -->
+        <div id="avv-manca" hidden style="margin-top:1.4rem">
+          <p class="muted">Non ho capito di quale libro parli. <a href="index.html#libri">Sono tutti qui</a>: quelli che stanno per uscire hanno il bottone per l'avviso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="firma">Il corpo è il primo posto<br>da cui ricominciare.</p>
+    <div class="piede">
+      <div>
+        <h4>Davide Scuderi</h4>
+        <p style="color:var(--b-muted);font-size:.95rem;max-width:24rem">Libri sul corpo, e su quello che il corpo ha imparato a reggere per essere amato.</p>
+        <p style="color:var(--b-muted);font-size:.95rem;margin-top:.8rem" data-contatto="email"></p>
+      </div>
+      <div>
+        <h4>I libri</h4>
+        <ul>
+          <li><a href="da-uomo-a-uomo.html">Da uomo a uomo</a></li>
+          <li><a href="senza-veli.html">Senza veli</a></li>
+          <li><a href="prenditi-a-carezze.html">Prenditi a carezze</a></li>
+          <li><a href="vestirsi-di-se.html">Vestirsi di sé</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Il resto</h4>
+        <ul>
+          <li><a href="index.html">Il progetto</a></li>
+          <li><a href="percorso.html">Il percorso di sette giorni</a></li>
+          <li><a href="app/">L'app sul telefono</a></li>
+          <li><a href="privacy.html">Privacy e cookie</a></li>
+          <li><a href="condizioni.html">Condizioni d'uso</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legale">© <span data-anno>2026</span> Davide Scuderi · Tutti i diritti riservati<br>
+    I libri non sostituiscono percorsi medici, psicologici o terapeutici, né forniscono diagnosi o indicazioni cliniche.</p>
+  </div>
+</footer>
+
+<div id="avviso-cookie">
+  <div class="wrap cookie-riga">
+    <p>Uso cookie di misurazione (Google, Meta) solo per capire se la pubblicità funziona. Senza il tuo assenso non parte. <a href="privacy.html">Dettagli</a>.</p>
+    <button class="btn btn-vuoto" data-cookie="no">Solo il necessario</button>
+    <button class="btn btn-pieno" data-cookie="si">Va bene</button>
+  </div>
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/catalogo.js"></script>
+<script>
+/* Quale libro: dalla chiave (?libro=alce) o dal titolo (?titolo=L'Alce, dall'app).
+   Va fatto PRIMA di sito.js, che legge data-modulo quando parte. */
+(function () {
+  var q = new URLSearchParams(location.search);
+  var chiave = (q.get("libro") || "").toLowerCase().trim();
+  var titolo = (q.get("titolo") || "").toLowerCase().trim();
+  var libri = (window.CATALOGO && window.CATALOGO.libri) || [];
+  var libro = null;
+  for (var i = 0; i < libri.length; i++) {
+    var L = libri[i];
+    if (chiave && L.chiave === chiave) { libro = L; break; }
+    if (titolo && (L.titolo.toLowerCase() === titolo || (L.alias || []).indexOf(titolo) >= 0)) { libro = L; break; }
+  }
+  var modulo = document.getElementById("avv-modulo");
+  if (!libro) {
+    document.getElementById("avv-etichetta").textContent = "Quale libro?";
+    document.getElementById("avv-titolo").textContent = "Avvisami quando esce";
+    document.getElementById("avv-manca").hidden = false;
+    modulo.hidden = true;
+    document.title = "Avvisami quando esce — Davide Scuderi";
+    return;
+  }
+  document.title = libro.titolo + " — avvisami quando esce";
+  document.getElementById("avv-titolo").textContent = libro.titolo;
+  document.getElementById("avv-libro").value = libro.titolo;
+  modulo.setAttribute("data-modulo", "avviso-" + libro.chiave);
+  if (libro.vendita) {
+    document.getElementById("avv-etichetta").textContent = "È già uscito";
+    document.getElementById("avv-sotto").textContent = "Questo libro c'è già.";
+    modulo.hidden = true;
+    var v = document.getElementById("avv-vendita");
+    v.hidden = false;
+    var A = (window.SITO && window.SITO.amazon) || {};
+    if (libro.config && A[libro.config + "Cartaceo"]) document.getElementById("avv-link-libro").href = A[libro.config + "Cartaceo"];
+  }
+})();
+</script>
+<script src="assets/sito.js"></script>
+</body>
+</html>
