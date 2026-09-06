@@ -192,6 +192,7 @@
   .fine-cap { font-size: .98rem; }
   .fine-cap b { font-weight: 500; }
   .fine-link { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin-top: .3rem; font-size: .9rem; }
+  .fine-nota a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
   .fine-link a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
   .fine-nota { font-size: .9rem; color: var(--quieto); }
   .fine-conv { display: flex; flex-direction: column; gap: 1.1rem; }
@@ -744,6 +745,20 @@
     });
     s4.appendChild(conv4);
     foglioFine.appendChild(s4);
+
+    if (chiusoPerOggi) {
+      // Il «per oggi basta» rimanda alla pagina della settimana: è quella dell'app, un tema a settimana dai libri.
+      var s5 = el("div");
+      s5.appendChild(el("h3", null, "Intanto"));
+      var p5 = el("p", "fine-nota", "");
+      p5.appendChild(document.createTextNode("Ci sono anche domani. Intanto c'è "));
+      var a5 = el("a", null, "la pagina della settimana");
+      a5.href = "app/#settimana"; a5.target = "_blank"; a5.rel = "noopener";
+      p5.appendChild(a5);
+      p5.appendChild(document.createTextNode(": un tema a settimana, dai libri, con una riga al giorno."));
+      s5.appendChild(p5);
+      foglioFine.appendChild(s5);
+    }
 
     foglioFine.appendChild(el("p", "fine-nota", "Questo foglio l'ha fatto la pagina nel tuo telefono, dalla conversazione qui sopra. Nessuno l'ha visto e non è stato mandato da nessuna parte. Se lo vuoi domani, salvalo adesso: chiusa la pagina, non resta niente."));
 
