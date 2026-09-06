@@ -251,6 +251,13 @@
     soglia.hidden = true;
     conv.hidden = false;
     campo.hidden = false;
+    blocco("turno-libri",
+      "Sono un programma, non una persona.\n" +
+      "Parlo di quello che succede fra le persone e nel corpo: separazioni, tradimenti, figli, " +
+      "vergogna, paura, quello che non si dice.\n" +
+      "Non parlo di legge, di soldi, di medicina: per quelle ci sono l'avvocato, il commercialista, il medico.\n" +
+      "Non ti dirò cosa fare.\n" +
+      "Cosa ti sta succedendo?");
     scrivi.focus();
   });
 
@@ -287,7 +294,7 @@
     turni.push({ role: "user", content: testo });
     while (turni.length > 20) turni.splice(0, 2);   // si buttano i giri vecchi, non il presente
 
-    attesa = blocco("attesa", "Un momento ");
+    attesa = blocco("attesa", "Un momento, resta qui ");
     ferma.hidden = false;
     controllo = new AbortController();
 
@@ -348,8 +355,10 @@
         return;
       }
       if (raccolto) { turni.push({ role: "assistant", content: raccolto }); }
-      else { if (risposta) risposta.remove(); turni.pop(); }
-      blocco("avviso", "Si è interrotto per strada. Riprova.");
+      else { if (risposta) risposta.remove(); turni.pop(); scrivi.value = testo; }
+      blocco("avviso", raccolto
+        ? "Si è interrotto per strada. Riprova."
+        : "Si è interrotto per strada: succede se si cambia app mentre aspetta. Il tuo messaggio è tornato nella casella: premi Manda e resta qui.");
     }
   }
 })();
