@@ -490,7 +490,10 @@
     var inizio = Date.now();
     while (Date.now() - inizio < 180000) {
       if (segnale.aborted) throw abortato();
-      if (document.visibilityState === "visible") {
+      // Si bussa sempre, anche se il browser dice di essere in secondo piano (alcuni lo dicono
+      // a torto): in secondo piano il telefono rallenta da solo i timer, e al ritorno la
+      // «sveglia» fa bussare subito.
+      try {
         var r = await fetch(SERVIZIO + "/risposta?b=" + biglietto, { signal: segnale, cache: "no-store" });
         if (r.ok) {
           var d = await r.json();
@@ -499,15 +502,15 @@
             return new TextDecoder().decode(chiaro);
           }
         }
-        await pausa(1500, segnale);
-      } else {
-        // In secondo piano non si bussa: si aspetta il ritorno, e si riprende subito.
-        await new Promise(function (ok, no) {
-          sveglia = function () { sveglia = null; ok(); };
-          var t = setTimeout(function () { sveglia = null; ok(); }, 5000);
-          segnale.addEventListener("abort", function () { clearTimeout(t); sveglia = null; no(abortato()); }, { once: true });
-        });
+      } catch (e) {
+        if (e && e.name === "AbortError") throw e;
+        // rete caduta un attimo: si ribussa
       }
+      await new Promise(function (ok, no) {
+        sveglia = function () { sveglia = null; clearTimeout(t); ok(); };
+        var t = setTimeout(function () { sveglia = null; ok(); }, document.visibilityState === "hidden" ? 5000 : 1500);
+        segnale.addEventListener("abort", function () { clearTimeout(t); sveglia = null; no(abortato()); }, { once: true });
+      });
     }
     var e = new Error("tempo"); e.name = "TimeoutError"; throw e;
   }
