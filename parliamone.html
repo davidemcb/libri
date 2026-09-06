@@ -167,6 +167,53 @@
   .piede a { color: var(--quieto); text-decoration: underline; text-underline-offset: 3px; }
   .piede a:hover { color: var(--teal); }
 
+  /* Il foglio di fine conversazione: si fa nel telefono, dalla conversazione qui sopra. */
+  .foglio-fine {
+    border-top: 1px solid var(--riga);
+    padding-top: 2rem;
+    display: flex; flex-direction: column; gap: 1.6rem;
+  }
+  .foglio-fine h2 {
+    font-family: var(--serif); font-weight: 500; font-size: 1.7rem; line-height: 1.15; margin: 0;
+  }
+  .foglio-fine h3 {
+    font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--teal); margin: 0 0 .6rem;
+  }
+  .foglio-fine p { margin: 0; }
+  .fine-portato {
+    font-family: var(--serif); font-size: 1.15rem; line-height: 1.5; font-style: italic;
+    border-left: 2px solid var(--riga); padding-left: 1.1rem; white-space: pre-wrap; margin: 0;
+  }
+  .fine-libro { display: flex; flex-direction: column; gap: .45rem; padding: .9rem 0; border-top: 1px solid var(--riga); }
+  .fine-libro:last-of-type { border-bottom: 1px solid var(--riga); }
+  .fine-titolo { font-family: var(--serif); font-size: 1.25rem; }
+  .fine-stato { font-size: .84rem; color: var(--quieto); }
+  .fine-cap { font-size: .98rem; }
+  .fine-cap b { font-weight: 500; }
+  .fine-link { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin-top: .3rem; font-size: .9rem; }
+  .fine-link a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+  .fine-nota { font-size: .9rem; color: var(--quieto); }
+  .fine-conv { display: flex; flex-direction: column; gap: 1.1rem; }
+  .fine-conv .turno-mio { font-size: .92rem; }
+  .fine-conv .turno-libri { font-size: 1.08rem; }
+  .fine-programma {
+    display: inline-block; font-family: var(--sans); font-size: .68rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--allarme); margin-bottom: .3rem;
+  }
+  .fine-bottoni { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
+  .fine-esito { font-size: .9rem; color: var(--quieto); }
+
+  @media print {
+    :root, :root[data-theme="dark"] { --fondo: #fff; --fondo-alt: #fff; --riga: #ccc; --testo: #111; --quieto: #555; --teal: #2f5f5a; --allarme: #8E4A33; }
+    body { font-size: 12pt; }
+    .foglio > *:not(.foglio-fine) { display: none !important; }
+    .foglio { padding: 0; }
+    .foglio-fine { border-top: 0; padding-top: 0; }
+    .fine-bottoni, .fine-esito { display: none !important; }
+    a { color: inherit; }
+  }
+
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -214,8 +261,11 @@
     <div class="bottoni">
       <button id="manda" type="button">Manda</button>
       <button id="ferma" type="button" class="quieto" hidden>Ferma</button>
+      <button id="fai-foglio" type="button" class="quieto" hidden>Il foglio di stasera</button>
     </div>
   </section>
+
+  <section class="foglio-fine" id="foglio-fine" hidden aria-live="polite"></section>
 
   <footer class="piede">
     <p>Qui risponde un programma costruito sui libri di Davide Scuderi, non Davide in tempo reale. È automatico e può sbagliare: non prenderlo per verità.</p>
@@ -225,6 +275,8 @@
 
 </div>
 
+<script src="assets/config.js"></script>
+<script src="assets/catalogo.js"></script>
 <script>
 (function () {
   "use strict";
@@ -241,8 +293,12 @@
   var scrivi = document.getElementById("scrivi");
   var manda  = document.getElementById("manda");
   var ferma  = document.getElementById("ferma");
+  var faiFoglio = document.getElementById("fai-foglio");
+  var foglioFine = document.getElementById("foglio-fine");
 
   var turni = [];       // vive solo qui: niente localStorage, niente cronologia, niente server
+  var tutti = [];       // la conversazione intera, per il foglio: stessa vita di `turni`, stessa promessa
+  var chiusoPerOggi = false;
   var attesa = null;
   var controllo = null;
 
@@ -334,6 +390,7 @@
     blocco("turno-mio", testo);
 
     turni.push({ role: "user", content: testo });
+    tutti.push({ role: "user", content: testo });
     while (turni.length > 20) turni.splice(0, 2);   // si buttano i giri vecchi, non il presente
 
     var colCassetto = !!(chiave && chiaveBase64);
@@ -358,7 +415,7 @@
       if (!r.ok) {
         var dettaglio = await r.json().catch(function () { return {}; });
         chiudiAttesa();
-        turni.pop();
+        turni.pop(); tutti.pop();
         scrivi.value = testo;
         blocco("avviso", dettaglio.errore || "Non riesco a rispondere adesso. Riprova fra poco.");
         return;
@@ -397,21 +454,21 @@
       }
 
       chiudiAttesa();
-      if (raccolto) turni.push({ role: "assistant", content: raccolto });
-      else { turni.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
-      scrivi.focus();
+      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
+      else { turni.pop(); tutti.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
+      if (!chiusoPerOggi) scrivi.focus();
 
     } catch (e) {
       chiudiAttesa();
       if (e && e.name === "AbortError") {
-        if (raccolto) turni.push({ role: "assistant", content: raccolto });
-        else { if (risposta) risposta.remove(); turni.pop(); scrivi.value = testo; }
+        if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
+        else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; }
         return;
       }
-      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); blocco("avviso", "Si è interrotto per strada. Riprova."); }
+      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); blocco("avviso", "Si è interrotto per strada. Riprova."); }
       else {
         if (risposta) risposta.remove();
-        turni.pop();
+        turni.pop(); tutti.pop();
         scrivi.value = testo;
         blocco("avviso", (e && e.name === "TimeoutError")
           ? "La risposta non è arrivata in tempo. Il tuo messaggio è tornato nella casella: premi Manda."
@@ -445,6 +502,319 @@
       }
     }
     var e = new Error("tempo"); e.name = "TimeoutError"; throw e;
+  }
+
+  /* ------------------------------------------------------------------ il foglio di stasera
+   * Deciso da Davide il 06/09/2026 (IL-DOPO.md § 7). Al «per oggi basta», o quando la persona
+   * lo chiede, la pagina fa un foglio con: quello che ha scritto, i capitoli che il
+   * Bibliotecario ha nominato (verificati sul catalogo: numero e titolo veri, non quelli del
+   * modello), dove si compra ogni libro o «sta per uscire», la pratica del corpo se il corpo
+   * è uscito, e la conversazione com'è andata, con segnato cosa ha detto il programma di suo.
+   * Si costruisce qui, dal testo che la pagina ha davanti. Il server non lo vede mai.
+   */
+
+  var CAT = window.CATALOGO || { libri: [], corpo: [] };
+  var SITO = window.SITO || {};
+  var PAGINE_LIBRO = { duau: "da-uomo-a-uomo.html", sv: "senza-veli.html", pac: "prenditi-a-carezze.html" };
+
+  function eTetto(testo) {
+    return /^\s*per oggi basta|^\s*per questo mese ho finito il fiato/i.test(testo || "");
+  }
+
+  function dopoRisposta(testo) {
+    faiFoglio.hidden = false;
+    if (eTetto(testo)) {
+      chiusoPerOggi = true;
+      scrivi.disabled = true;
+      manda.disabled = true;
+      scrivi.placeholder = "Ci sono anche domani.";
+      mostraFoglio();
+    }
+  }
+
+  faiFoglio.addEventListener("click", mostraFoglio);
+
+  // Minuscolo, senza accenti, senza asterischi e virgolette: così «*L'Alce*», «L’Alce» e «l'alce» sono la stessa cosa.
+  function piatto(t) {
+    return (t || "")
+      .replace(/[’‘`´]/g, "'")
+      .replace(/[*_«»"“”]/g, "")
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .toLowerCase();
+  }
+
+  function scappa(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+  // Dove ogni libro è nominato in un testo già piatto: [{libro, inizio, fine}], in ordine.
+  function menzioni(t) {
+    var fuori = [];
+    CAT.libri.forEach(function (libro) {
+      libro.alias.forEach(function (alias) {
+        var re = new RegExp("(^|[^a-z])(" + scappa(alias) + ")(?![a-z])", "g");
+        var m;
+        while ((m = re.exec(t))) {
+          var inizio = m.index + m[1].length;
+          fuori.push({ libro: libro, inizio: inizio, fine: inizio + m[2].length });
+        }
+      });
+    });
+    fuori.sort(function (a, b) { return a.inizio - b.inizio; });
+    // Se due alias si sovrappongono («la banana guarda in giu» e «la banana»), resta il più lungo.
+    var puliti = [];
+    fuori.forEach(function (m) {
+      var ultimo = puliti[puliti.length - 1];
+      if (ultimo && m.inizio < ultimo.fine) { if (m.fine - m.inizio > ultimo.fine - ultimo.inizio) puliti[puliti.length - 1] = m; }
+      else puliti.push(m);
+    });
+    return puliti;
+  }
+
+  // I capitoli nominati: [{libro, numero}], solo quelli che nel catalogo esistono davvero.
+  function trovaPagine() {
+    var trovati = [];
+    var visti = {};
+    var ultimoLibro = null;   // il libro nominato per ultimo, anche in una risposta precedente
+
+    tutti.forEach(function (turno) {
+      if (turno.role !== "assistant") return;
+      var t = piatto(turno.content);
+      var libri = menzioni(t);
+      var re = /capitol[oi]\s+(\d+)((?:\s*(?:,|e|o|ed|il|e il|al|all')\s*\d+)*)/g;
+      var m;
+      while ((m = re.exec(t))) {
+        var numeri = [Number(m[1])];
+        var altri = m[2].match(/\d+/g) || [];
+        altri.forEach(function (n) { numeri.push(Number(n)); });
+        var inizio = m.index, fine = m.index + m[0].length;
+
+        // Il libro: subito dopo («capitolo 7 di Da uomo a uomo», «capitolo 3 dell'Alce»), oppure
+        // poco prima («L'ex non è un nemico, capitolo 21»), oppure l'ultimo nominato.
+        var libro = null, i;
+        for (i = 0; i < libri.length; i++) {
+          if (libri[i].inizio >= fine && libri[i].inizio - fine <= 40 && /^[\s,:;]*(?:di|del|dell'|dello|della|de|nel|nell'|in)?\s*$/.test(t.slice(fine, libri[i].inizio))) { libro = libri[i].libro; break; }
+        }
+        if (!libro) {
+          for (i = libri.length - 1; i >= 0; i--) {
+            if (libri[i].fine <= inizio && inizio - libri[i].fine <= 120) { libro = libri[i].libro; break; }
+          }
+        }
+        if (!libro) {
+          for (i = libri.length - 1; i >= 0; i--) { if (libri[i].fine <= inizio) { libro = libri[i].libro; break; } }
+        }
+        if (!libro) libro = ultimoLibro;
+        if (!libro) continue;
+
+        numeri.forEach(function (n) {
+          if (!libro.capitoli[String(n)]) return;   // il modello ha nominato un capitolo che non c'è: non va nel foglio
+          var k = libro.chiave + ":" + n;
+          if (visti[k]) return;
+          visti[k] = true;
+          trovati.push({ libro: libro, numero: n });
+        });
+      }
+      if (libri.length) ultimoLibro = libri[libri.length - 1].libro;
+    });
+    return trovati;
+  }
+
+  // I segni del corpo usciti nella conversazione, al massimo due, prima quelli con la voce.
+  function trovaCorpo() {
+    var t = piatto(tutti.map(function (x) { return x.content; }).join("\n"));
+    var usciti = [];
+    CAT.corpo.forEach(function (segno) {
+      var primo = -1;
+      segno.parole.forEach(function (parola) {
+        var m = new RegExp("(^|[^a-z])" + scappa(parola)).exec(t);
+        if (m && (primo < 0 || m.index < primo)) primo = m.index;
+      });
+      if (primo >= 0) usciti.push({ segno: segno, dove: primo });
+    });
+    usciti.sort(function (a, b) { return (b.segno.audio - a.segno.audio) || (a.dove - b.dove); });
+    return usciti.slice(0, 2).map(function (u) { return u.segno; });
+  }
+
+  function linkLibro(libro) {
+    var fuori = [];
+    if (libro.vendita && libro.config) {
+      var A = SITO.amazon || {}, G = SITO.gumroad || {};
+      var ebookSito = G[libro.config + "Ebook"], ebookAmazon = A[libro.config + "Ebook"], cartaceo = A[libro.config + "Cartaceo"];
+      if (ebookSito) fuori.push({ testo: "Ebook, subito, dal sito", href: ebookSito });
+      else if (ebookAmazon) fuori.push({ testo: "Ebook su Amazon", href: ebookAmazon });
+      if (cartaceo) fuori.push({ testo: "Cartaceo su Amazon", href: cartaceo });
+      if (PAGINE_LIBRO[libro.config]) fuori.push({ testo: "La pagina del libro", href: PAGINE_LIBRO[libro.config] });
+    } else {
+      fuori.push({ testo: "Sta per uscire · lasciami l'email e ti avviso", href: "index.html#pagine" });
+    }
+    return fuori;
+  }
+
+  function el(tag, classe, testo) {
+    var d = document.createElement(tag);
+    if (classe) d.className = classe;
+    if (testo != null) d.textContent = testo;
+    return d;
+  }
+
+  function dataOggi() {
+    try { return new Date().toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" }); }
+    catch (e) { return ""; }
+  }
+
+  function mostraFoglio() {
+    if (!tutti.length) return;
+    var pagine = trovaPagine();
+    var corpo = trovaCorpo();
+    var primo = null;
+    for (var i = 0; i < tutti.length; i++) if (tutti[i].role === "user") { primo = tutti[i].content; break; }
+    var confine = tutti.some(function (x) { return x.role === "assistant" && /non sta in un libro/i.test(x.content); });
+
+    foglioFine.innerHTML = "";
+
+    foglioFine.appendChild(el("p", "occhiello", "Il foglio di stasera" + (dataOggi() ? " · " + dataOggi() : "")));
+    foglioFine.appendChild(el("h2", null, chiusoPerOggi ? "Per oggi basta. Questo te lo porti via." : "Quello che è uscito, in una pagina."));
+
+    if (primo) {
+      var s1 = el("div");
+      s1.appendChild(el("h3", null, "Quello che hai portato"));
+      s1.appendChild(el("p", "fine-portato", primo.length > 700 ? primo.slice(0, 700).replace(/\s+\S*$/, "") + "…" : primo));
+      foglioFine.appendChild(s1);
+    }
+
+    var s2 = el("div");
+    s2.appendChild(el("h3", null, "Le pagine che sono uscite"));
+    if (!pagine.length) {
+      s2.appendChild(el("p", "fine-nota", "Stasera non è uscita nessuna pagina dei libri: quello che hai letto l'ha detto il programma, e non porta la firma di Davide."));
+    } else {
+      // Raggruppati per libro, nell'ordine in cui sono usciti.
+      var ordine = [], perLibro = {};
+      pagine.forEach(function (p) {
+        if (!perLibro[p.libro.chiave]) { perLibro[p.libro.chiave] = { libro: p.libro, numeri: [] }; ordine.push(p.libro.chiave); }
+        perLibro[p.libro.chiave].numeri.push(p.numero);
+      });
+      ordine.forEach(function (k) {
+        var g = perLibro[k];
+        var box = el("div", "fine-libro");
+        box.appendChild(el("div", "fine-titolo", g.libro.titolo));
+        box.appendChild(el("div", "fine-stato", g.libro.vendita ? "di Davide Scuderi · in vendita" : "di Davide Scuderi · sta per uscire"));
+        g.numeri.sort(function (a, b) { return a - b; }).forEach(function (n) {
+          var riga = el("div", "fine-cap");
+          riga.appendChild(document.createTextNode("capitolo " + n + " · "));
+          riga.appendChild(el("b", null, g.libro.capitoli[String(n)]));
+          box.appendChild(riga);
+        });
+        var link = el("div", "fine-link");
+        linkLibro(g.libro).forEach(function (l) {
+          var a = el("a", null, l.testo);
+          a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+          link.appendChild(a);
+        });
+        box.appendChild(link);
+        s2.appendChild(box);
+      });
+      s2.appendChild(el("p", "fine-nota", "Numero e titolo dei capitoli sono quelli dei libri, non quelli del programma: se un capitolo nominato non esisteva, qui non c'è."));
+    }
+    if (confine) s2.appendChild(el("p", "fine-nota", "Una parte di quello che hai letto l'ha detta il programma di suo, non un libro: nella conversazione qui sotto è segnata."));
+    foglioFine.appendChild(s2);
+
+    if (corpo.length) {
+      var s3 = el("div");
+      s3.appendChild(el("h3", null, "Se il corpo si è fatto sentire"));
+      s3.appendChild(el("p", "fine-nota", "Un minuto col corpo, nell'app: non è un esercizio, è compagnia. Se ti va."));
+      var link3 = el("div", "fine-link");
+      corpo.forEach(function (segno) {
+        var a = el("a", null, segno.voce + (segno.audio ? " · con la voce di Davide" : ""));
+        a.href = "app/#pratica/" + segno.chiave; a.target = "_blank"; a.rel = "noopener";
+        link3.appendChild(a);
+      });
+      s3.appendChild(link3);
+      foglioFine.appendChild(s3);
+    }
+
+    var s4 = el("div");
+    s4.appendChild(el("h3", null, "La conversazione, com'è andata"));
+    var conv4 = el("div", "fine-conv");
+    tutti.forEach(function (x) {
+      var d = el("div", x.role === "user" ? "turno-mio" : "turno-libri");
+      if (x.role === "assistant" && /non sta in un libro/i.test(x.content)) {
+        d.appendChild(el("span", "fine-programma", "Qui parla il programma, non un libro"));
+        d.appendChild(document.createElement("br"));
+      }
+      d.appendChild(document.createTextNode(x.content));
+      conv4.appendChild(d);
+    });
+    s4.appendChild(conv4);
+    foglioFine.appendChild(s4);
+
+    foglioFine.appendChild(el("p", "fine-nota", "Questo foglio l'ha fatto la pagina nel tuo telefono, dalla conversazione qui sopra. Nessuno l'ha visto e non è stato mandato da nessuna parte. Se lo vuoi domani, salvalo adesso: chiusa la pagina, non resta niente."));
+
+    var bottoni = el("div", "fine-bottoni");
+    var salva = el("button", null, "Salvalo (PDF)"); salva.type = "button";
+    var manda2 = el("button", "quieto", "Mandalo a te stesso"); manda2.type = "button";
+    var esito = el("span", "fine-esito", "");
+    salva.addEventListener("click", function () { window.print(); });
+    manda2.addEventListener("click", function () {
+      var testo = testoFoglio(pagine, corpo, primo);
+      if (navigator.share) {
+        navigator.share({ title: "Il foglio di stasera", text: testo }).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(testo).then(function () { esito.textContent = "Copiato. Incollalo in una nota, o in un messaggio a te stesso."; },
+          function () { esito.textContent = "Non riesco a copiare: seleziona il testo e copialo tu."; });
+      } else esito.textContent = "Seleziona il testo e copialo.";
+    });
+    bottoni.appendChild(salva); bottoni.appendChild(manda2); bottoni.appendChild(esito);
+    foglioFine.appendChild(bottoni);
+
+    foglioFine.hidden = false;
+    foglioFine.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  function testoFoglio(pagine, corpo, primo) {
+    var r = ["IL FOGLIO DI STASERA" + (dataOggi() ? " · " + dataOggi() : ""), ""];
+    if (primo) r.push("Quello che hai portato:", primo, "");
+    r.push("Le pagine che sono uscite:");
+    if (!pagine.length) r.push("nessuna pagina dei libri, stasera: quello che hai letto l'ha detto il programma.");
+    var visti = {};
+    pagine.forEach(function (p) {
+      if (!visti[p.libro.chiave]) {
+        visti[p.libro.chiave] = true;
+        r.push("", p.libro.titolo + " (Davide Scuderi) · " + (p.libro.vendita ? "in vendita" : "sta per uscire"));
+        linkLibro(p.libro).forEach(function (l) { r.push("  " + l.testo + ": " + (/^https?:/.test(l.href) ? l.href : "https://davidemcb.github.io/libri/" + l.href)); });
+      }
+      r.push("  capitolo " + p.numero + " · " + p.libro.capitoli[String(p.numero)]);
+    });
+    if (corpo.length) {
+      r.push("", "Se il corpo si è fatto sentire, un minuto col corpo nell'app:");
+      corpo.forEach(function (s) { r.push("  " + s.voce + ": https://davidemcb.github.io/libri/app/#pratica/" + s.chiave); });
+    }
+    r.push("", "La conversazione, com'è andata:", "");
+    tutti.forEach(function (x) {
+      if (x.role === "user") r.push("TU: " + x.content, "");
+      else r.push((/non sta in un libro/i.test(x.content) ? "[qui parla il programma, non un libro]\n" : "") + x.content, "");
+    });
+    r.push("Fatto nel telefono, dalla pagina davidemcb.github.io/libri/parliamone.html. Nessuno l'ha visto.");
+    return r.join("\n");
+  }
+
+  /* La prova del foglio senza spendere venti messaggi: ...parliamone.html?prova=foglio
+   * Carica una conversazione d'esempio (sul modello delle prove del 06/09) e mostra il foglio.
+   * Non chiama il servizio. Serve a Davide per vederlo, e a chi lavora sulla pagina. */
+  if (new URLSearchParams(location.search).get("prova") === "foglio") {
+    var ESEMPIO = [
+      ["user", "Mia moglie mi ha tradito. L'ho scoperto stasera, dal telefono. Lei dorme, io sono in cucina e non riesco a stare fermo."],
+      ["assistant", "Va bene. Prima i fatti, uno alla volta.\nQuando l'hai visto: stasera, o è da giorni che lo sospettavi?\nLo sa che l'hai visto?\nDomani hai qualcosa che devi fare per forza?"],
+      ["user", "Stasera. Non lo sa. Domani lavoro, ho un turno alle sette. Ho un nodo in gola che non va né su né giù e non mi sento le mani."],
+      ["assistant", "Allora due cose stanno nella stessa mano, e vanno separate.\nUna è quello che hai letto stasera. L'altra è cosa farne, e quella non è di stasera: è di dopo.\nIl nodo in gola e le mani che non senti non sono un guasto: è il corpo che ha ricevuto la notizia prima della testa, e la tiene ferma lì finché non decidi tu.\nNel capitolo 3 dell'Alce, Il telefono che non dovevi guardare, c'è un uomo nella tua stessa cucina: le settimane in cui ogni cosa sembra un segnale, e la notte in cui guarda davvero.\nE il capitolo 7 di *Da uomo a uomo*, Il tradimento, dice una cosa che stanotte serve: lo capisci prima di avere una prova, e il corpo resta in allerta anche quando non serve più.\nNon sei obbligato a decidere niente prima delle sette.\nCosa vorresti che fosse vero, domattina?"],
+      ["user", "Vorrei che non fosse successo. Ma è successo. Non so se glielo dico domani o aspetto."],
+      ["assistant", "Questa non sta in un libro: te la dico io.\nDirlo domani e aspettare non sono due scelte: sono due tempi. Domani puoi decidere solo il tempo, non il resto.\nL'ex non è un nemico, capitolo 21, Non devi perdonare nessuno, parla di quello che ti diranno dopo: che devi perdonare per stare meglio. Non è per stanotte, ma è bene sapere che c'è.\nAdesso il turno delle sette è la cosa più concreta che hai. Cosa ti serve per arrivarci?"],
+      ["user", "Un caffè e non pensare. Grazie."],
+      ["assistant", "Per oggi basta. Non è un giudizio: è che dopo un po' serve dormirci sopra. Ci sono anche domani."]
+    ];
+    document.getElementById("entra").click();
+    ESEMPIO.forEach(function (t) {
+      tutti.push({ role: t[0], content: t[1] });
+      blocco(t[0] === "user" ? "turno-mio" : "turno-libri", t[1]);
+    });
+    dopoRisposta(ESEMPIO[ESEMPIO.length - 1][1]);
   }
 })();
 </script>
