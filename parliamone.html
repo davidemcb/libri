@@ -145,6 +145,16 @@
     white-space: pre-wrap;
   }
 
+  /* «Hai finito, o vuoi continuare?»: la domanda che la pagina fa da sola quando cala il
+     silenzio. Serve a chi si ferma prima del tetto e se ne va senza il foglio. */
+  .chiesta {
+    border-left: 2px solid var(--teal); padding-left: 1.1rem;
+    display: flex; flex-direction: column; gap: .8rem;
+  }
+  .chiesta p { margin: 0; font-family: var(--serif); font-size: 1.2rem; line-height: 1.45; }
+  .chiesta .sotto { font-family: var(--sans); font-size: .9rem; color: var(--quieto); }
+  .chiesta .bottoni button { align-self: auto; }
+
   .campo { display: flex; flex-direction: column; gap: .9rem; }
 
   textarea {
@@ -202,6 +212,7 @@
     display: inline-block; font-family: var(--sans); font-size: .68rem; font-weight: 700;
     letter-spacing: .14em; text-transform: uppercase; color: var(--allarme); margin-bottom: .3rem;
   }
+  .fine-riscontro { display: flex; flex-direction: column; gap: .6rem; }
   .fine-bottoni { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
   .fine-esito { font-size: .9rem; color: var(--quieto); }
 
@@ -211,7 +222,7 @@
     .foglio > *:not(.foglio-fine) { display: none !important; }
     .foglio { padding: 0; }
     .foglio-fine { border-top: 0; padding-top: 0; }
-    .fine-bottoni, .fine-esito { display: none !important; }
+    .fine-bottoni, .fine-esito, .fine-riscontro { display: none !important; }
     a { color: inherit; }
   }
 
@@ -310,6 +321,18 @@
   var attesa = null;
   var controllo = null;
 
+  // La domanda del silenzio (decisa da Davide il 07/09/2026): quasi nessuno arriva ai dieci
+  // messaggi del tetto: si smette prima e si chiude la pagina, e il foglio non lo vede nessuno.
+  // Dopo un po' di silenzio la pagina chiede una cosa sola — hai finito, o vuoi continuare? — e
+  // a «ho finito» dà il foglio: com'è andata, i libri, la conversazione. Non insiste: due volte
+  // in tutto, mai mentre sta scrivendo, mai mentre una risposta è per strada.
+  var ATTESA_DOMANDA = 90000;   // il silenzio dopo cui si chiede, la prima volta
+  var DOMANDE_AL_MASSIMO = 2;
+  var orologioDomanda = null;
+  var bloccoDomanda = null;
+  var domandeFatte = 0;
+  var haFinito = false;
+
   // La chiave del cassetto: nasce qui, resta qui. Il server la usa per chiudere la risposta e
   // non la conserva. Serve perché sul telefono chi cambia app mentre aspetta perdeva la risposta.
   var chiave = null;        // CryptoKey
@@ -388,11 +411,16 @@
   scrivi.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) invia();
   });
+  // Sta scrivendo: l'orologio del silenzio riparte da capo.
+  scrivi.addEventListener("input", function () { if (orologioDomanda) armaDomanda(); });
 
   async function invia() {
     var testo = scrivi.value.trim();
     if (!testo || manda.disabled) return;
 
+    togliDomanda();
+    haFinito = false;   // ha ripreso a parlare: più tardi si potrà richiedere
+    if (!chiusoPerOggi) foglioFine.hidden = true;   // il foglio di prima è vecchio: si rifà dopo
     scrivi.value = "";
     manda.disabled = true;
     blocco("turno-mio", testo);
@@ -564,6 +592,21 @@
   var SITO = window.SITO || {};
   var PAGINE_LIBRO = { duau: "da-uomo-a-uomo.html", sv: "senza-veli.html", pac: "prenditi-a-carezze.html" };
 
+  // Dove va a finire un riscontro, se la persona decide di darlo. Parte da lei, con le sue parole,
+  // dalla sua app: qui non si manda niente e non si allega niente della conversazione.
+  var RISCONTRO = {
+    whatsapp: "393481514382",                                  // il numero pubblico di Davide
+    email: SITO.emailPubblica || "davidescuderi1981@gmail.com",
+    apertura: "Ciao Davide, ho provato «Cosa ti sta succedendo?». Ti dico com'è andata: "
+  };
+
+  // Il link per recensire un libro su Amazon, ricavato dall'ASIN che sta in config.js.
+  function recensioneAmazon(libro) {
+    var A = SITO.amazon || {};
+    var m = /\/dp\/([A-Z0-9]{10})/.exec(A[libro.config + "Cartaceo"] || A[libro.config + "Ebook"] || "");
+    return m ? "https://www.amazon.it/review/create-review?asin=" + m[1] : "";
+  }
+
   function eTetto(testo) {
     return /^\s*per oggi basta|^\s*per questo mese ho finito il fiato/i.test(testo || "");
   }
@@ -575,11 +618,81 @@
       scrivi.disabled = true;
       manda.disabled = true;
       scrivi.placeholder = "Ci sono anche domani.";
-      mostraFoglio();
+      mostraFoglio(true);
+      return;
     }
+    armaDomanda();
   }
 
-  faiFoglio.addEventListener("click", mostraFoglio);
+  faiFoglio.addEventListener("click", function () { mostraFoglio(); });
+
+  /* ---------------------------------------------------------------- hai finito, o continuiamo?
+   * Il tetto (dieci messaggi al giorno) chiude da sé con «per oggi basta». Chi si ferma prima
+   * non chiude niente: sta zitto e se ne va. Qui la pagina, dopo un silenzio, glielo chiede.
+   */
+  function armaDomanda() {
+    fermaOrologio();
+    if (chiusoPerOggi || haFinito || bloccoDomanda) return;
+    if (domandeFatte >= DOMANDE_AL_MASSIMO) return;
+    if (giriFatti() < 2) return;   // non alla prima risposta: si è appena cominciato
+    orologioDomanda = setTimeout(chiediSeHaFinito, domandeFatte === 0 ? ATTESA_DOMANDA : ATTESA_DOMANDA * 2);
+  }
+
+  function fermaOrologio() {
+    if (orologioDomanda) { clearTimeout(orologioDomanda); orologioDomanda = null; }
+  }
+
+  function togliDomanda() {
+    fermaOrologio();
+    if (bloccoDomanda) { bloccoDomanda.remove(); bloccoDomanda = null; }
+  }
+
+  function giriFatti() {
+    var n = 0;
+    for (var i = 0; i < tutti.length; i++) if (tutti[i].role === "assistant") n++;
+    return n;
+  }
+
+  function chiediSeHaFinito() {
+    orologioDomanda = null;
+    if (chiusoPerOggi || haFinito || bloccoDomanda) return;
+    if (manda.disabled) return;                       // una risposta è per strada: non si interrompe
+    if (scrivi.value.trim()) { armaDomanda(); return; }   // sta scrivendo: si aspetta
+    if (document.visibilityState !== "visible") {     // è in un'altra app: si riprova dopo, e non conta
+      orologioDomanda = setTimeout(chiediSeHaFinito, 30000);
+      return;
+    }
+    domandeFatte++;
+
+    bloccoDomanda = el("div", "chiesta");
+    bloccoDomanda.appendChild(el("p", null, "Hai finito, o vuoi continuare?"));
+    bloccoDomanda.appendChild(el("p", "sotto",
+      "Se hai finito ti lascio il foglio di stasera: le pagine dei libri che sono uscite, dove si "
+      + "trovano, e la conversazione com'è andata. Se invece vuoi continuare, scrivi pure."));
+    var righe = el("div", "bottoni");
+    var continua = el("button", "quieto", "Voglio continuare");
+    var finisci = el("button", null, "Ho finito");
+    continua.type = "button";
+    finisci.type = "button";
+    // «Voglio continuare»: la domanda sparisce e l'orologio riparte, più lungo. Poi basta.
+    continua.addEventListener("click", function () { togliDomanda(); armaDomanda(); scrivi.focus(); });
+    finisci.addEventListener("click", chiudiConversazione);
+    righe.appendChild(finisci);
+    righe.appendChild(continua);
+    bloccoDomanda.appendChild(righe);
+    conv.appendChild(bloccoDomanda);
+    bloccoDomanda.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+
+  // «Ho finito»: non si chiude niente a chiave — se le torna in mente qualcosa scrive ancora —
+  // ma da qui in poi c'è il foglio, e nel foglio la domanda «com'è andata?».
+  function chiudiConversazione() {
+    togliDomanda();
+    haFinito = true;
+    faiFoglio.hidden = true;
+    scrivi.placeholder = "Se ti torna in mente qualcosa, sono qui.";
+    mostraFoglio(true);
+  }
 
   // Minuscolo, senza accenti, senza asterischi e virgolette: così «*L'Alce*», «L’Alce» e «l'alce» sono la stessa cosa.
   function piatto(t) {
@@ -707,18 +820,26 @@
     catch (e) { return ""; }
   }
 
-  function mostraFoglio() {
+  function mostraFoglio(chiusura) {
     if (!tutti.length) return;
+    var finita = !!chiusura || chiusoPerOggi || haFinito;
     var pagine = trovaPagine();
     var corpo = trovaCorpo();
     var primo = null;
     for (var i = 0; i < tutti.length; i++) if (tutti[i].role === "user") { primo = tutti[i].content; break; }
     var confine = tutti.some(function (x) { return x.role === "assistant" && /non sta in un libro/i.test(x.content); });
+    // A chi sono usciti i numeri di emergenza non si chiede nessun favore: nessuna recensione,
+    // niente. È la stessa regola che il prompt dà al Bibliotecario (SE LA PERSONA STA SALUTANDO).
+    var grave = tutti.some(function (x) { return x.role === "assistant" && /\b1522\b/.test(x.content); });
+    var chiediComEAndata = finita && !grave;
 
     foglioFine.innerHTML = "";
 
     foglioFine.appendChild(el("p", "occhiello", "Il foglio di stasera" + (dataOggi() ? " · " + dataOggi() : "")));
-    foglioFine.appendChild(el("h2", null, chiusoPerOggi ? "Per oggi basta. Questo te lo porti via." : "Quello che è uscito, in una pagina."));
+    foglioFine.appendChild(el("h2", null,
+      chiusoPerOggi ? "Per oggi basta. Questo te lo porti via."
+      : finita ? "Va bene così. Questo te lo porti via."
+      : "Quello che è uscito, in una pagina."));
 
     if (primo) {
       var s1 = el("div");
@@ -777,6 +898,8 @@
       foglioFine.appendChild(s3);
     }
 
+    if (chiediComEAndata) foglioFine.appendChild(chiediRiscontro(pagine));
+
     var s4 = el("div");
     s4.appendChild(el("h3", null, "La conversazione, com'è andata"));
     var conv4 = el("div", "fine-conv");
@@ -814,7 +937,7 @@
     var esito = el("span", "fine-esito", "");
     salva.addEventListener("click", function () { window.print(); });
     manda2.addEventListener("click", function () {
-      var testo = testoFoglio(pagine, corpo, primo);
+      var testo = testoFoglio(pagine, corpo, primo, chiediComEAndata);
       if (navigator.share) {
         navigator.share({ title: "Il foglio di stasera", text: testo }).catch(function () {});
       } else if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -829,7 +952,53 @@
     foglioFine.scrollIntoView({ block: "start", behavior: "smooth" });
   }
 
-  function testoFoglio(pagine, corpo, primo) {
+  /* La recensione. Si chiede una volta sola, alla fine, e non parte niente da sola: si apre
+   * WhatsApp o la posta con una riga già scritta, e da lì scrive lei quello che vuole. Della
+   * conversazione non si allega niente — non la vede nessuno, e non deve cominciare adesso.
+   * Chi un libro l'ha già letto trova qui anche dove si recensisce: è la cosa che li fa trovare. */
+  function chiediRiscontro(pagine) {
+    var s = el("div", "fine-riscontro");
+    s.appendChild(el("h3", null, "Com'è andata?"));
+    s.appendChild(el("p", "fine-nota",
+      "Se ti va, due righe a Davide: cosa ti è servito e cosa no. Le legge lui. Scrivi solo quello "
+      + "che vuoi tu: della conversazione qui sopra non parte niente, e nessuno la vede."));
+
+    var dove = el("div", "fine-link");
+    var testo = encodeURIComponent(RISCONTRO.apertura);
+    [
+      { testo: "Scrivilo su WhatsApp", href: "https://wa.me/" + RISCONTRO.whatsapp + "?text=" + testo },
+      { testo: "Scrivilo per email", href: "mailto:" + RISCONTRO.email + "?subject=" + encodeURIComponent("Com'è andata") + "&body=" + testo }
+    ].forEach(function (l) {
+      var a = el("a", null, l.testo);
+      a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+      dove.appendChild(a);
+    });
+    s.appendChild(dove);
+
+    // Solo i libri già in vendita, e solo quelli usciti stasera: a chi non li ha, non si chiede niente.
+    var visti = {}, recensibili = [];
+    pagine.forEach(function (p) {
+      if (visti[p.libro.chiave] || !p.libro.vendita || !p.libro.config) return;
+      visti[p.libro.chiave] = true;
+      var href = recensioneAmazon(p.libro);
+      if (href) recensibili.push({ testo: "Recensisci " + p.libro.titolo, href: href });
+    });
+    if (recensibili.length) {
+      s.appendChild(el("p", "fine-nota",
+        "E se uno di questi libri l'hai già letto: una recensione su Amazon è il modo in cui lo trova "
+        + "qualcun altro che sta come te."));
+      var suAmazon = el("div", "fine-link");
+      recensibili.forEach(function (l) {
+        var a = el("a", null, l.testo);
+        a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+        suAmazon.appendChild(a);
+      });
+      s.appendChild(suAmazon);
+    }
+    return s;
+  }
+
+  function testoFoglio(pagine, corpo, primo, finita) {
     var r = ["IL FOGLIO DI STASERA" + (dataOggi() ? " · " + dataOggi() : ""), ""];
     if (primo) r.push("Quello che hai portato:", primo, "");
     r.push("Le pagine che sono uscite:");
@@ -847,6 +1016,11 @@
       r.push("", "Se il corpo si è fatto sentire, un minuto col corpo nell'app:");
       corpo.forEach(function (s) { r.push("  " + s.voce + ": https://davidemcb.github.io/libri/app/#pratica/" + s.chiave); });
     }
+    if (finita) {
+      r.push("", "Com'è andata? Se ti va, due righe a Davide: cosa ti è servito e cosa no.",
+             "  WhatsApp: https://wa.me/" + RISCONTRO.whatsapp,
+             "  Email: " + RISCONTRO.email);
+    }
     r.push("", "La conversazione, com'è andata:", "");
     tutti.forEach(function (x) {
       if (x.role === "user") r.push("TU: " + x.content, "");
@@ -859,7 +1033,8 @@
   /* La prova del foglio senza spendere venti messaggi: ...parliamone.html?prova=foglio
    * Carica una conversazione d'esempio (sul modello delle prove del 06/09) e mostra il foglio.
    * Non chiama il servizio. Serve a Davide per vederlo, e a chi lavora sulla pagina. */
-  if (new URLSearchParams(location.search).get("prova") === "foglio") {
+  var PROVA = new URLSearchParams(location.search).get("prova");
+  if (PROVA === "foglio" || PROVA === "domanda") {
     var ESEMPIO = [
       ["user", "Mia moglie mi ha tradito. L'ho scoperto stasera, dal telefono. Lei dorme, io sono in cucina e non riesco a stare fermo."],
       ["assistant", "Va bene. Prima i fatti, uno alla volta.\nQuando l'hai visto: stasera, o è da giorni che lo sospettavi?\nLo sa che l'hai visto?\nDomani hai qualcosa che devi fare per forza?"],
@@ -870,12 +1045,16 @@
       ["user", "Un caffè e non pensare. Grazie."],
       ["assistant", "Per oggi basta. Non è un giudizio: è che dopo un po' serve dormirci sopra. Ci sono anche domani."]
     ];
+    // ...?prova=domanda si ferma a metà, come chi smette prima del tetto, e fa vedere la domanda.
+    var pezzo = PROVA === "domanda" ? ESEMPIO.slice(0, 4) : ESEMPIO;
     document.getElementById("entra").click();
-    ESEMPIO.forEach(function (t) {
+    pezzo.forEach(function (t) {
       tutti.push({ role: t[0], content: t[1] });
+      turni.push({ role: t[0], content: t[1] });
       blocco(t[0] === "user" ? "turno-mio" : "turno-libri", t[1]);
     });
-    dopoRisposta(ESEMPIO[ESEMPIO.length - 1][1]);
+    dopoRisposta(pezzo[pezzo.length - 1][1]);
+    if (PROVA === "domanda") { fermaOrologio(); chiediSeHaFinito(); }
   }
 })();
 </script>
