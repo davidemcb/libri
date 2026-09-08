@@ -37,6 +37,27 @@
     --testo: #14110E; --quieto: #6B5F52; --teal: #3D6F69; --allarme: #8E4A33;
   }
 
+  /* Su iPhone la pagina segue «Testo più grande» delle impostazioni (le pagine web di solito lo ignorano). */
+  @supports (font: -apple-system-body) { html:not(.grande) { font: -apple-system-body; } }
+
+  /* La modalità «grande» (VOCE.md § 8): per chi legge male. Carta chiara sempre, tutto più
+     grande, bottoni alti e larghi. Si accende col bottone «Aa», o col link ?grande=si. */
+  :root.grande {
+    font-size: 21px; color-scheme: light;
+    --fondo: #FBF7F1; --fondo-alt: #F2EBE1; --riga: #D3C7B7;
+    --testo: #14110E; --quieto: #4A4038; --teal: #2F5F5A; --allarme: #8E4A33;
+  }
+  .grande body { line-height: 1.6; }
+  .grande .foglio { padding-left: 1.1rem; padding-right: 1.1rem; }
+  .grande h1 { font-size: clamp(2rem, 8vw, 2.6rem); }
+  .grande .turno-mio { font-size: 1.05rem; color: var(--testo); }
+  .grande .turno-libri { font-size: 1.4rem; line-height: 1.6; }
+  .grande .righe p, .grande .piede, .grande .fine-nota, .grande .stato-voce, .grande .riga-tessera, .grande .eta, .grande .attesa, .grande .avviso { font-size: 1rem; }
+  .grande .occhiello { font-size: .85rem; }
+  .grande textarea { font-size: 1.15rem; min-height: 7rem; }
+  .grande .bottoni { flex-direction: column; align-items: stretch; gap: .9rem; }
+  .grande .bottoni button, .grande #entra { width: 100%; min-height: 3.4rem; font-size: 1.1rem; align-self: stretch; }
+
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
 
@@ -45,7 +66,7 @@
     background: var(--fondo);
     color: var(--testo);
     font-family: var(--sans);
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
@@ -177,6 +198,12 @@
   @keyframes batte { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { #parla.ascolta::before { animation: none; } }
   .stato-voce { margin: 0; font-size: .92rem; color: var(--quieto); }
+  /* Il bottone «Aa» in alto: passa da normale a grande e viceversa. */
+  .strumenti { display: flex; justify-content: flex-end; margin-bottom: -1.5rem; }
+  #grande { font-family: var(--serif); font-size: 1.05rem; padding: .4rem .7rem; letter-spacing: .02em; }
+  #grande[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); }
+  /* La lettura a voce (VOCE.md § 3-A): mentre è accesa il bottone lo dice. */
+  #leggi[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); }
 
   .piede {
     border-top: 1px solid var(--riga); padding-top: 1.5rem;
@@ -251,6 +278,10 @@
 
 <div class="foglio">
 
+  <div class="strumenti">
+    <button id="grande" type="button" class="quieto" aria-pressed="false" aria-label="Testo più grande" title="Testo più grande">Aa</button>
+  </div>
+
   <header class="apertura">
     <svg class="segno" viewBox="0 0 46 34" role="img" aria-label="Due barre che si fermano su una linea">
       <rect class="barra-teal"   x="14" y="2" width="4" height="24"></rect>
@@ -272,7 +303,7 @@
       <!-- Riga della fase di prova senza libri (SOLO_CONVERSAZIONE = "si" nel worker), chiusa da Davide il 06/09/2026 («metti i libri dentro adesso»):
       <p>Quello che facciamo è ascoltarti e farti qualche domanda. Questa è una prova: non ti proponiamo niente, né libri né altro.</p> -->
       <p><strong>Quello che scrivi non lo conserviamo.</strong> Resta in questa pagina finché è aperta. Chiudila, e non resta niente da nessuna parte.</p>
-      <p id="riga-voce" hidden>Puoi anche <strong>parlare invece di scrivere</strong>: la voce la trasforma in testo il tuo telefono, col suo servizio (Google o Apple), e qui arriva solo il testo. Lo vedi comparire e puoi correggerlo prima di mandare.</p>
+      <p id="riga-voce" hidden><span id="riga-parla" hidden>Puoi anche <strong>parlare invece di scrivere</strong>: la voce la trasforma in testo il tuo telefono, col suo servizio (Google o Apple), e qui arriva solo il testo. Lo vedi comparire e puoi correggerlo prima di mandare.</span> <span id="riga-leggi" hidden>Se vuoi, <strong>le risposte te le legge la voce del telefono</strong>: niente esce dal telefono.</span></p>
       <p>Se di mezzo c'è violenza, o stai pensando di farti del male, questo non è il posto:</p>
       <p class="numeri">
         <span><b>112</b> emergenza</span>
@@ -293,6 +324,7 @@
     <div class="bottoni">
       <button id="manda" type="button">Manda</button>
       <button id="parla" type="button" class="quieto" aria-pressed="false" hidden>Parla</button>
+      <button id="leggi" type="button" class="quieto" aria-pressed="false" hidden>Leggimela</button>
       <button id="ferma" type="button" class="quieto" hidden>Ferma</button>
       <button id="fai-foglio" type="button" class="quieto" hidden>Il foglio di stasera</button>
     </div>
@@ -507,16 +539,19 @@
     var biglietto = "";
     var inizio = Date.now();
     var finito = false;
+    nuovaLettura();   // la voce, se accesa, riparte da capo con questa risposta
 
     function mostra(t) {
       if (attesa) { attesa.remove(); attesa = null; }
       if (!risposta) risposta = blocco("turno-libri", "");
       raccolto = t;
       risposta.textContent = raccolto;
+      leggiAPezzi(raccolto, false);   // frase per frase, mentre arriva
     }
 
     function concludi() {
       chiudiAttesa();
+      leggiAPezzi(raccolto, true);    // quello che resta
       if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
       else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
       if (!chiusoPerOggi) scrivi.focus();
@@ -1251,6 +1286,117 @@
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState !== "visible") fermaAscolto();
   });
+
+  // ─── La modalità «grande» (08/09/2026, VOCE.md § 8) ─────────────────────────────────────
+  // Per chi legge male: carta chiara sempre, tutto più grande, bottoni alti. Si accende col
+  // bottone «Aa» in alto o col link ?grande=si (da mandare a chi non deve cercare niente);
+  // il telefono se lo ricorda. ?grande=no la spegne e lo ricorda.
+  var CHIAVE_GRANDE = "grande";
+  var grandeBtn = document.getElementById("grande");
+  function eGrande() { return document.documentElement.classList.contains("grande"); }
+  function mettiGrande(si, ricorda) {
+    document.documentElement.classList.toggle("grande", si);
+    grandeBtn.setAttribute("aria-pressed", si ? "true" : "false");
+    grandeBtn.title = si ? "Testo normale" : "Testo più grande";
+    grandeBtn.setAttribute("aria-label", grandeBtn.title);
+    if (ricorda) { try { localStorage.setItem(CHIAVE_GRANDE, si ? "si" : "no"); } catch (e) { /* niente memoria */ } }
+  }
+  (function () {
+    var q = new URLSearchParams(location.search).get("grande");
+    var salvato = "";
+    try { salvato = localStorage.getItem(CHIAVE_GRANDE) || ""; } catch (e) { /* niente memoria */ }
+    if (q === "si" || q === "no") mettiGrande(q === "si", true);
+    else if (salvato) mettiGrande(salvato === "si", false);
+  })();
+  grandeBtn.addEventListener("click", function () { mettiGrande(!eGrande(), true); });
+
+  // ─── La lettura a voce (08/09/2026, VOCE.md § 3-A) ──────────────────────────────────────
+  // La voce del telefono legge le risposte, frase per frase mentre arrivano. Niente esce dal
+  // telefono: non c'è nessun fornitore in mezzo. Si accende con «Leggimela» e il telefono se lo
+  // ricorda; nella modalità grande è accesa di partenza (chi legge male non deve cercarla).
+  // Se il browser non sa leggere, il bottone non compare.
+  var Sintesi = window.speechSynthesis || null;
+  var CHIAVE_LETTURA = "lettura";
+  var leggi = document.getElementById("leggi");
+  var letturaAccesa = false;
+  var lettoFino = 0;          // fin dove, nella risposta in corso, la voce è già arrivata
+  var voceScelta;             // la voce italiana del telefono, quando la si trova
+  var sbloccata = false;      // iPhone fa partire una voce solo dopo un tocco: il primo lo sblocca
+
+  function mettiLettura(si, ricorda) {
+    letturaAccesa = !!si && !!Sintesi;
+    leggi.textContent = letturaAccesa ? "Leggimela: sì" : "Leggimela";
+    leggi.setAttribute("aria-pressed", letturaAccesa ? "true" : "false");
+    if (!letturaAccesa) zittisci();
+    if (ricorda) { try { localStorage.setItem(CHIAVE_LETTURA, si ? "si" : "no"); } catch (e) { /* niente memoria */ } }
+  }
+  function voceItaliana() {
+    if (voceScelta !== undefined) return voceScelta;
+    var voci = (Sintesi && Sintesi.getVoices && Sintesi.getVoices()) || [];
+    if (!voci.length) return null;   // non ancora caricate: si riprova alla prossima frase
+    var it = voci.filter(function (v) { return /^it([-_]|$)/i.test(v.lang || ""); });
+    var locali = it.filter(function (v) { return v.localService; });
+    voceScelta = locali[0] || it[0] || null;
+    return voceScelta;
+  }
+  function pronuncia(testo) {
+    if (!Sintesi || !testo) return;
+    var u = new SpeechSynthesisUtterance(testo);
+    u.lang = "it-IT";
+    u.rate = 0.95;
+    var v = voceItaliana();
+    if (v) u.voice = v;
+    Sintesi.speak(u);
+  }
+  function zittisci() { if (Sintesi) { try { Sintesi.cancel(); } catch (e) { /* già zitta */ } } }
+  function sblocca() {
+    if (sbloccata || !Sintesi || !letturaAccesa) return;
+    sbloccata = true;
+    try { Sintesi.speak(new SpeechSynthesisUtterance(" ")); } catch (e) { /* pazienza */ }
+  }
+  function nuovaLettura() { zittisci(); lettoFino = 0; }
+  // Legge, della risposta in corso, le frasi complete non ancora lette. Alla fine, tutto il resto.
+  function leggiAPezzi(testo, finale) {
+    if (!letturaAccesa || !Sintesi || !testo) return;
+    var fino;
+    if (finale) fino = testo.length;
+    else {
+      var re = /[.!?…][»")]?(?=\s|$)|\n/g, m, ultima = -1;
+      re.lastIndex = lettoFino;
+      while ((m = re.exec(testo)) !== null) ultima = m.index + m[0].length;
+      if (ultima < 0) return;
+      fino = ultima;
+    }
+    var pezzo = testo.slice(lettoFino, fino).replace(/\s+/g, " ").trim();
+    lettoFino = Math.max(lettoFino, fino);
+    if (pezzo) pronuncia(pezzo);
+  }
+
+  if (Sintesi) {
+    leggi.hidden = false;
+    document.getElementById("riga-leggi").hidden = false;
+    document.getElementById("riga-voce").hidden = false;
+    var salvataLettura = "";
+    try { salvataLettura = localStorage.getItem(CHIAVE_LETTURA) || ""; } catch (e) { /* niente memoria */ }
+    mettiLettura(salvataLettura ? salvataLettura === "si" : eGrande(), false);
+    leggi.addEventListener("click", function () {
+      var ora = !letturaAccesa;
+      mettiLettura(ora, true);
+      if (ora) {
+        sblocca();
+        // Appena accesa, legge l'ultima risposta se c'è: così si sente subito com'è.
+        for (var i = tutti.length - 1; i >= 0; i--) {
+          if (tutti[i].role === "assistant") { lettoFino = 0; pronuncia(tutti[i].content); break; }
+        }
+      }
+    });
+    manda.addEventListener("click", sblocca);
+    ferma.addEventListener("click", zittisci);
+    document.getElementById("entra").addEventListener("click", sblocca);
+    if (Sintesi.addEventListener) Sintesi.addEventListener("voiceschanged", function () { voceScelta = undefined; });
+  }
+  // La riga «parlare invece di scrivere» si vede solo se il telefono sa trascrivere.
+  if (Riconoscimento) document.getElementById("riga-parla").hidden = false;
 })();
 </script>
 
