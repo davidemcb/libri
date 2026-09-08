@@ -93,7 +93,7 @@
       '<em>Il corpo è il primo posto.</em><br>' +
       '<a href="' + esc(BASE_SITO) + '" target="_blank" rel="noopener">Il sito</a> · ' +
       '<a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Privacy</a> · ' +
-      '<a href="#archivio">Le settimane passate</a> · <a href="#installa">Metti l\'app sul telefono</a></p></section>';
+      '<a href="#email">Una pagina il lunedì, per posta</a> · <a href="#archivio">Le settimane passate</a> · <a href="#installa">Metti l\'app sul telefono</a></p></section>';
   }
 
   /* ---------- condivisione ---------- */
@@ -225,7 +225,7 @@
       cartaPost(s, n, {etichetta:"La riga di oggi", linkPagina:true}) +
       '</section>' +
       '<section class="sez"><p class="prosa muted piccolo">Una riga al giorno, una pagina a settimana. Niente da fare, niente da imparare: se una riga ti somiglia, passala a chi ne ha bisogno.</p></section>' +
-      invitoPratica(null) + piede();
+      invitoPratica(null) + sezioneEmail("oggi") + piede();
   }
 
   function vistaSettimana(inizio){
@@ -288,7 +288,7 @@
       TEMI_DIMMI.map(function(t){ return '<label><input type="checkbox" name="tema" value="' + esc(t) + '">' + esc(t) + '</label>'; }).join("") + '</div></div>' +
       '<div><p class="lbl" style="margin-bottom:.7rem">Se vuoi, due righe</p><textarea name="testo" placeholder="Cosa ti è rimasto addosso di quello che hai letto. O cosa non trovi. E se l\'app ti ha dato problemi a installarla, scrivimelo qui: è la cosa che mi serve di più adesso."></textarea></div>' +
       '<div class="azioni"><button class="btn btn-pieno" type="submit" data-via="whatsapp">Mandalo su WhatsApp</button><button class="btn btn-vuoto" type="submit" data-via="email">Mandalo per email</button></div>' +
-      '<p class="muted piccolo">Si apre WhatsApp o la posta col messaggio già scritto: lo leggi, lo cambi, lo mandi tu. Qui dentro non resta niente.</p></form></section>' + piede();
+      '<p class="muted piccolo">Si apre WhatsApp o la posta col messaggio già scritto: lo leggi, lo cambi, lo mandi tu. Qui dentro non resta niente.</p></form></section>' + sezioneEmail("dimmi") + piede();
   }
 
   function sezioneCantiere(){
@@ -327,6 +327,56 @@
       (testo ? "\n\n" + testo : "");
     if (via === "email") location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Dalla tua app") + "&body=" + encodeURIComponent(msg);
     else window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  });
+
+  /* ---------- la posta del lunedì (chiesto da Davide l'08/09/2026: «nell'app non c'è la parte
+     per lasciare la mail») ----------
+     Stesso modulo Brevo del sito (config.js → modulo), stessa ORIGINE «pagine» della home, così
+     entra nella stessa automazione: una pagina il lunedì alle sette. Da dove viene lo dice
+     UTM_SOURCE = app, che in Brevo esiste già. L'email non passa da qui: va dritta a Brevo. */
+  function sezioneEmail(da){
+    return '<section class="sez posta"><div class="testata"><p class="lbl">Per posta</p><h2>Una pagina ogni lunedì.</h2>' +
+      '<p class="sotto">Una pagina vera dai libri, ogni lunedì alle sette. Un problema, e quello che il libro ne dice. Niente altro.</p></div>' +
+      '<form class="modulo-email" data-da="' + esc(da || "app") + '" novalidate>' +
+      '<label class="lbl" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>' +
+      '<input name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email" inputmode="email">' +
+      '<label class="consenso"><input type="checkbox" name="OPT_IN" required><span>Sì, una pagina il lunedì. Posso cancellarmi con un clic. <a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Come tratto i dati</a>.</span></label>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="submit">Mandamela il lunedì</button></div>' +
+      '<p class="esito muted piccolo" hidden>Fatto. La prima pagina arriva lunedì alle sette.</p>' +
+      '<p class="errore piccolo" hidden></p>' +
+      '<p class="muted piccolo">Una pagina il lunedì, e niente altro. Un clic per cancellarti, in fondo a ogni messaggio.</p></form></section>';
+  }
+  function vistaEmail(){ return sezioneEmail("email") + piede(); }
+
+  vista.addEventListener("submit", function(ev){
+    var f = ev.target.closest(".modulo-email");
+    if (!f) return;
+    ev.preventDefault();
+    var campo = f.querySelector('input[type="email"]'), ok = f.querySelector('input[type="checkbox"]');
+    var esito = f.querySelector(".esito"), errore = f.querySelector(".errore"), bottone = f.querySelector("button");
+    function dico(m){ errore.textContent = m; errore.hidden = false; }
+    errore.hidden = true;
+    if (!campo.value || campo.validity.valid === false) { dico("Controlla l'indirizzo: manca qualcosa."); return; }
+    if (!ok.checked) { dico("Serve la spunta: senza il tuo consenso non posso scriverti."); return; }
+    if (!C.modulo) { dico("Il modulo non è ancora collegato al servizio email."); return; }
+    var d = new FormData();
+    d.append(C.campoEmail || "EMAIL", campo.value);
+    Object.keys(C.campiExtra || {}).forEach(function(k){ d.append(k, C.campiExtra[k]); });
+    d.append("ORIGINE", "pagine");
+    d.append("UTM_SOURCE", "app");
+    d.append("UTM_CAMPAIGN", "");
+    d.append("UTM_CONTENUTO", f.getAttribute("data-da") || "app");
+    bottone.disabled = true; bottone.textContent = "Un attimo…";
+    fetch(C.modulo, {method:"POST", body:d, mode:"no-cors"})
+      .then(function(){ campo.value = ""; ok.checked = false; bottone.hidden = true; esito.hidden = false; })
+      .catch(function(){
+        // se la richiesta non parte, si lascia fare al browser: Brevo mostra la sua pagina
+        f.setAttribute("action", C.modulo); f.setAttribute("method", "POST");
+        var h = function(n, v){ var i = document.createElement("input"); i.type = "hidden"; i.name = n; i.value = v; f.appendChild(i); };
+        Object.keys(C.campiExtra || {}).forEach(function(k){ h(k, C.campiExtra[k]); });
+        h("ORIGINE", "pagine"); h("UTM_SOURCE", "app"); h("UTM_CONTENUTO", f.getAttribute("data-da") || "app");
+        f.submit();
+      });
   });
 
   function vistaInstalla(){
@@ -571,6 +621,7 @@
       case "parla": html = vistaParla(); break;
       case "libri": html = vistaLibri(); break;
       case "dimmi": html = vistaDimmi(); break;
+      case "email": html = vistaEmail(); break;
       case "installa": html = vistaInstalla(); break;
       default: html = nonTrovato();
     }
