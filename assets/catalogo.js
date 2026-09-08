@@ -1,5 +1,5 @@
 /* GENERATO da MARKETING/APP/servizio-conversazione/costruisci_catalogo_js.py — non si corregge qui.
-   371 capitoli in 15 libri, dalle schede del 2026-09-08.
+   501 capitoli in 20 libri, dalle schede del 2026-09-08.
    Serve al foglio di fine conversazione in parliamone.html: dice quali capitoli esistono davvero,
    quali libri sono in vendita, e quali segni del corpo hanno una pratica nell'app. */
 window.CATALOGO = {
@@ -549,6 +549,195 @@ window.CATALOGO = {
     "28": "Otto parole",
     "29": "E se poi si arrabbia",
     "30": "Il bite nel cassetto"
+   }
+  },
+  {
+   "chiave": "scale",
+   "titolo": "Sono caduto dalle scale",
+   "vendita": false,
+   "alias": [
+    "sono caduto dalle scale",
+    "caduto dalle scale"
+   ],
+   "config": "",
+   "capitoli": {
+    "1": "Sono caduto dalle scale",
+    "2": "Il colletto tirato su",
+    "3": "«Beato te»",
+    "4": "Trenta centimetri e quaranta chili",
+    "5": "La parola cancellata",
+    "6": "La mattina dopo",
+    "7": "I cocci",
+    "8": "Chi è questa",
+    "9": "La carta che non passa",
+    "10": "Le tre e venti",
+    "11": "«Se te ne vai»",
+    "12": "Dalla mia parte del letto",
+    "13": "Provo a dirlo ad alta voce",
+    "14": "Le mani",
+    "15": "Anche io ho urlato",
+    "16": "Cosa direbbe mio padre",
+    "17": "In corridoio, in pigiama",
+    "18": "Il numero che non chiamo",
+    "19": "Il quaderno da due euro",
+    "20": "Una persona sola",
+    "21": "Non è un brutto carattere",
+    "22": "Restare, per adesso",
+    "23": "La porta",
+    "24": "Non sono caduto dalle scale"
+   }
+  },
+  {
+   "chiave": "yogurt",
+   "titolo": "Donne yogurt",
+   "vendita": false,
+   "alias": [
+    "donne yogurt"
+   ],
+   "config": "",
+   "capitoli": {
+    "1": "Donne yogurt",
+    "2": "«Che hai?» — «Niente»",
+    "3": "Si sono lasciati",
+    "4": "Ma cosa vuoi da me?",
+    "5": "Non mi ascolti",
+    "6": "L’estratto conto",
+    "7": "Non è quello che fai",
+    "8": "Il sesso",
+    "9": "Il desiderio",
+    "10": "La risata al telefono",
+    "11": "Sentirsi vista",
+    "12": "La borsa del lavoro sulla sedia",
+    "13": "Sentirsi scelta",
+    "14": "E lui?",
+    "15": "Il marito che risolve",
+    "16": "L’uomo che non capisce",
+    "17": "La donna che smette di chiedere",
+    "18": "I bambini dai nonni",
+    "19": "Quando arriva il silenzio",
+    "20": "Il giro dell’isolato",
+    "21": "Il rancore",
+    "22": "La distanza",
+    "23": "Non è diventata acida in un giorno",
+    "24": "Il disegno sul frigo",
+    "25": "Due persone che si sono perse",
+    "26": "Le scarpe nuove nell’ingresso",
+    "27": "Tornare a guardarsi",
+    "28": "La frase provata in macchina",
+    "29": "Non esiste lo yogurt perfetto"
+   }
+  },
+  {
+   "chiave": "mamma-moglie",
+   "titolo": "Mamma contro moglie",
+   "vendita": false,
+   "alias": [
+    "mamma contro moglie"
+   ],
+   "config": "",
+   "capitoli": {
+    "1": "Mamma contro moglie",
+    "2": "«Mia madre è fatta così»",
+    "3": "«Fai come dice tua mamma»",
+    "4": "La telefonata della mamma",
+    "5": "Il pranzo della domenica",
+    "6": "La tazzina buona",
+    "7": "Natale da chi?",
+    "8": "«Non posso dirglielo»",
+    "9": "Quando lei si arrabbia con mia madre",
+    "10": "Tanto la casa c’è",
+    "11": "Quando mia madre si arrabbia con lei",
+    "12": "Io in mezzo",
+    "13": "La caparra",
+    "14": "Il figlio che non vuole scegliere",
+    "15": "Essere un buon figlio",
+    "16": "Essere un buon marito",
+    "17": "Tre piatti",
+    "18": "Il senso di colpa del figlio",
+    "19": "Quando diventi padre",
+    "20": "Le piante sul balcone",
+    "21": "Tua madre resta tua madre",
+    "22": "Ma la tua vita è la tua",
+    "23": "L’asse da stiro nella tua stanza",
+    "24": "Mettere un confine",
+    "25": "La sedia di tuo fratello",
+    "26": "Senza tradire nessuno",
+    "27": "Il braccio sulle scale",
+    "28": "Diventare adulto",
+    "29": "Mamma, ti voglio bene"
+   }
+  },
+  {
+   "chiave": "smetto",
+   "titolo": "Quando voglio smetto",
+   "vendita": false,
+   "alias": [
+    "quando voglio smetto",
+    "ancora uno"
+   ],
+   "config": "",
+   "capitoli": {
+    "1": "Ancora uno",
+    "2": "La luce del frigo",
+    "3": "Le nove e dieci",
+    "4": "Prossimo episodio fra otto secondi",
+    "5": "Il pacco sul tavolo",
+    "6": "Prima di mettere i piedi per terra",
+    "7": "«Mi rilassa»",
+    "8": "«Me lo merito»",
+    "9": "«Lo fanno tutti»",
+    "10": "«Ho una vita normale»",
+    "11": "Il sacchetto che tintinna",
+    "12": "Quello che dice il corpo alle sette",
+    "13": "La mano arriva prima",
+    "14": "Che rumore fa la casa, prima",
+    "15": "La domenica alle cinque",
+    "16": "La sera in cui non c’è niente",
+    "17": "La volta che non l’ho fatto",
+    "18": "Dove vado, mentre lo faccio",
+    "19": "Accorgersi non è smettere",
+    "20": "«Me lo merito» e «mi serve»",
+    "21": "Non è il bicchiere",
+    "22": "Quelli che sono di là",
+    "23": "Un minuto sulla sedia",
+    "24": "Ancora uno"
+   }
+  },
+  {
+   "chiave": "risica",
+   "titolo": "Chi non risica, non rosica",
+   "vendita": false,
+   "alias": [
+    "chi non risica non rosica",
+    "chi non risica, non rosica",
+    "chi non risica"
+   ],
+   "config": "",
+   "capitoli": {
+    "1": "Te l’avevo detto",
+    "2": "La saracinesca",
+    "3": "La cartella con l’elastico",
+    "4": "«Vediamo»",
+    "5": "Rientro entro dicembre",
+    "6": "Se ci metti tutto, ce la fai",
+    "7": "Il caffè al banco",
+    "8": "La spesa alle nove di sera",
+    "9": "Passiamo di là?",
+    "10": "La carta alla cassa",
+    "11": "Il curriculum a quarantotto anni",
+    "12": "La festa a cui non vado",
+    "13": "La cena di classe",
+    "14": "Undici minuti in bagno",
+    "15": "Chi te l’ha dato, l’elenco",
+    "16": "L’«ancora» che cade",
+    "17": "Il metro ha una riga sola",
+    "18": "Una parola da bilanci",
+    "19": "Le scatole in garage",
+    "20": "Non è la saracinesca",
+    "21": "Quello che non funzionava",
+    "22": "Il retro dello scontrino",
+    "23": "Il pane, un anno dopo",
+    "24": "Chi non risica, non rosica"
    }
   }
  ],
