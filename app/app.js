@@ -14,11 +14,13 @@
     duau: {titolo:"Da uomo a uomo", cover:"../img/duau.jpg", pagina:"da-uomo-a-uomo.html",
            sotto:"Per gli uomini che dicono «tutto a posto» e intanto reggono.",
            cartaceo:C.amazon.duauCartaceo, prezzoCartaceo:"19,90 €",
-           ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoEbook:"5,99 €", ebookDalSito:!!C.gumroad.duauEbook},
+           ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoEbook:"5,99 €", ebookDalSito:!!C.gumroad.duauEbook,
+           audiolibro:"#negozio?libro=duau_audio", prezzoAudiolibro:"9,90 €"},
     sv:   {titolo:"Senza veli", cover:"../img/senzaveli.jpg", pagina:"senza-veli.html",
            sotto:"Per la donna che regge tutto.",
            cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"19,90 €",
-           ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook},
+           ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook,
+           audiolibro:"#negozio?libro=sv_audio", prezzoAudiolibro:"9,90 €"},
     vds:  {titolo:"Vestirsi di sé", cover:"../img/vestirsi.jpg", coverL:700, coverA:1052,
            pagina:"vestirsi-di-se.html",
            sotto:"Il primo libro: l'auto-massaggio consapevole, con gli esercizi per tutto il corpo.",
@@ -27,7 +29,8 @@
     pac:  {titolo:"Prenditi a carezze", cover:"../img/prenditi.jpg", pagina:"prenditi-a-carezze.html",
            sotto:"Una pratica semplice, nessun metodo da imparare.",
            cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"9,90 €",
-           ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.pacEbook}
+           ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.pacEbook,
+           audiolibro:"#negozio?libro=pac_audio", prezzoAudiolibro:"9,90 €"}
   };
   LIBRI.alce = {titolo:"L'Alce", cover:"", sotto:"Un viaggio dentro la perdita di una certezza.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   LIBRI.exnemico = {titolo:"L'ex non è un nemico", cover:"", sotto:"Quando la separazione finisce, ma la guerra continua.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
@@ -165,6 +168,7 @@
   function bottoniLibro(L, compatti){
     var out = "";
     if (L.ebook) out += '<a class="btn btn-pieno" href="' + esc(L.ebook) + '" target="_blank" rel="noopener">Ebook' + (L.prezzoEbook ? ", " + L.prezzoEbook : "") + (L.ebookDalSito ? " · subito" : " · Kindle") + '</a>';
+    if (L.audiolibro) out += '<a class="btn btn-vuoto" href="' + esc(L.audiolibro) + '">Audiolibro' + (L.prezzoAudiolibro ? ", " + L.prezzoAudiolibro : "") + '</a>';
     if (L.cartaceo) out += '<a class="btn btn-vuoto" href="' + esc(L.cartaceo) + '" target="_blank" rel="noopener">Cartaceo su Amazon' + (L.prezzoCartaceo ? ", " + L.prezzoCartaceo : "") + '</a>';
     else if (!compatti) out += '<span class="btn btn-vuoto muted" aria-disabled="true">Cartaceo in arrivo</span>';
     return '<div class="azioni">' + out + '</div>';
@@ -302,8 +306,10 @@
     if (qs.has("ritira")) return vistaNegozioAttesa(function(){ return ritiraNegozio(qs.get("ritira")); }, "Stiamo controllando il pagamento…");
     if (qs.has("apri")) return vistaNegozioAttesa(function(){ return apriMieiLibri(qs.get("apri")); }, "Un attimo, apriamo i tuoi libri…");
     var avviso = qs.has("annullato") ? '<p class="avviso">Hai annullato: non è stato addebitato niente.</p>' : "";
-    // ?libro=sv (o duau): chi arriva da un link che nomina già il libro (es. dalla conversazione
-    // col Bibliotecario) lo trova con la spunta già messa, invece di dover scegliere fra i due.
+    // ?libro=sv (o duau, o una delle tre chiavi audio pac_audio/sv_audio/duau_audio): chi arriva
+    // da un link che nomina già il prodotto (dal Bibliotecario, o dal bottone Audiolibro nei
+    // libri) lo trova con la spunta già messa, invece di dover scegliere. Il confronto è con la
+    // chiave del catalogo così com'è: non serve elencare le chiavi qui, vale per qualunque prodotto.
     var preselezionato = qs.get("libro") || "";
     return vistaNegozioAttesa(function(){
       return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); }).then(function(d){
