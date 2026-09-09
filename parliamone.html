@@ -725,6 +725,18 @@
         a.href = l.href; a.target = DENTRO && l.href.indexOf("http") !== 0 ? "_top" : "_blank"; a.rel = "noopener";
         fondo.appendChild(a);
       });
+      // L'assaggio audio (§ ASSAGGIO_AUDIO sopra): stesso tono sobrio dei link di lettura, mai un
+      // pulsante. Solo per i sette capitoli già liberi in audio; per gli altri capitoli di un libro
+      // con audiolibro, una riga che lo dice e basta, senza link (l'audiolibro è in vendita).
+      var fileAssaggio = ASSAGGIO_AUDIO[p.libro + ":" + p.numero];
+      if (fileAssaggio) {
+        var ascolta = el("a", null, "Ascolta un assaggio di questo capitolo");
+        ascolta.href = fileAssaggio;
+        ascolta.target = DENTRO ? "_top" : "_blank"; ascolta.rel = "noopener";
+        fondo.appendChild(ascolta);
+      } else if (LIBRI_CON_AUDIOLIBRO[p.libro]) {
+        fondo.appendChild(el("span", null, "L'audio di questo capitolo c'è nell'audiolibro completo, in vendita."));
+      }
     } else if (!p.vendita) fondo.appendChild(el("span", null, "Sta per uscire."));
     box.appendChild(fondo);
     conv.appendChild(box);
@@ -788,6 +800,25 @@
   var CAT = window.CATALOGO || { libri: [], corpo: [] };
   var SITO = window.SITO || {};
   var PAGINE_LIBRO = { duau: "da-uomo-a-uomo.html", sv: "senza-veli.html", pac: "prenditi-a-carezze.html" };
+
+  // Assaggio audio del capitolo, deciso da Davide il 09/09/2026: SOLO per i capitoli già scelti
+  // come «capitolo gratis» in versione testo (gli stessi PDF di SITO/capitoli/) — mai un'anteprima
+  // più ampia. Chiave "libro:numero" con lo stesso numero del catalogo (window.CATALOGO), verso un
+  // file mp3 in SITO/audio/. «Prenditi a carezze» non c'è: il suo estratto è Prologo + Capitolo 1
+  // insieme, non un capitolo pulito, quindi niente assaggio per quel libro.
+  var ASSAGGIO_AUDIO = {
+    "duau:3":  "audio/da-uomo-a-uomo-capitolo-padre.mp3",
+    "duau:7":  "audio/da-uomo-a-uomo-capitolo-tradimento.mp3",
+    "duau:8":  "audio/da-uomo-a-uomo-capitolo-separarsi.mp3",
+    "duau:11": "audio/da-uomo-a-uomo-capitolo-figli.mp3",
+    "duau:12": "audio/da-uomo-a-uomo-capitolo-solitudine.mp3",
+    "sv:49":   "audio/senza-veli-capitolo-la-donna-che-regge-tutto-i.mp3",
+    "sv:50":   "audio/senza-veli-capitolo-la-donna-che-regge-tutto-ii.mp3"
+  };
+  // I libri che hanno un audiolibro (anche se non ancora in vendita): per un capitolo senza
+  // assaggio pronto si dice solo che l'audio esiste nel libro completo, senza link — è in vendita,
+  // non gratis, e oggi non esiste ancora un link diretto dove venderlo.
+  var LIBRI_CON_AUDIOLIBRO = { duau: true, sv: true, pac: true };
 
   // Dove va a finire un riscontro, se la persona decide di darlo. Parte da lei, con le sue parole,
   // dalla sua app: qui non si manda niente e non si allega niente della conversazione.
@@ -1413,6 +1444,20 @@
     });
     dopoRisposta(pezzo[pezzo.length - 1][1]);
     if (PROVA === "domanda") { fermaOrologio(); chiediSeHaFinito(); }
+  }
+
+  /* La prova dell'assaggio audio, senza il servizio: ...parliamone.html?prova=pagina
+   * Mostra tre pagine finte per vedere le tre situazioni dell'assaggio audio (09/09/2026):
+   * un capitolo con l'assaggio pronto, un capitolo dello stesso libro senza, e un libro senza
+   * audiolibro. Non chiama il servizio, non tocca il vero window.CATALOGO. */
+  if (PROVA === "pagina") {
+    document.getElementById("entra").click();
+    mostraPagina({ libro: "duau", numero: 7, titolo: "Il tradimento", titoloLibro: "Da uomo a uomo",
+      testo: "§ Apertura\nLo capisci prima di avere una prova, e il corpo resta in allerta anche quando non serve più." });
+    mostraPagina({ libro: "duau", numero: 9, titolo: "La relazione che resta", titoloLibro: "Da uomo a uomo",
+      testo: "§ Apertura\nCapitolo di prova senza assaggio pronto, per vedere la riga senza link." });
+    mostraPagina({ libro: "alce", numero: 3, titolo: "Il telefono che non dovevi guardare", titoloLibro: "L'Alce",
+      testo: "§ Apertura\nLibro senza audiolibro: qui non deve cambiare niente rispetto a prima." });
   }
 
   // ─── La voce all'andata (08/09/2026, VOCE.md § 2-A) ─────────────────────────────────────
