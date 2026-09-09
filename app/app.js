@@ -283,13 +283,19 @@
 
   /* ---------- il negozio (09/09/2026): checkout Stripe in italiano, senza uscire dall'app ---------- */
   var SERVIZIO = "https://conversazione.davidescuderi1981.workers.dev";
-  var NEGOZIO_TITOLI = {sv: "Senza veli", duau: "Da uomo a uomo"};   // ripetuto qui: il worker non ha la voce dei libri, l'app sì
+  var NEGOZIO_TITOLI = {};   // riempito dal catalogo del worker, mano a mano che lo si legge — così «I miei libri» sa i nomi anche a freddo
 
   function vistaNegozio(query){
     var qs = new URLSearchParams(query || "");
     if (qs.has("ritira")) return vistaNegozioAttesa(function(){ return ritiraNegozio(qs.get("ritira")); }, "Stiamo controllando il pagamento…");
     if (qs.has("apri")) return vistaNegozioAttesa(function(){ return apriMieiLibri(qs.get("apri")); }, "Un attimo, apriamo i tuoi libri…");
-    return vistaNegozioScelta(qs.has("annullato") ? '<p class="avviso">Hai annullato: non è stato addebitato niente.</p>' : "");
+    var avviso = qs.has("annullato") ? '<p class="avviso">Hai annullato: non è stato addebitato niente.</p>' : "";
+    return vistaNegozioAttesa(function(){
+      return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); }).then(function(d){
+        (d.prodotti || []).forEach(function(p){ NEGOZIO_TITOLI[p.chiave] = p.titolo; });
+        return vistaNegozioScelta(d.prodotti || [], avviso);
+      });
+    }, "Un attimo, apriamo il negozio…");
   }
 
   function vistaNegozioAttesa(promessa, testoAttesa){
@@ -297,18 +303,20 @@
     return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Negozio</h1></div><p class="attesa muted">' + esc(testoAttesa) + '</p></section>';
   }
 
-  function vistaNegozioScelta(avviso){
-    var chiavi = Object.keys(NEGOZIO_TITOLI);
-    var righe = chiavi.map(function(k){
-      var L = LIBRI[k] || {};
-      return '<label class="libro senza-cover" style="cursor:pointer"><input type="checkbox" name="prodotto" value="' + esc(k) + '" style="margin-top:.3rem">' +
-        '<div><h3>' + esc(NEGOZIO_TITOLI[k]) + '</h3><p class="muted piccolo">' + esc(L.sotto || "") + '</p></div></label>';
+  function vistaNegozioScelta(prodotti, avviso){
+    var disponibili = prodotti.filter(function(p){ return p.tipo !== "audio" || p.pronto; });
+    var inArrivo = prodotti.filter(function(p){ return p.tipo === "audio" && !p.pronto; });
+    var righe = disponibili.map(function(p){
+      var L = LIBRI[p.chiave] || {};
+      return '<label class="libro senza-cover" style="cursor:pointer"><input type="checkbox" name="prodotto" value="' + esc(p.chiave) + '" style="margin-top:.3rem">' +
+        '<div><h3>' + esc(p.titolo) + '</h3><p class="muted piccolo">' + esc(p.sotto || L.sotto || "") + '</p></div></label>';
     }).join("");
+    var rigaInArrivo = inArrivo.length ? '<p class="muted piccolo">In arrivo: ' + esc(inArrivo.map(function(p){ return p.titolo; }).join(", ")) + '.</p>' : "";
     return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Scegli e compra</h1>' +
-      '<p class="sotto">Pagamento in italiano, il libro arriva via email in PDF ed EPUB, e resta sempre tuo in «I miei libri».</p></div>' +
+      '<p class="sotto">Pagamento in italiano, il libro arriva via email, e resta sempre tuo in «I miei libri».</p></div>' +
       (avviso || "") +
       '<form id="modulo-negozio" class="sez">' +
-      '<div class="prosa">' + righe + '</div>' +
+      '<div class="prosa">' + righe + '</div>' + rigaInArrivo +
       '<div class="modulo-email"><input type="email" name="email" placeholder="La tua email, dove arriva il libro" required>' +
       '<label class="consenso"><input type="checkbox" name="subito" required><span>Voglio il libro subito, e so che così rinuncio al diritto di recesso di 14 giorni (l\'articolo 59 del Codice del Consumo: vale per ogni contenuto digitale che parte prima).</span></label>' +
       '<div class="azioni"><button class="btn btn-pieno" type="submit">Vai al pagamento</button></div>' +
@@ -366,15 +374,25 @@
       .then(function(){ bottone.disabled = false; });
   });
 
+  function caricaTitoliNegozio(){
+    if (Object.keys(NEGOZIO_TITOLI).length) return Promise.resolve();
+    return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); })
+      .then(function(d){ (d.prodotti || []).forEach(function(p){ NEGOZIO_TITOLI[p.chiave] = p.titolo; }); })
+      .catch(function(){});   // se il catalogo non risponde, si mostrano comunque le chiavi
+  }
+
   function ritiraNegozio(sessione){
-    return fetch(SERVIZIO + "/negozio/ritira?s=" + encodeURIComponent(sessione))
-      .then(function(r){ return r.json(); })
+    // Chi arriva qui viene dal ritorno di Stripe: potrebbe non aver mai visto il catalogo
+    // in questa visita, quindi NEGOZIO_TITOLI potrebbe essere ancora vuoto.
+    return caricaTitoliNegozio().then(function(){
+      return fetch(SERVIZIO + "/negozio/ritira?s=" + encodeURIComponent(sessione));
+    }).then(function(r){ return r.json(); })
       .then(function(d){
         if (!d.pronta) return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Un momento ancora</h1></div>' +
           '<p class="sotto">Il pagamento non risulta ancora concluso. Se hai appena pagato, aspetta qualche secondo e <a href="' + esc(location.hash) + '" onclick="location.reload();return false">riprova</a>.</p></section>' + piede();
         var titoli = d.prodotti.map(function(k){ return NEGOZIO_TITOLI[k] || k; });
         return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Fatto</h1></div>' +
-          '<p class="sotto">' + (titoli.length > 1 ? "I tuoi libri (" + esc(titoli.join(", ")) + ") sono" : "«" + esc(titoli[0]) + "» è") + ' in arrivo via email, in PDF ed EPUB. Controlla anche la posta indesiderata.</p>' +
+          '<p class="sotto">' + (titoli.length > 1 ? "I tuoi libri (" + esc(titoli.join(", ")) + ") sono" : "«" + esc(titoli[0]) + "» è") + ' in arrivo via email. Controlla anche la posta indesiderata.</p>' +
           '<p class="muted piccolo">L\'email porta anche il link a «I miei libri»: da lì li ritrovi quando vuoi, senza password.</p>' +
           '<div class="azioni"><a class="btn btn-vuoto" href="#negozio">Torna al negozio</a></div></section>' + piede();
       });
@@ -390,9 +408,11 @@
         if (!lista.length) return '<section class="sez"><div class="testata"><p class="lbl">I miei libri</p><h1>Non c\'è ancora niente</h1></div>' +
           '<p class="sotto">Con questa email non risulta nessun acquisto.</p><div class="azioni"><a class="btn btn-pieno" href="#negozio">Vai al negozio</a></div></section>' + piede();
         var righe = lista.map(function(p){
-          return '<div class="libro senza-cover"><div><h3>' + esc(p.titolo) + '</h3>' +
-            '<div class="azioni"><a class="btn btn-pieno" href="' + SERVIZIO + '/negozio/scarica?t=' + encodeURIComponent(link) + '&prodotto=' + esc(p.chiave) + '&formato=pdf">Scarica il PDF</a>' +
-            '<a class="btn btn-vuoto" href="' + SERVIZIO + '/negozio/scarica?t=' + encodeURIComponent(link) + '&prodotto=' + esc(p.chiave) + '&formato=epub">Scarica l\'EPUB</a></div></div></div>';
+          var base = SERVIZIO + '/negozio/scarica?t=' + encodeURIComponent(link) + '&prodotto=' + esc(p.chiave) + '&formato=';
+          var bottoni = p.tipo === "audio"
+            ? '<a class="btn btn-pieno" href="' + base + 'm4b">Scarica l\'audiolibro</a>'
+            : '<a class="btn btn-pieno" href="' + base + 'pdf">Scarica il PDF</a><a class="btn btn-vuoto" href="' + base + 'epub">Scarica l\'EPUB</a>';
+          return '<div class="libro senza-cover"><div><h3>' + esc(p.titolo) + '</h3><div class="azioni">' + bottoni + '</div></div></div>';
         }).join("");
         return '<section class="sez"><div class="testata"><p class="lbl">I miei libri</p><h1>Tutto quello che hai comprato</h1></div>' + righe + '</section>' + piede();
       });
