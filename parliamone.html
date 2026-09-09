@@ -375,6 +375,18 @@
   var DENTRO = new URLSearchParams(location.search).get("dentro") === "1";
   if (DENTRO) document.documentElement.classList.add("dentro");
 
+  // Il programma ambassador (09/09/2026, come in app.js): se la persona arriva qui con un
+  // link tipo parliamone.html?rif=stefania, si tiene la parola nello stesso posto e con la
+  // stessa chiave che legge l'app (negozio-rif) — stessa origine (davidemcb.github.io/libri),
+  // quindi quando la si manda verso app/#negozio la trova già lì, senza doverla ripassare
+  // nell'indirizzo. Non si controlla il nome, lo fa il worker quando arriva l'acquisto.
+  (function () {
+    try {
+      var rif = new URLSearchParams(location.search).get("rif");
+      if (rif) localStorage.setItem("negozio-rif", rif.trim().toLowerCase());
+    } catch (e) {}
+  })();
+
   // La tessera (08/09/2026, LA-TESSERA-COME-FUNZIONA.md): il biglietto firmato sta nel telefono,
   // come la chiave del cassetto. Arriva dal link dell'email (…parliamone.html?t=T1.…) o da
   // tessera.html, e si manda con ogni domanda: il tetto lo conta il server sul biglietto.
@@ -1074,13 +1086,22 @@
     return libro.vendita ? "in vendita" : "sta per uscire";
   }
 
+  // I due libri che il negozio diretto (Stripe, dentro l'app) vende oggi — 09/09/2026, la chiave
+  // è la stessa di libro.config perché così li ha nominati costruisci_negozio.py. Per questi due,
+  // il link dell'ebook "dal sito" porta al negozio nuovo (dove passa il 20% ambassador) invece che
+  // a Gumroad; per tutti gli altri libri resta come prima, perché lì non si comprano ancora.
+  var NEGOZIO_DIRETTO = { duau: true, sv: true };
+
   function linkLibro(libro) {
     var fuori = [];
     // vendita: true = Amazon e sito · "sito" = solo l'ebook dal sito (Gumroad), il cartaceo non è ancora
     // su Amazon (decisione di Davide dell'08/09/2026, MARKETING/DUE-CANALI-DUE-RITMI.md § 6.2) · false = non ancora.
     if (libro.vendita && libro.config) {
       var A = SITO.amazon || {}, G = SITO.gumroad || {};
-      var ebookSito = G[libro.config + "Ebook"], ebookAmazon = A[libro.config + "Ebook"], cartaceo = A[libro.config + "Cartaceo"];
+      var ebookAmazon = A[libro.config + "Ebook"], cartaceo = A[libro.config + "Cartaceo"];
+      var ebookSito = NEGOZIO_DIRETTO[libro.config]
+        ? "app/#negozio?libro=" + encodeURIComponent(libro.config)
+        : G[libro.config + "Ebook"];
       if (ebookSito) fuori.push({ testo: "Ebook, subito, dal sito", href: ebookSito });
       else if (ebookAmazon) fuori.push({ testo: "Ebook su Amazon", href: ebookAmazon });
       if (cartaceo) fuori.push({ testo: "Cartaceo su Amazon", href: cartaceo });

@@ -302,10 +302,13 @@
     if (qs.has("ritira")) return vistaNegozioAttesa(function(){ return ritiraNegozio(qs.get("ritira")); }, "Stiamo controllando il pagamento…");
     if (qs.has("apri")) return vistaNegozioAttesa(function(){ return apriMieiLibri(qs.get("apri")); }, "Un attimo, apriamo i tuoi libri…");
     var avviso = qs.has("annullato") ? '<p class="avviso">Hai annullato: non è stato addebitato niente.</p>' : "";
+    // ?libro=sv (o duau): chi arriva da un link che nomina già il libro (es. dalla conversazione
+    // col Bibliotecario) lo trova con la spunta già messa, invece di dover scegliere fra i due.
+    var preselezionato = qs.get("libro") || "";
     return vistaNegozioAttesa(function(){
       return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); }).then(function(d){
         (d.prodotti || []).forEach(function(p){ NEGOZIO_TITOLI[p.chiave] = p.titolo; });
-        return vistaNegozioScelta(d.prodotti || [], avviso);
+        return vistaNegozioScelta(d.prodotti || [], avviso, preselezionato);
       });
     }, "Un attimo, apriamo il negozio…");
   }
@@ -315,12 +318,13 @@
     return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Negozio</h1></div><p class="attesa muted">' + esc(testoAttesa) + '</p></section>';
   }
 
-  function vistaNegozioScelta(prodotti, avviso){
+  function vistaNegozioScelta(prodotti, avviso, preselezionato){
     var disponibili = prodotti.filter(function(p){ return p.tipo !== "audio" || p.pronto; });
     var inArrivo = prodotti.filter(function(p){ return p.tipo === "audio" && !p.pronto; });
     var righe = disponibili.map(function(p){
       var L = LIBRI[p.chiave] || {};
-      return '<label class="libro senza-cover" style="cursor:pointer"><input type="checkbox" name="prodotto" value="' + esc(p.chiave) + '" style="margin-top:.3rem">' +
+      var spuntato = preselezionato && p.chiave === preselezionato ? " checked" : "";
+      return '<label class="libro senza-cover" style="cursor:pointer"><input type="checkbox" name="prodotto" value="' + esc(p.chiave) + '" style="margin-top:.3rem"' + spuntato + '>' +
         '<div><h3>' + esc(p.titolo) + '</h3><p class="muted piccolo">' + esc(p.sotto || L.sotto || "") + '</p></div></label>';
     }).join("");
     var rigaInArrivo = inArrivo.length ? '<p class="muted piccolo">In arrivo: ' + esc(inArrivo.map(function(p){ return p.titolo; }).join(", ")) + '.</p>' : "";
