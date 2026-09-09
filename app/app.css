@@ -111,6 +111,16 @@ textarea{
   width:100%;min-height:7rem;font:inherit;font-size:1.05rem;line-height:1.55;color:var(--text);
   background:#fff;border:1px solid var(--sabbia-line);border-radius:3px;padding:.8rem;resize:vertical;
 }
+/* la posta del lunedì */
+.modulo-email{display:grid;gap:.9rem}
+.modulo-email input[type=email]{
+  width:100%;font:inherit;font-size:1.05rem;line-height:1.4;color:var(--text);
+  background:#fff;border:1px solid var(--sabbia-line);border-radius:3px;padding:.8rem;
+}
+.consenso{display:flex;gap:.7rem;align-items:flex-start;font-size:.92rem;line-height:1.5;color:var(--muted)}
+.consenso input{margin-top:.3rem;flex:none;accent-color:var(--terra)}
+.consenso a{color:inherit}
+.modulo-email .errore{color:#8a2f2f}
 .passi{padding-left:1.2rem;margin:0;display:grid;gap:.5rem}
 
 /* barra in basso */

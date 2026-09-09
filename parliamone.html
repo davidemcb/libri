@@ -37,6 +37,27 @@
     --testo: #14110E; --quieto: #6B5F52; --teal: #3D6F69; --allarme: #8E4A33;
   }
 
+  /* Su iPhone la pagina segue «Testo più grande» delle impostazioni (le pagine web di solito lo ignorano). */
+  @supports (font: -apple-system-body) { html:not(.grande) { font: -apple-system-body; } }
+
+  /* La modalità «grande» (VOCE.md § 8): per chi legge male. Carta chiara sempre, tutto più
+     grande, bottoni alti e larghi. Si accende col bottone «Aa», o col link ?grande=si. */
+  :root.grande {
+    font-size: 21px; color-scheme: light;
+    --fondo: #FBF7F1; --fondo-alt: #F2EBE1; --riga: #D3C7B7;
+    --testo: #14110E; --quieto: #4A4038; --teal: #2F5F5A; --allarme: #8E4A33;
+  }
+  .grande body { line-height: 1.6; }
+  .grande .foglio { padding-left: 1.1rem; padding-right: 1.1rem; }
+  .grande h1 { font-size: clamp(2rem, 8vw, 2.6rem); }
+  .grande .turno-mio { font-size: 1.05rem; color: var(--testo); }
+  .grande .turno-libri { font-size: 1.4rem; line-height: 1.6; }
+  .grande .righe p, .grande .piede, .grande .fine-nota, .grande .stato-voce, .grande .riga-tessera, .grande .eta, .grande .attesa, .grande .avviso { font-size: 1rem; }
+  .grande .occhiello { font-size: .85rem; }
+  .grande textarea { font-size: 1.15rem; min-height: 7rem; }
+  .grande .bottoni { flex-direction: column; align-items: stretch; gap: .9rem; }
+  .grande .bottoni button, .grande #entra { width: 100%; min-height: 3.4rem; font-size: 1.1rem; align-self: stretch; }
+
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
 
@@ -45,7 +66,7 @@
     background: var(--fondo);
     color: var(--testo);
     font-family: var(--sans);
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
@@ -145,6 +166,16 @@
     white-space: pre-wrap;
   }
 
+  /* «Hai finito, o vuoi continuare?»: la domanda che la pagina fa da sola quando cala il
+     silenzio. Serve a chi si ferma prima del tetto e se ne va senza il foglio. */
+  .chiesta {
+    border-left: 2px solid var(--teal); padding-left: 1.1rem;
+    display: flex; flex-direction: column; gap: .8rem;
+  }
+  .chiesta p { margin: 0; font-family: var(--serif); font-size: 1.2rem; line-height: 1.45; }
+  .chiesta .sotto { font-family: var(--sans); font-size: .9rem; color: var(--quieto); }
+  .chiesta .bottoni button { align-self: auto; }
+
   .campo { display: flex; flex-direction: column; gap: .9rem; }
 
   textarea {
@@ -157,6 +188,22 @@
   textarea:focus { border-color: var(--teal); outline: none; }
 
   .bottoni { display: flex; gap: .7rem; align-items: center; flex-wrap: wrap; }
+  /* La voce all'andata (VOCE.md § 2-A): mentre ascolta, il bottone cambia parole e prende un punto che batte. */
+  #parla.ascolta { border-color: var(--teal); color: var(--teal); }
+  #parla.ascolta::before {
+    content: ""; display: inline-block; width: .55em; height: .55em; border-radius: 50%;
+    background: var(--allarme); margin-right: .55em; vertical-align: middle;
+    animation: batte 1.2s ease-in-out infinite;
+  }
+  @keyframes batte { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { #parla.ascolta::before { animation: none; } }
+  .stato-voce { margin: 0; font-size: .92rem; color: var(--quieto); }
+  /* Il bottone «Aa» in alto: passa da normale a grande e viceversa. */
+  .strumenti { display: flex; justify-content: flex-end; margin-bottom: -1.5rem; }
+  #grande { font-family: var(--serif); font-size: 1.05rem; padding: .4rem .7rem; letter-spacing: .02em; }
+  #grande[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); }
+  /* La lettura a voce (VOCE.md § 3-A): mentre è accesa il bottone lo dice. */
+  #leggi[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); }
 
   .piede {
     border-top: 1px solid var(--riga); padding-top: 1.5rem;
@@ -202,6 +249,11 @@
     display: inline-block; font-family: var(--sans); font-size: .68rem; font-weight: 700;
     letter-spacing: .14em; text-transform: uppercase; color: var(--allarme); margin-bottom: .3rem;
   }
+  .fine-riscontro { display: flex; flex-direction: column; gap: .6rem; }
+  .fine-tessera { display: flex; flex-direction: column; gap: .6rem; }
+  /* La riga della tessera, sopra la casella: c'è solo se c'è una tessera. */
+  .riga-tessera { margin: 0; font-size: .84rem; color: var(--quieto); }
+  .riga-tessera a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
   .fine-bottoni { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
   .fine-esito { font-size: .9rem; color: var(--quieto); }
 
@@ -211,7 +263,7 @@
     .foglio > *:not(.foglio-fine) { display: none !important; }
     .foglio { padding: 0; }
     .foglio-fine { border-top: 0; padding-top: 0; }
-    .fine-bottoni, .fine-esito { display: none !important; }
+    .fine-bottoni, .fine-esito, .fine-riscontro { display: none !important; }
     a { color: inherit; }
   }
 
@@ -225,6 +277,10 @@
 <body>
 
 <div class="foglio">
+
+  <div class="strumenti">
+    <button id="grande" type="button" class="quieto" aria-pressed="false" aria-label="Testo più grande" title="Testo più grande">Aa</button>
+  </div>
 
   <header class="apertura">
     <svg class="segno" viewBox="0 0 46 34" role="img" aria-label="Due barre che si fermano su una linea">
@@ -247,6 +303,7 @@
       <!-- Riga della fase di prova senza libri (SOLO_CONVERSAZIONE = "si" nel worker), chiusa da Davide il 06/09/2026 («metti i libri dentro adesso»):
       <p>Quello che facciamo è ascoltarti e farti qualche domanda. Questa è una prova: non ti proponiamo niente, né libri né altro.</p> -->
       <p><strong>Quello che scrivi non lo conserviamo.</strong> Resta in questa pagina finché è aperta. Chiudila, e non resta niente da nessuna parte.</p>
+      <p id="riga-voce" hidden><span id="riga-parla" hidden>Puoi anche <strong>parlare invece di scrivere</strong>: la voce la trasforma in testo il tuo telefono, col suo servizio (Google o Apple), e qui arriva solo il testo. Lo vedi comparire e puoi correggerlo prima di mandare.</span> <span id="riga-leggi" hidden>Se vuoi, <strong>le risposte te le legge la voce del telefono</strong>: niente esce dal telefono.</span></p>
       <p>Se di mezzo c'è violenza, o stai pensando di farti del male, questo non è il posto:</p>
       <p class="numeri">
         <span><b>112</b> emergenza</span>
@@ -262,12 +319,16 @@
 
   <section class="campo" id="campo" hidden>
     <label class="occhiello" for="scrivi">Raccontamelo</label>
+    <p class="riga-tessera" id="riga-tessera" hidden></p>
     <textarea id="scrivi" placeholder="Come viene. Non serve che sia in ordine."></textarea>
     <div class="bottoni">
       <button id="manda" type="button">Manda</button>
+      <button id="parla" type="button" class="quieto" aria-pressed="false" hidden>Parla</button>
+      <button id="leggi" type="button" class="quieto" aria-pressed="false" hidden>Leggimela</button>
       <button id="ferma" type="button" class="quieto" hidden>Ferma</button>
       <button id="fai-foglio" type="button" class="quieto" hidden>Il foglio di stasera</button>
     </div>
+    <p class="stato-voce" id="stato-voce" hidden aria-live="polite"></p>
   </section>
 
   <section class="foglio-fine" id="foglio-fine" hidden aria-live="polite"></section>
@@ -295,6 +356,55 @@
   var DENTRO = new URLSearchParams(location.search).get("dentro") === "1";
   if (DENTRO) document.documentElement.classList.add("dentro");
 
+  // La tessera (08/09/2026, LA-TESSERA-COME-FUNZIONA.md): il biglietto firmato sta nel telefono,
+  // come la chiave del cassetto. Arriva dal link dell'email (…parliamone.html?t=T1.…) o da
+  // tessera.html, e si manda con ogni domanda: il tetto lo conta il server sul biglietto.
+  // Non è quello che scrivi: quello resta nella pagina e basta, come dice la soglia.
+  var CHIAVE_TESSERA = "tessera";
+  var TESSERA = "";
+  var statoTessera = "";   // valida:<restano> · finita · scaduta · invalida — lo dice il server a ogni risposta
+  // La tessera si nomina nel foglio solo se il worker dice che è in vendita (TESSERA = "si"):
+  // finché è spenta, o il worker vivo non la conosce ancora, il foglio non la nomina e non fa prezzi.
+  // Chi ha già una tessera valida la vede lo stesso. Una GET sola, all'apertura, senza modello.
+  var tesseraInVendita = false;
+  fetch(SERVIZIO + "/tessera/listino", { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) { tesseraInVendita = !!(d && d.accesa === true); riempiTessera(); })
+    .catch(function () { tesseraInVendita = false; });
+  (function () {
+    var dalLink = new URLSearchParams(location.search).get("t") || "";
+    if (dalLink && !/^T1\.[a-z]+\.\d+\.\d+\.[0-9a-f]+\.[0-9a-f]+$/.test(dalLink)) dalLink = "";
+    try {
+      if (dalLink) localStorage.setItem(CHIAVE_TESSERA, dalLink);
+      TESSERA = localStorage.getItem(CHIAVE_TESSERA) || "";
+    } catch (e) { TESSERA = dalLink; }
+    // Il biglietto non resta nella barra dell'indirizzo: se ne va, e resta la pagina di sempre.
+    if (dalLink && history.replaceState) {
+      var resto = [];
+      if (PAROLA) resto.push("p=" + encodeURIComponent(PAROLA));
+      if (DENTRO) resto.push("dentro=1");
+      history.replaceState(null, "", location.pathname + (resto.length ? "?" + resto.join("&") : ""));
+    }
+  })();
+  function scadenzaTessera(t) { var p = (t || "").split("."); return p.length === 6 ? Number(p[3]) : 0; }
+  function tesseraValida() { return !!TESSERA && scadenzaTessera(TESSERA) * 1000 > Date.now() && statoTessera !== "invalida"; }
+  function dataTessera(sec) {
+    try { return new Date(sec * 1000).toLocaleString("it-IT", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }); }
+    catch (e) { return ""; }
+  }
+  var rigaTessera = document.getElementById("riga-tessera");
+  function mostraStatoTessera() {
+    if (!TESSERA) { rigaTessera.hidden = true; return; }
+    var testo = "";
+    if (statoTessera === "invalida") testo = "La tessera salvata qui non è valida. Se l'hai comprata, riaprila dal link dell'email.";
+    else if (statoTessera === "scaduta" || !tesseraValida()) testo = "La tessera è scaduta il " + dataTessera(scadenzaTessera(TESSERA)) + ". Restano i dieci messaggi al giorno di tutti.";
+    else if (statoTessera === "finita") testo = "Tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + ". Per questo periodo ha finito i suoi messaggi: restano i dieci al giorno di tutti.";
+    else if (statoTessera.indexOf("valida:") === 0) testo = "Tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + " · " + statoTessera.slice(7) + " messaggi in questo periodo.";
+    else testo = "Tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + ".";
+    rigaTessera.textContent = testo;
+    rigaTessera.hidden = false;
+  }
+
   var soglia = document.getElementById("soglia");
   var conv   = document.getElementById("conversazione");
   var campo  = document.getElementById("campo");
@@ -309,6 +419,18 @@
   var chiusoPerOggi = false;
   var attesa = null;
   var controllo = null;
+
+  // La domanda del silenzio (decisa da Davide il 07/09/2026): quasi nessuno arriva ai dieci
+  // messaggi del tetto: si smette prima e si chiude la pagina, e il foglio non lo vede nessuno.
+  // Dopo un po' di silenzio la pagina chiede una cosa sola — hai finito, o vuoi continuare? — e
+  // a «ho finito» dà il foglio: com'è andata, i libri, la conversazione. Non insiste: due volte
+  // in tutto, mai mentre sta scrivendo, mai mentre una risposta è per strada.
+  var ATTESA_DOMANDA = 90000;   // il silenzio dopo cui si chiede, la prima volta
+  var DOMANDE_AL_MASSIMO = 2;
+  var orologioDomanda = null;
+  var bloccoDomanda = null;
+  var domandeFatte = 0;
+  var haFinito = false;
 
   // La chiave del cassetto: nasce qui, resta qui. Il server la usa per chiudere la risposta e
   // non la conserva. Serve perché sul telefono chi cambia app mentre aspetta perdeva la risposta.
@@ -329,6 +451,7 @@
       "Cosa ti sta succedendo?");
     scrivi.focus();
     preparaChiave();
+    mostraStatoTessera();
   });
 
   function preparaChiave() {
@@ -388,11 +511,16 @@
   scrivi.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) invia();
   });
+  // Sta scrivendo: l'orologio del silenzio riparte da capo.
+  scrivi.addEventListener("input", function () { if (orologioDomanda) armaDomanda(); });
 
   async function invia() {
     var testo = scrivi.value.trim();
     if (!testo || manda.disabled) return;
 
+    togliDomanda();
+    haFinito = false;   // ha ripreso a parlare: più tardi si potrà richiedere
+    if (!chiusoPerOggi) foglioFine.hidden = true;   // il foglio di prima è vecchio: si rifà dopo
     scrivi.value = "";
     manda.disabled = true;
     blocco("turno-mio", testo);
@@ -411,16 +539,19 @@
     var biglietto = "";
     var inizio = Date.now();
     var finito = false;
+    nuovaLettura();   // la voce, se accesa, riparte da capo con questa risposta
 
     function mostra(t) {
       if (attesa) { attesa.remove(); attesa = null; }
       if (!risposta) risposta = blocco("turno-libri", "");
       raccolto = t;
       risposta.textContent = raccolto;
+      leggiAPezzi(raccolto, false);   // frase per frase, mentre arriva
     }
 
     function concludi() {
       chiudiAttesa();
+      leggiAPezzi(raccolto, true);    // quello che resta
       if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); dopoRisposta(raccolto); }
       else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
       if (!chiusoPerOggi) scrivi.focus();
@@ -429,6 +560,7 @@
     try {
       var corpo = { parola: PAROLA, turni: turni };
       if (colCassetto) corpo.chiave = chiaveBase64;
+      if (tesseraValida()) corpo.tessera = TESSERA;
 
       var r = await fetch(SERVIZIO, {
         method: "POST",
@@ -447,6 +579,8 @@
       }
 
       biglietto = r.headers.get("x-biglietto") || "";
+      var st = r.headers.get("x-tessera") || "";
+      if (st) { statoTessera = st; mostraStatoTessera(); }
 
       // Il flusso, parola per parola.
       var lettore = r.body.getReader();
@@ -564,22 +698,108 @@
   var SITO = window.SITO || {};
   var PAGINE_LIBRO = { duau: "da-uomo-a-uomo.html", sv: "senza-veli.html", pac: "prenditi-a-carezze.html" };
 
+  // Dove va a finire un riscontro, se la persona decide di darlo. Parte da lei, con le sue parole,
+  // dalla sua app: qui non si manda niente e non si allega niente della conversazione.
+  var RISCONTRO = {
+    whatsapp: "393481514382",                                  // il numero pubblico di Davide
+    email: SITO.emailPubblica || "davidescuderi1981@gmail.com",
+    apertura: "Ciao Davide, ho provato «Cosa ti sta succedendo?». Ti dico com'è andata: "
+  };
+
+  // Il link per recensire un libro su Amazon, ricavato dall'ASIN che sta in config.js.
+  function recensioneAmazon(libro) {
+    var A = SITO.amazon || {};
+    var m = /\/dp\/([A-Z0-9]{10})/.exec(A[libro.config + "Cartaceo"] || A[libro.config + "Ebook"] || "");
+    return m ? "https://www.amazon.it/review/create-review?asin=" + m[1] : "";
+  }
+
   function eTetto(testo) {
     return /^\s*per oggi basta|^\s*per questo mese ho finito il fiato/i.test(testo || "");
   }
 
   function dopoRisposta(testo) {
+    faiFoglio.textContent = nomeFoglio();
     faiFoglio.hidden = false;
     if (eTetto(testo)) {
       chiusoPerOggi = true;
       scrivi.disabled = true;
       manda.disabled = true;
       scrivi.placeholder = "Ci sono anche domani.";
-      mostraFoglio();
+      mostraFoglio(true);
+      return;
     }
+    armaDomanda();
   }
 
-  faiFoglio.addEventListener("click", mostraFoglio);
+  faiFoglio.addEventListener("click", function () { mostraFoglio(); });
+
+  /* ---------------------------------------------------------------- hai finito, o continuiamo?
+   * Il tetto (dieci messaggi al giorno) chiude da sé con «per oggi basta». Chi si ferma prima
+   * non chiude niente: sta zitto e se ne va. Qui la pagina, dopo un silenzio, glielo chiede.
+   */
+  function armaDomanda() {
+    fermaOrologio();
+    if (chiusoPerOggi || haFinito || bloccoDomanda) return;
+    if (domandeFatte >= DOMANDE_AL_MASSIMO) return;
+    if (giriFatti() < 2) return;   // non alla prima risposta: si è appena cominciato
+    orologioDomanda = setTimeout(chiediSeHaFinito, domandeFatte === 0 ? ATTESA_DOMANDA : ATTESA_DOMANDA * 2);
+  }
+
+  function fermaOrologio() {
+    if (orologioDomanda) { clearTimeout(orologioDomanda); orologioDomanda = null; }
+  }
+
+  function togliDomanda() {
+    fermaOrologio();
+    if (bloccoDomanda) { bloccoDomanda.remove(); bloccoDomanda = null; }
+  }
+
+  function giriFatti() {
+    var n = 0;
+    for (var i = 0; i < tutti.length; i++) if (tutti[i].role === "assistant") n++;
+    return n;
+  }
+
+  function chiediSeHaFinito() {
+    orologioDomanda = null;
+    if (chiusoPerOggi || haFinito || bloccoDomanda) return;
+    if (manda.disabled) return;                       // una risposta è per strada: non si interrompe
+    if (scrivi.value.trim()) { armaDomanda(); return; }   // sta scrivendo: si aspetta
+    if (document.visibilityState !== "visible") {     // è in un'altra app: si riprova dopo, e non conta
+      orologioDomanda = setTimeout(chiediSeHaFinito, 30000);
+      return;
+    }
+    domandeFatte++;
+
+    bloccoDomanda = el("div", "chiesta");
+    bloccoDomanda.appendChild(el("p", null, "Hai finito, o vuoi continuare?"));
+    bloccoDomanda.appendChild(el("p", "sotto",
+      "Se hai finito ti lascio il foglio di " + momento() + ": le pagine dei libri che sono uscite, dove si "
+      + "trovano, e la conversazione com'è andata. Se invece vuoi continuare, scrivi pure."));
+    var righe = el("div", "bottoni");
+    var continua = el("button", "quieto", "Voglio continuare");
+    var finisci = el("button", null, "Ho finito");
+    continua.type = "button";
+    finisci.type = "button";
+    // «Voglio continuare»: la domanda sparisce e l'orologio riparte, più lungo. Poi basta.
+    continua.addEventListener("click", function () { togliDomanda(); armaDomanda(); scrivi.focus(); });
+    finisci.addEventListener("click", chiudiConversazione);
+    righe.appendChild(finisci);
+    righe.appendChild(continua);
+    bloccoDomanda.appendChild(righe);
+    conv.appendChild(bloccoDomanda);
+    bloccoDomanda.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+
+  // «Ho finito»: non si chiude niente a chiave — se le torna in mente qualcosa scrive ancora —
+  // ma da qui in poi c'è il foglio, e nel foglio la domanda «com'è andata?».
+  function chiudiConversazione() {
+    togliDomanda();
+    haFinito = true;
+    faiFoglio.hidden = true;
+    scrivi.placeholder = "Se ti torna in mente qualcosa, sono qui.";
+    mostraFoglio(true);
+  }
 
   // Minuscolo, senza accenti, senza asterischi e virgolette: così «*L'Alce*», «L’Alce» e «l'alce» sono la stessa cosa.
   function piatto(t) {
@@ -707,18 +927,34 @@
     catch (e) { return ""; }
   }
 
-  function mostraFoglio() {
+  /* «Stasera» solo se è sera davvero, nell'ora del telefono di chi legge: di giorno «oggi».
+   * Prima il foglio si chiamava «di stasera» a qualunque ora (riscontro 05-bis, 08/09/2026). */
+  function momento() {
+    try { var h = new Date().getHours(); return (h >= 18 || h < 5) ? "stasera" : "oggi"; }
+    catch (e) { return "oggi"; }
+  }
+  function nomeFoglio() { return "Il foglio di " + momento(); }
+
+  function mostraFoglio(chiusura) {
     if (!tutti.length) return;
+    var finita = !!chiusura || chiusoPerOggi || haFinito;
     var pagine = trovaPagine();
     var corpo = trovaCorpo();
     var primo = null;
     for (var i = 0; i < tutti.length; i++) if (tutti[i].role === "user") { primo = tutti[i].content; break; }
     var confine = tutti.some(function (x) { return x.role === "assistant" && /non sta in un libro/i.test(x.content); });
+    // A chi sono usciti i numeri di emergenza non si chiede nessun favore: nessuna recensione,
+    // niente. È la stessa regola che il prompt dà al Bibliotecario (SE LA PERSONA STA SALUTANDO).
+    var grave = tutti.some(function (x) { return x.role === "assistant" && /\b1522\b/.test(x.content); });
+    var chiediComEAndata = finita && !grave;
 
     foglioFine.innerHTML = "";
 
-    foglioFine.appendChild(el("p", "occhiello", "Il foglio di stasera" + (dataOggi() ? " · " + dataOggi() : "")));
-    foglioFine.appendChild(el("h2", null, chiusoPerOggi ? "Per oggi basta. Questo te lo porti via." : "Quello che è uscito, in una pagina."));
+    foglioFine.appendChild(el("p", "occhiello", nomeFoglio() + (dataOggi() ? " · " + dataOggi() : "")));
+    foglioFine.appendChild(el("h2", null,
+      chiusoPerOggi ? "Per oggi basta. Questo te lo porti via."
+      : finita ? "Va bene così. Questo te lo porti via."
+      : "Quello che è uscito, in una pagina."));
 
     if (primo) {
       var s1 = el("div");
@@ -777,6 +1013,11 @@
       foglioFine.appendChild(s3);
     }
 
+    if (chiediComEAndata) foglioFine.appendChild(chiediRiscontro(pagine));
+    // La tessera si nomina solo qui: dopo, quando ha detto «ho finito», mai dentro la
+    // conversazione e mai a chi sono usciti i numeri (le quattro regole di LA-BIBLIOTECA.md § 1).
+    if (finita && !grave) foglioFine.appendChild(sezioneTessera());
+
     var s4 = el("div");
     s4.appendChild(el("h3", null, "La conversazione, com'è andata"));
     var conv4 = el("div", "fine-conv");
@@ -814,9 +1055,9 @@
     var esito = el("span", "fine-esito", "");
     salva.addEventListener("click", function () { window.print(); });
     manda2.addEventListener("click", function () {
-      var testo = testoFoglio(pagine, corpo, primo);
+      var testo = testoFoglio(pagine, corpo, primo, chiediComEAndata);
       if (navigator.share) {
-        navigator.share({ title: "Il foglio di stasera", text: testo }).catch(function () {});
+        navigator.share({ title: nomeFoglio(), text: testo }).catch(function () {});
       } else if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(testo).then(function () { esito.textContent = "Copiato. Incollalo in una nota, o in un messaggio a te stesso."; },
           function () { esito.textContent = "Non riesco a copiare: seleziona il testo e copialo tu."; });
@@ -829,11 +1070,86 @@
     foglioFine.scrollIntoView({ block: "start", behavior: "smooth" });
   }
 
-  function testoFoglio(pagine, corpo, primo) {
+  /* La recensione. Si chiede una volta sola, alla fine, e non parte niente da sola: si apre
+   * WhatsApp o la posta con una riga già scritta, e da lì scrive lei quello che vuole. Della
+   * conversazione non si allega niente — non la vede nessuno, e non deve cominciare adesso.
+   * Chi un libro l'ha già letto trova qui anche dove si recensisce: è la cosa che li fa trovare. */
+  function chiediRiscontro(pagine) {
+    var s = el("div", "fine-riscontro");
+    s.appendChild(el("h3", null, "Com'è andata?"));
+    s.appendChild(el("p", "fine-nota",
+      "Se ti va, due righe a Davide: cosa ti è servito e cosa no. Le legge lui. Scrivi solo quello "
+      + "che vuoi tu: della conversazione qui sopra non parte niente, e nessuno la vede."));
+
+    var dove = el("div", "fine-link");
+    var testo = encodeURIComponent(RISCONTRO.apertura);
+    [
+      { testo: "Scrivilo su WhatsApp", href: "https://wa.me/" + RISCONTRO.whatsapp + "?text=" + testo },
+      { testo: "Scrivilo per email", href: "mailto:" + RISCONTRO.email + "?subject=" + encodeURIComponent("Com'è andata") + "&body=" + testo }
+    ].forEach(function (l) {
+      var a = el("a", null, l.testo);
+      a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+      dove.appendChild(a);
+    });
+    s.appendChild(dove);
+
+    // Solo i libri già in vendita, e solo quelli usciti stasera: a chi non li ha, non si chiede niente.
+    var visti = {}, recensibili = [];
+    pagine.forEach(function (p) {
+      if (visti[p.libro.chiave] || !p.libro.vendita || !p.libro.config) return;
+      visti[p.libro.chiave] = true;
+      var href = recensioneAmazon(p.libro);
+      if (href) recensibili.push({ testo: "Recensisci " + p.libro.titolo, href: href });
+    });
+    if (recensibili.length) {
+      s.appendChild(el("p", "fine-nota",
+        "E se uno di questi libri l'hai già letto: una recensione su Amazon è il modo in cui lo trova "
+        + "qualcun altro che sta come te."));
+      var suAmazon = el("div", "fine-link");
+      recensibili.forEach(function (l) {
+        var a = el("a", null, l.testo);
+        a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+        suAmazon.appendChild(a);
+      });
+      s.appendChild(suAmazon);
+    }
+    return s;
+  }
+
+  /* «Se vuoi tornare»: prima il gratis, che c'è sempre; poi la tessera, senza fretta. */
+  function sezioneTessera() {
+    var s = el("div", "fine-tessera");
+    s.appendChild(el("h3", null, "Se vuoi tornare"));
+    if (tesseraValida()) {
+      s.appendChild(el("p", "fine-nota", "Hai una tessera fino al " + dataTessera(scadenzaTessera(TESSERA))
+        + (statoTessera === "finita" ? ". Per questo periodo ha finito i suoi messaggi: intanto restano i dieci al giorno di tutti." : ". Torna quando vuoi: la pagina se la ricorda.")));
+      return s;
+    }
+    s.appendChild(el("p", "fine-nota", "Domani ci sono di nuovo, gratis: dieci messaggi al giorno, per tutti, sempre."));
+    // Il paragrafo della tessera va qui dentro, ma solo se il listino del worker dice che è in
+    // vendita: lo riempie riempiTessera(), adesso se il listino è già arrivato, o quando arriva.
+    s.appendChild(el("div", "fine-tessera-vendita"));
+    riempiTessera();
+    return s;
+  }
+
+  function riempiTessera() {
+    var dove = foglioFine.querySelector(".fine-tessera-vendita");
+    if (!dove || !tesseraInVendita || dove.firstChild) return;
+    var p = el("p", "fine-nota", "");
+    p.appendChild(document.createTextNode("Se ti serve più tempo c'è "));
+    var a = el("a", null, "la tessera");
+    a.href = "tessera.html"; a.target = DENTRO ? "_top" : "_blank"; a.rel = "noopener";
+    p.appendChild(a);
+    p.appendChild(document.createTextNode(": un giorno a 2,90 €, e poi la settimana, il mese, l'anno. Nessuna fretta: la trovi anche domani, e anche senza."));
+    dove.appendChild(p);
+  }
+
+  function testoFoglio(pagine, corpo, primo, finita) {
     var r = ["IL FOGLIO DI STASERA" + (dataOggi() ? " · " + dataOggi() : ""), ""];
     if (primo) r.push("Quello che hai portato:", primo, "");
     r.push("Le pagine che sono uscite:");
-    if (!pagine.length) r.push("nessuna pagina dei libri, stasera: quello che hai letto l'ha detto il programma.");
+    if (!pagine.length) r.push("nessuna pagina dei libri, " + momento() + ": quello che hai letto l'ha detto il programma.");
     var visti = {};
     pagine.forEach(function (p) {
       if (!visti[p.libro.chiave]) {
@@ -847,6 +1163,14 @@
       r.push("", "Se il corpo si è fatto sentire, un minuto col corpo nell'app:");
       corpo.forEach(function (s) { r.push("  " + s.voce + ": https://davidemcb.github.io/libri/app/#pratica/" + s.chiave); });
     }
+    if (finita) {
+      r.push("", "Com'è andata? Se ti va, due righe a Davide: cosa ti è servito e cosa no.",
+             "  WhatsApp: https://wa.me/" + RISCONTRO.whatsapp,
+             "  Email: " + RISCONTRO.email);
+      r.push("", "Se vuoi tornare: domani ci sono di nuovo, gratis, dieci messaggi al giorno.");
+      if (tesseraValida()) r.push("Hai una tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + ".");
+      else r.push("Se ti serve più tempo c'è la tessera, da 2,90 € un giorno: https://davidemcb.github.io/libri/tessera.html");
+    }
     r.push("", "La conversazione, com'è andata:", "");
     tutti.forEach(function (x) {
       if (x.role === "user") r.push("TU: " + x.content, "");
@@ -859,7 +1183,8 @@
   /* La prova del foglio senza spendere venti messaggi: ...parliamone.html?prova=foglio
    * Carica una conversazione d'esempio (sul modello delle prove del 06/09) e mostra il foglio.
    * Non chiama il servizio. Serve a Davide per vederlo, e a chi lavora sulla pagina. */
-  if (new URLSearchParams(location.search).get("prova") === "foglio") {
+  var PROVA = new URLSearchParams(location.search).get("prova");
+  if (PROVA === "foglio" || PROVA === "domanda") {
     var ESEMPIO = [
       ["user", "Mia moglie mi ha tradito. L'ho scoperto stasera, dal telefono. Lei dorme, io sono in cucina e non riesco a stare fermo."],
       ["assistant", "Va bene. Prima i fatti, uno alla volta.\nQuando l'hai visto: stasera, o è da giorni che lo sospettavi?\nLo sa che l'hai visto?\nDomani hai qualcosa che devi fare per forza?"],
@@ -870,13 +1195,208 @@
       ["user", "Un caffè e non pensare. Grazie."],
       ["assistant", "Per oggi basta. Non è un giudizio: è che dopo un po' serve dormirci sopra. Ci sono anche domani."]
     ];
+    // ...?prova=domanda si ferma a metà, come chi smette prima del tetto, e fa vedere la domanda.
+    var pezzo = PROVA === "domanda" ? ESEMPIO.slice(0, 4) : ESEMPIO;
     document.getElementById("entra").click();
-    ESEMPIO.forEach(function (t) {
+    pezzo.forEach(function (t) {
       tutti.push({ role: t[0], content: t[1] });
+      turni.push({ role: t[0], content: t[1] });
       blocco(t[0] === "user" ? "turno-mio" : "turno-libri", t[1]);
     });
-    dopoRisposta(ESEMPIO[ESEMPIO.length - 1][1]);
+    dopoRisposta(pezzo[pezzo.length - 1][1]);
+    if (PROVA === "domanda") { fermaOrologio(); chiediSeHaFinito(); }
   }
+
+  // ─── La voce all'andata (08/09/2026, VOCE.md § 2-A) ─────────────────────────────────────
+  // Si tocca «Parla», si parla, il telefono trascrive col suo servizio (Google o Apple: la
+  // stessa cosa del microfono sulla tastiera), il testo compare nella casella e si manda come se
+  // fosse scritto. Il worker non lo sa e non cambia di una riga. Se il browser non sa trascrivere
+  // (Firefox, qualche computer), il bottone e la riga della soglia non compaiono: la pagina è
+  // quella di sempre. L'audio non passa mai di qui: dal telefono arriva solo il testo.
+  var Riconoscimento = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  var parla = document.getElementById("parla");
+  var statoVoce = document.getElementById("stato-voce");
+  var ascolto = null;        // il riconoscimento in corso, o null
+  var voceBase = "";         // quello che c'era già nella casella quando si è premuto «Parla»
+
+  if (Riconoscimento) {
+    parla.hidden = false;
+    document.getElementById("riga-voce").hidden = false;
+  }
+
+  function diciVoce(testo) {
+    statoVoce.textContent = testo || "";
+    statoVoce.hidden = !testo;
+  }
+
+  function iniziaAscolto() {
+    if (ascolto || !Riconoscimento) return;
+    var r = new Riconoscimento();
+    r.lang = "it-IT";
+    r.interimResults = true;   // le parole compaiono mentre si parla
+    r.continuous = true;       // non si ferma alla prima pausa (dove il telefono lo permette)
+    r.maxAlternatives = 1;
+    voceBase = scrivi.value.trim();
+
+    r.onresult = function (e) {
+      // Si ricostruisce tutto ogni volta: l'elenco dei risultati è quello dell'intera
+      // sessione, e così non si raddoppia niente, qualunque telefono sia.
+      var finale = "", provvisorio = "";
+      for (var i = 0; i < e.results.length; i++) {
+        var pezzo = e.results[i][0].transcript;
+        if (e.results[i].isFinal) finale += pezzo + " "; else provvisorio += pezzo;
+      }
+      var detto = (finale + provvisorio).replace(/\s+/g, " ").trim();
+      scrivi.value = [voceBase, detto].filter(Boolean).join(" ");
+      if (orologioDomanda) armaDomanda();   // sta parlando: l'orologio del silenzio riparte
+    };
+    r.onerror = function (e) {
+      var perche = e && e.error;
+      if (perche === "not-allowed" || perche === "service-not-allowed") {
+        diciVoce("Il microfono qui non è permesso. Puoi scrivere: va bene lo stesso.");
+      } else if (perche === "no-speech") {
+        diciVoce("Non ho sentito niente. Tocca di nuovo «Parla», oppure scrivi.");
+      } else if (perche !== "aborted") {
+        diciVoce("La voce adesso non funziona. Puoi scrivere.");
+      }
+    };
+    r.onend = function () {
+      ascolto = null;
+      parla.textContent = "Parla";
+      parla.classList.remove("ascolta");
+      parla.setAttribute("aria-pressed", "false");
+    };
+
+    try { r.start(); } catch (e) { diciVoce("La voce adesso non funziona. Puoi scrivere."); return; }
+    ascolto = r;
+    diciVoce("");
+    parla.textContent = "Sto ascoltando · tocca per finire";
+    parla.classList.add("ascolta");
+    parla.setAttribute("aria-pressed", "true");
+  }
+
+  function fermaAscolto() {
+    if (ascolto) { try { ascolto.stop(); } catch (e) { /* già fermo */ } }
+  }
+
+  parla.addEventListener("click", function () { if (ascolto) fermaAscolto(); else iniziaAscolto(); });
+  // Se mentre ascolta la persona scrive, o manda: l'ascolto si ferma, e vince quello che ha in casella.
+  scrivi.addEventListener("input", fermaAscolto);
+  manda.addEventListener("click", fermaAscolto);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState !== "visible") fermaAscolto();
+  });
+
+  // ─── La modalità «grande» (08/09/2026, VOCE.md § 8) ─────────────────────────────────────
+  // Per chi legge male: carta chiara sempre, tutto più grande, bottoni alti. Si accende col
+  // bottone «Aa» in alto o col link ?grande=si (da mandare a chi non deve cercare niente);
+  // il telefono se lo ricorda. ?grande=no la spegne e lo ricorda.
+  var CHIAVE_GRANDE = "grande";
+  var grandeBtn = document.getElementById("grande");
+  function eGrande() { return document.documentElement.classList.contains("grande"); }
+  function mettiGrande(si, ricorda) {
+    document.documentElement.classList.toggle("grande", si);
+    grandeBtn.setAttribute("aria-pressed", si ? "true" : "false");
+    grandeBtn.title = si ? "Testo normale" : "Testo più grande";
+    grandeBtn.setAttribute("aria-label", grandeBtn.title);
+    if (ricorda) { try { localStorage.setItem(CHIAVE_GRANDE, si ? "si" : "no"); } catch (e) { /* niente memoria */ } }
+  }
+  (function () {
+    var q = new URLSearchParams(location.search).get("grande");
+    var salvato = "";
+    try { salvato = localStorage.getItem(CHIAVE_GRANDE) || ""; } catch (e) { /* niente memoria */ }
+    if (q === "si" || q === "no") mettiGrande(q === "si", true);
+    else if (salvato) mettiGrande(salvato === "si", false);
+  })();
+  grandeBtn.addEventListener("click", function () { mettiGrande(!eGrande(), true); });
+
+  // ─── La lettura a voce (08/09/2026, VOCE.md § 3-A) ──────────────────────────────────────
+  // La voce del telefono legge le risposte, frase per frase mentre arrivano. Niente esce dal
+  // telefono: non c'è nessun fornitore in mezzo. Si accende con «Leggimela» e il telefono se lo
+  // ricorda; nella modalità grande è accesa di partenza (chi legge male non deve cercarla).
+  // Se il browser non sa leggere, il bottone non compare.
+  var Sintesi = window.speechSynthesis || null;
+  var CHIAVE_LETTURA = "lettura";
+  var leggi = document.getElementById("leggi");
+  var letturaAccesa = false;
+  var lettoFino = 0;          // fin dove, nella risposta in corso, la voce è già arrivata
+  var voceScelta;             // la voce italiana del telefono, quando la si trova
+  var sbloccata = false;      // iPhone fa partire una voce solo dopo un tocco: il primo lo sblocca
+
+  function mettiLettura(si, ricorda) {
+    letturaAccesa = !!si && !!Sintesi;
+    leggi.textContent = letturaAccesa ? "Leggimela: sì" : "Leggimela";
+    leggi.setAttribute("aria-pressed", letturaAccesa ? "true" : "false");
+    if (!letturaAccesa) zittisci();
+    if (ricorda) { try { localStorage.setItem(CHIAVE_LETTURA, si ? "si" : "no"); } catch (e) { /* niente memoria */ } }
+  }
+  function voceItaliana() {
+    if (voceScelta !== undefined) return voceScelta;
+    var voci = (Sintesi && Sintesi.getVoices && Sintesi.getVoices()) || [];
+    if (!voci.length) return null;   // non ancora caricate: si riprova alla prossima frase
+    var it = voci.filter(function (v) { return /^it([-_]|$)/i.test(v.lang || ""); });
+    var locali = it.filter(function (v) { return v.localService; });
+    voceScelta = locali[0] || it[0] || null;
+    return voceScelta;
+  }
+  function pronuncia(testo) {
+    if (!Sintesi || !testo) return;
+    var u = new SpeechSynthesisUtterance(testo);
+    u.lang = "it-IT";
+    u.rate = 0.95;
+    var v = voceItaliana();
+    if (v) u.voice = v;
+    Sintesi.speak(u);
+  }
+  function zittisci() { if (Sintesi) { try { Sintesi.cancel(); } catch (e) { /* già zitta */ } } }
+  function sblocca() {
+    if (sbloccata || !Sintesi || !letturaAccesa) return;
+    sbloccata = true;
+    try { Sintesi.speak(new SpeechSynthesisUtterance(" ")); } catch (e) { /* pazienza */ }
+  }
+  function nuovaLettura() { zittisci(); lettoFino = 0; }
+  // Legge, della risposta in corso, le frasi complete non ancora lette. Alla fine, tutto il resto.
+  function leggiAPezzi(testo, finale) {
+    if (!letturaAccesa || !Sintesi || !testo) return;
+    var fino;
+    if (finale) fino = testo.length;
+    else {
+      var re = /[.!?…][»")]?(?=\s|$)|\n/g, m, ultima = -1;
+      re.lastIndex = lettoFino;
+      while ((m = re.exec(testo)) !== null) ultima = m.index + m[0].length;
+      if (ultima < 0) return;
+      fino = ultima;
+    }
+    var pezzo = testo.slice(lettoFino, fino).replace(/\s+/g, " ").trim();
+    lettoFino = Math.max(lettoFino, fino);
+    if (pezzo) pronuncia(pezzo);
+  }
+
+  if (Sintesi) {
+    leggi.hidden = false;
+    document.getElementById("riga-leggi").hidden = false;
+    document.getElementById("riga-voce").hidden = false;
+    var salvataLettura = "";
+    try { salvataLettura = localStorage.getItem(CHIAVE_LETTURA) || ""; } catch (e) { /* niente memoria */ }
+    mettiLettura(salvataLettura ? salvataLettura === "si" : eGrande(), false);
+    leggi.addEventListener("click", function () {
+      var ora = !letturaAccesa;
+      mettiLettura(ora, true);
+      if (ora) {
+        sblocca();
+        // Appena accesa, legge l'ultima risposta se c'è: così si sente subito com'è.
+        for (var i = tutti.length - 1; i >= 0; i--) {
+          if (tutti[i].role === "assistant") { lettoFino = 0; pronuncia(tutti[i].content); break; }
+        }
+      }
+    });
+    manda.addEventListener("click", sblocca);
+    ferma.addEventListener("click", zittisci);
+    document.getElementById("entra").addEventListener("click", sblocca);
+    if (Sintesi.addEventListener) Sintesi.addEventListener("voiceschanged", function () { voceScelta = undefined; });
+  }
+  // La riga «parlare invece di scrivere» si vede solo se il telefono sa trascrivere.
+  if (Riconoscimento) document.getElementById("riga-parla").hidden = false;
 })();
 </script>
 

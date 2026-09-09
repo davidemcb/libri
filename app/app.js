@@ -93,7 +93,7 @@
       '<em>Il corpo è il primo posto.</em><br>' +
       '<a href="' + esc(BASE_SITO) + '" target="_blank" rel="noopener">Il sito</a> · ' +
       '<a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Privacy</a> · ' +
-      '<a href="#archivio">Le settimane passate</a> · <a href="#installa">Metti l\'app sul telefono</a></p></section>';
+      '<a href="#email">Una pagina il lunedì, per posta</a> · <a href="#archivio">Le settimane passate</a> · <a href="#installa">Metti l\'app sul telefono</a></p></section>';
   }
 
   /* ---------- condivisione ---------- */
@@ -225,7 +225,7 @@
       cartaPost(s, n, {etichetta:"La riga di oggi", linkPagina:true}) +
       '</section>' +
       '<section class="sez"><p class="prosa muted piccolo">Una riga al giorno, una pagina a settimana. Niente da fare, niente da imparare: se una riga ti somiglia, passala a chi ne ha bisogno.</p></section>' +
-      invitoPratica(null) + piede();
+      invitoPratica(null) + sezioneEmail("oggi") + piede();
   }
 
   function vistaSettimana(inizio){
@@ -277,8 +277,145 @@
           '<div class="azioni-mini"><button class="btn btn-linea" type="button" data-condividi="libro" data-libro="' + esc(k) + '">Passalo a qualcuno</button></div>' +
           '</div></div>';
       }).join("") +
-      '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB, con l\'email dell\'acquirente stampata. Il cartaceo lo stampa Amazon.</p></section>' +
+      '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB. <a href="#negozio">Prova il nuovo modo di comprare</a>, tutto in italiano, dentro l\'app.</p></section>' +
       sezioneCantiere() + piede();
+  }
+
+  /* ---------- il negozio (09/09/2026): checkout Stripe in italiano, senza uscire dall'app ---------- */
+  var SERVIZIO = "https://conversazione.davidescuderi1981.workers.dev";
+  var NEGOZIO_TITOLI = {};   // riempito dal catalogo del worker, mano a mano che lo si legge — così «I miei libri» sa i nomi anche a freddo
+
+  function vistaNegozio(query){
+    var qs = new URLSearchParams(query || "");
+    if (qs.has("ritira")) return vistaNegozioAttesa(function(){ return ritiraNegozio(qs.get("ritira")); }, "Stiamo controllando il pagamento…");
+    if (qs.has("apri")) return vistaNegozioAttesa(function(){ return apriMieiLibri(qs.get("apri")); }, "Un attimo, apriamo i tuoi libri…");
+    var avviso = qs.has("annullato") ? '<p class="avviso">Hai annullato: non è stato addebitato niente.</p>' : "";
+    return vistaNegozioAttesa(function(){
+      return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); }).then(function(d){
+        (d.prodotti || []).forEach(function(p){ NEGOZIO_TITOLI[p.chiave] = p.titolo; });
+        return vistaNegozioScelta(d.prodotti || [], avviso);
+      });
+    }, "Un attimo, apriamo il negozio…");
+  }
+
+  function vistaNegozioAttesa(promessa, testoAttesa){
+    promessa().then(function(html){ if ((location.hash || "").indexOf("#negozio") === 0) { vista.innerHTML = html; window.scrollTo(0,0); } });
+    return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Negozio</h1></div><p class="attesa muted">' + esc(testoAttesa) + '</p></section>';
+  }
+
+  function vistaNegozioScelta(prodotti, avviso){
+    var disponibili = prodotti.filter(function(p){ return p.tipo !== "audio" || p.pronto; });
+    var inArrivo = prodotti.filter(function(p){ return p.tipo === "audio" && !p.pronto; });
+    var righe = disponibili.map(function(p){
+      var L = LIBRI[p.chiave] || {};
+      return '<label class="libro senza-cover" style="cursor:pointer"><input type="checkbox" name="prodotto" value="' + esc(p.chiave) + '" style="margin-top:.3rem">' +
+        '<div><h3>' + esc(p.titolo) + '</h3><p class="muted piccolo">' + esc(p.sotto || L.sotto || "") + '</p></div></label>';
+    }).join("");
+    var rigaInArrivo = inArrivo.length ? '<p class="muted piccolo">In arrivo: ' + esc(inArrivo.map(function(p){ return p.titolo; }).join(", ")) + '.</p>' : "";
+    return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Scegli e compra</h1>' +
+      '<p class="sotto">Pagamento in italiano, il libro arriva via email, e resta sempre tuo in «I miei libri».</p></div>' +
+      (avviso || "") +
+      '<form id="modulo-negozio" class="sez">' +
+      '<div class="prosa">' + righe + '</div>' + rigaInArrivo +
+      '<div class="modulo-email"><input type="email" name="email" placeholder="La tua email, dove arriva il libro" required>' +
+      '<label class="consenso"><input type="checkbox" name="subito" required><span>Voglio il libro subito, e so che così rinuncio al diritto di recesso di 14 giorni (l\'articolo 59 del Codice del Consumo: vale per ogni contenuto digitale che parte prima).</span></label>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="submit">Vai al pagamento</button></div>' +
+      '<p class="errore piccolo" id="negozio-errore" hidden></p></div>' +
+      '</form>' +
+      '<div class="carta"><p class="lbl" style="margin-bottom:.5rem">Hai già comprato?</p>' +
+      '<form id="modulo-miei-libri" class="modulo-email"><input type="email" name="email" placeholder="La tua email" required>' +
+      '<div class="azioni"><button class="btn btn-vuoto" type="submit">Ritrova i miei libri</button></div>' +
+      '<p class="piccolo muted" id="miei-libri-esito"></p>' +
+      '</form></div>' +
+      '</section>' + piede();
+  }
+
+  vista.addEventListener("submit", function(ev){
+    var f = ev.target.closest("#modulo-negozio");
+    if (!f) return;
+    ev.preventDefault();
+    var prodotti = Array.prototype.map.call(f.querySelectorAll('input[name="prodotto"]:checked'), function(i){ return i.value; });
+    var email = f.querySelector('input[name="email"]').value.trim();
+    var subito = f.querySelector('input[name="subito"]').checked;
+    var erroreEl = f.querySelector("#negozio-errore");
+    erroreEl.hidden = true;
+    if (!prodotti.length) { erroreEl.textContent = "Scegli almeno un libro."; erroreEl.hidden = false; return; }
+    var bottone = f.querySelector('button[type="submit"]');
+    bottone.disabled = true; bottone.textContent = "Un attimo…";
+    fetch(SERVIZIO + "/negozio/compra", {
+      method: "POST", headers: {"content-type":"application/json"},
+      body: JSON.stringify({prodotti: prodotti, email: email, subito: subito}),
+    }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); })
+      .then(function(res){
+        if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "Errore");
+        location.href = res.d.url;
+      })
+      .catch(function(e){
+        bottone.disabled = false; bottone.textContent = "Vai al pagamento";
+        erroreEl.textContent = (e && e.message) || "Qualcosa non ha funzionato. Riprova fra poco.";
+        erroreEl.hidden = false;
+      });
+  });
+
+  vista.addEventListener("submit", function(ev){
+    var f = ev.target.closest("#modulo-miei-libri");
+    if (!f) return;
+    ev.preventDefault();
+    var email = f.querySelector('input[name="email"]').value.trim();
+    var esitoEl = f.querySelector("#miei-libri-esito");
+    var bottone = f.querySelector('button[type="submit"]');
+    bottone.disabled = true;
+    fetch(SERVIZIO + "/negozio/richiedi", {
+      method: "POST", headers: {"content-type":"application/json"},
+      body: JSON.stringify({email: email}),
+    }).then(function(r){ return r.json(); })
+      .then(function(d){ esitoEl.textContent = d.messaggio || "Controlla la posta."; })
+      .catch(function(){ esitoEl.textContent = "Non sono riuscito a mandarlo. Riprova fra poco."; })
+      .then(function(){ bottone.disabled = false; });
+  });
+
+  function caricaTitoliNegozio(){
+    if (Object.keys(NEGOZIO_TITOLI).length) return Promise.resolve();
+    return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); })
+      .then(function(d){ (d.prodotti || []).forEach(function(p){ NEGOZIO_TITOLI[p.chiave] = p.titolo; }); })
+      .catch(function(){});   // se il catalogo non risponde, si mostrano comunque le chiavi
+  }
+
+  function ritiraNegozio(sessione){
+    // Chi arriva qui viene dal ritorno di Stripe: potrebbe non aver mai visto il catalogo
+    // in questa visita, quindi NEGOZIO_TITOLI potrebbe essere ancora vuoto.
+    return caricaTitoliNegozio().then(function(){
+      return fetch(SERVIZIO + "/negozio/ritira?s=" + encodeURIComponent(sessione));
+    }).then(function(r){ return r.json(); })
+      .then(function(d){
+        if (!d.pronta) return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Un momento ancora</h1></div>' +
+          '<p class="sotto">Il pagamento non risulta ancora concluso. Se hai appena pagato, aspetta qualche secondo e <a href="' + esc(location.hash) + '" onclick="location.reload();return false">riprova</a>.</p></section>' + piede();
+        var titoli = d.prodotti.map(function(k){ return NEGOZIO_TITOLI[k] || k; });
+        return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Fatto</h1></div>' +
+          '<p class="sotto">' + (titoli.length > 1 ? "I tuoi libri (" + esc(titoli.join(", ")) + ") sono" : "«" + esc(titoli[0]) + "» è") + ' in arrivo via email. Controlla anche la posta indesiderata.</p>' +
+          '<p class="muted piccolo">L\'email porta anche il link a «I miei libri»: da lì li ritrovi quando vuoi, senza password.</p>' +
+          '<div class="azioni"><a class="btn btn-vuoto" href="#negozio">Torna al negozio</a></div></section>' + piede();
+      });
+  }
+
+  function apriMieiLibri(link){
+    return fetch(SERVIZIO + "/negozio/apri?t=" + encodeURIComponent(link))
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); })
+      .then(function(res){
+        if (!res.ok) return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Link scaduto</h1></div>' +
+          '<p class="sotto">' + esc((res.d && res.d.errore) || "Chiedine uno nuovo.") + '</p><div class="azioni"><a class="btn btn-pieno" href="#negozio">Vai al negozio</a></div></section>' + piede();
+        var lista = res.d.prodotti || [];
+        if (!lista.length) return '<section class="sez"><div class="testata"><p class="lbl">I miei libri</p><h1>Non c\'è ancora niente</h1></div>' +
+          '<p class="sotto">Con questa email non risulta nessun acquisto.</p><div class="azioni"><a class="btn btn-pieno" href="#negozio">Vai al negozio</a></div></section>' + piede();
+        var righe = lista.map(function(p){
+          var base = SERVIZIO + '/negozio/scarica?t=' + encodeURIComponent(link) + '&prodotto=' + esc(p.chiave) + '&formato=';
+          var bottoni = p.tipo === "audio"
+            ? '<a class="btn btn-pieno" href="' + base + 'm4b">Scarica l\'audiolibro</a>'
+            : '<a class="btn btn-pieno" href="' + base + 'pdf">Scarica il PDF</a><a class="btn btn-vuoto" href="' + base + 'epub">Scarica l\'EPUB</a>';
+          return '<div class="libro senza-cover"><div><h3>' + esc(p.titolo) + '</h3><div class="azioni">' + bottoni + '</div></div></div>';
+        }).join("");
+        return '<section class="sez"><div class="testata"><p class="lbl">I miei libri</p><h1>Tutto quello che hai comprato</h1></div>' + righe + '</section>' + piede();
+      });
   }
 
   function vistaDimmi(){
@@ -288,7 +425,7 @@
       TEMI_DIMMI.map(function(t){ return '<label><input type="checkbox" name="tema" value="' + esc(t) + '">' + esc(t) + '</label>'; }).join("") + '</div></div>' +
       '<div><p class="lbl" style="margin-bottom:.7rem">Se vuoi, due righe</p><textarea name="testo" placeholder="Cosa ti è rimasto addosso di quello che hai letto. O cosa non trovi. E se l\'app ti ha dato problemi a installarla, scrivimelo qui: è la cosa che mi serve di più adesso."></textarea></div>' +
       '<div class="azioni"><button class="btn btn-pieno" type="submit" data-via="whatsapp">Mandalo su WhatsApp</button><button class="btn btn-vuoto" type="submit" data-via="email">Mandalo per email</button></div>' +
-      '<p class="muted piccolo">Si apre WhatsApp o la posta col messaggio già scritto: lo leggi, lo cambi, lo mandi tu. Qui dentro non resta niente.</p></form></section>' + piede();
+      '<p class="muted piccolo">Si apre WhatsApp o la posta col messaggio già scritto: lo leggi, lo cambi, lo mandi tu. Qui dentro non resta niente.</p></form></section>' + sezioneEmail("dimmi") + piede();
   }
 
   function sezioneCantiere(){
@@ -327,6 +464,56 @@
       (testo ? "\n\n" + testo : "");
     if (via === "email") location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Dalla tua app") + "&body=" + encodeURIComponent(msg);
     else window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  });
+
+  /* ---------- la posta del lunedì (chiesto da Davide l'08/09/2026: «nell'app non c'è la parte
+     per lasciare la mail») ----------
+     Stesso modulo Brevo del sito (config.js → modulo), stessa ORIGINE «pagine» della home, così
+     entra nella stessa automazione: una pagina il lunedì alle sette. Da dove viene lo dice
+     UTM_SOURCE = app, che in Brevo esiste già. L'email non passa da qui: va dritta a Brevo. */
+  function sezioneEmail(da){
+    return '<section class="sez posta"><div class="testata"><p class="lbl">Per posta</p><h2>Una pagina ogni lunedì.</h2>' +
+      '<p class="sotto">Una pagina vera dai libri, ogni lunedì alle sette. Un problema, e quello che il libro ne dice. Niente altro.</p></div>' +
+      '<form class="modulo-email" data-da="' + esc(da || "app") + '" novalidate>' +
+      '<label class="lbl" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>' +
+      '<input name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email" inputmode="email">' +
+      '<label class="consenso"><input type="checkbox" name="OPT_IN" required><span>Sì, una pagina il lunedì. Posso cancellarmi con un clic. <a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Come tratto i dati</a>.</span></label>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="submit">Mandamela il lunedì</button></div>' +
+      '<p class="esito muted piccolo" hidden>Fatto. La prima pagina arriva lunedì alle sette.</p>' +
+      '<p class="errore piccolo" hidden></p>' +
+      '<p class="muted piccolo">Una pagina il lunedì, e niente altro. Un clic per cancellarti, in fondo a ogni messaggio.</p></form></section>';
+  }
+  function vistaEmail(){ return sezioneEmail("email") + piede(); }
+
+  vista.addEventListener("submit", function(ev){
+    var f = ev.target.closest(".modulo-email");
+    if (!f) return;
+    ev.preventDefault();
+    var campo = f.querySelector('input[type="email"]'), ok = f.querySelector('input[type="checkbox"]');
+    var esito = f.querySelector(".esito"), errore = f.querySelector(".errore"), bottone = f.querySelector("button");
+    function dico(m){ errore.textContent = m; errore.hidden = false; }
+    errore.hidden = true;
+    if (!campo.value || campo.validity.valid === false) { dico("Controlla l'indirizzo: manca qualcosa."); return; }
+    if (!ok.checked) { dico("Serve la spunta: senza il tuo consenso non posso scriverti."); return; }
+    if (!C.modulo) { dico("Il modulo non è ancora collegato al servizio email."); return; }
+    var d = new FormData();
+    d.append(C.campoEmail || "EMAIL", campo.value);
+    Object.keys(C.campiExtra || {}).forEach(function(k){ d.append(k, C.campiExtra[k]); });
+    d.append("ORIGINE", "pagine");
+    d.append("UTM_SOURCE", "app");
+    d.append("UTM_CAMPAIGN", "");
+    d.append("UTM_CONTENUTO", f.getAttribute("data-da") || "app");
+    bottone.disabled = true; bottone.textContent = "Un attimo…";
+    fetch(C.modulo, {method:"POST", body:d, mode:"no-cors"})
+      .then(function(){ campo.value = ""; ok.checked = false; bottone.hidden = true; esito.hidden = false; })
+      .catch(function(){
+        // se la richiesta non parte, si lascia fare al browser: Brevo mostra la sua pagina
+        f.setAttribute("action", C.modulo); f.setAttribute("method", "POST");
+        var h = function(n, v){ var i = document.createElement("input"); i.type = "hidden"; i.name = n; i.value = v; f.appendChild(i); };
+        Object.keys(C.campiExtra || {}).forEach(function(k){ h(k, C.campiExtra[k]); });
+        h("ORIGINE", "pagine"); h("UTM_SOURCE", "app"); h("UTM_CONTENUTO", f.getAttribute("data-da") || "app");
+        f.submit();
+      });
   });
 
   function vistaInstalla(){
@@ -559,7 +746,7 @@
   function mostra(){
     if (!dati) return;
     var h = (location.hash || "#oggi").slice(1).split("/");
-    var sez = h[0] || "oggi", html;
+    var sez = (h[0] || "oggi").split("?")[0], html;
     switch (sez) {
       case "oggi": html = vistaOggi(); break;
       case "settimana": html = vistaSettimana(h[1]); break;
@@ -570,7 +757,9 @@
       case "pratica": html = vistaPratica(h[1]); break;
       case "parla": html = vistaParla(); break;
       case "libri": html = vistaLibri(); break;
+      case "negozio": html = vistaNegozio(((h[0] || "").split("?")[1] || "")); break;
       case "dimmi": html = vistaDimmi(); break;
+      case "email": html = vistaEmail(); break;
       case "installa": html = vistaInstalla(); break;
       default: html = nonTrovato();
     }
