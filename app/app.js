@@ -285,8 +285,20 @@
   var SERVIZIO = "https://conversazione.davidescuderi1981.workers.dev";
   var NEGOZIO_TITOLI = {};   // riempito dal catalogo del worker, mano a mano che lo si legge — così «I miei libri» sa i nomi anche a freddo
 
+  /* Il programma ambassador (deciso da Davide il 09/09/2026): un link con ?rif=stefania (o
+     morena) dà il 20% di questa vendita a lei. Si legge una volta e si tiene nel telefono come
+     la parola d'invito, così sopravvive se la persona guarda un altro libro prima di comprare;
+     il worker è quello che decide se il nome è buono, qui si passa avanti senza controllare. */
+  function leggiRifAmbassador(qs){
+    try {
+      if (qs.has("rif")) localStorage.setItem("negozio-rif", qs.get("rif").trim().toLowerCase());
+      return localStorage.getItem("negozio-rif") || "";
+    } catch (e) { return ""; }
+  }
+
   function vistaNegozio(query){
     var qs = new URLSearchParams(query || "");
+    leggiRifAmbassador(qs);
     if (qs.has("ritira")) return vistaNegozioAttesa(function(){ return ritiraNegozio(qs.get("ritira")); }, "Stiamo controllando il pagamento…");
     if (qs.has("apri")) return vistaNegozioAttesa(function(){ return apriMieiLibri(qs.get("apri")); }, "Un attimo, apriamo i tuoi libri…");
     var avviso = qs.has("annullato") ? '<p class="avviso">Hai annullato: non è stato addebitato niente.</p>' : "";
@@ -342,9 +354,10 @@
     if (!prodotti.length) { erroreEl.textContent = "Scegli almeno un libro."; erroreEl.hidden = false; return; }
     var bottone = f.querySelector('button[type="submit"]');
     bottone.disabled = true; bottone.textContent = "Un attimo…";
+    var rif = (function(){ try { return localStorage.getItem("negozio-rif") || ""; } catch (e) { return ""; } })();
     fetch(SERVIZIO + "/negozio/compra", {
       method: "POST", headers: {"content-type":"application/json"},
-      body: JSON.stringify({prodotti: prodotti, email: email, subito: subito}),
+      body: JSON.stringify({prodotti: prodotti, email: email, subito: subito, rif: rif}),
     }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); })
       .then(function(res){
         if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "Errore");
