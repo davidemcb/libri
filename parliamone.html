@@ -138,6 +138,7 @@
   }
   button:hover { opacity: .85; }
   button:disabled { opacity: .4; cursor: default; }
+  button#fai-foglio { background: var(--allarme); color: var(--fondo); font-weight: 600; }
   button.quieto { background: transparent; color: var(--quieto); border: 1px solid var(--riga); }
   :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
 
@@ -475,10 +476,10 @@
     campo.hidden = false;
     blocco("turno-libri",
       "Sono un programma, non una persona.\n" +
-      "Parlo di quello che succede fra le persone e nel corpo: separazioni, tradimenti, figli, " +
-      "vergogna, paura, quello che non si dice.\n" +
+      "Ti aiuto a dare un nome a quello che senti — le situazioni della vita, il corpo, i sentimenti.\n" +
       "Non parlo di legge, di soldi, di medicina: per quelle ci sono l'avvocato, il commercialista, il medico.\n" +
       "Non ti dirò cosa fare.\n" +
+      "Se una cosa è già scritta in un libro di Davide, ti do il capitolo intero — cliccabile qui sotto, nella risposta.\n" +
       "Cosa ti sta succedendo?");
     scrivi.focus();
     preparaChiave();
