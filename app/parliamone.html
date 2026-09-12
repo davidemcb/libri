@@ -1,0 +1,1685 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cosa ti sta succedendo? — Davide Scuderi</title>
+<meta name="description" content="Scrivi quello che ti sta succedendo. Rispondono le pagine dei libri di Davide Scuderi.">
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --fondo:     #14110E;
+    --fondo-alt: #1B1714;
+    --riga:      #2F2822;
+    --testo:     #F0E9DC;
+    --quieto:    #B9AC97;
+    --teal:      #6FA39D;
+    --allarme:   #C08466;
+
+    --serif: "EB Garamond", Palatino, "Palatino Linotype", Georgia, serif;
+    --sans:  "Karla", "Helvetica Neue", Arial, sans-serif;
+    --colonna: 34rem;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --fondo: #F6EFE8; --fondo-alt: #EFE5DA; --riga: #DCD0C1;
+      --testo: #14110E; --quieto: #6B5F52; --teal: #3D6F69; --allarme: #8E4A33;
+    }
+  }
+  :root[data-theme="light"] {
+    --fondo: #F6EFE8; --fondo-alt: #EFE5DA; --riga: #DCD0C1;
+    --testo: #14110E; --quieto: #6B5F52; --teal: #3D6F69; --allarme: #8E4A33;
+  }
+
+  /* Su iPhone la pagina segue «Testo più grande» delle impostazioni (le pagine web di solito lo ignorano). */
+  @supports (font: -apple-system-body) { html:not(.grande) { font: -apple-system-body; } }
+
+  /* La modalità «grande» (VOCE.md § 8): per chi legge male. Carta chiara sempre, tutto più
+     grande, bottoni alti e larghi. Si accende col bottone «Aa», o col link ?grande=si. */
+  :root.grande {
+    font-size: 21px; color-scheme: light;
+    --fondo: #FBF7F1; --fondo-alt: #F2EBE1; --riga: #D3C7B7;
+    --testo: #14110E; --quieto: #4A4038; --teal: #2F5F5A; --allarme: #8E4A33;
+  }
+  .grande body { line-height: 1.6; }
+  .grande .foglio { padding-left: 1.1rem; padding-right: 1.1rem; }
+  .grande h1 { font-size: clamp(2rem, 8vw, 2.6rem); }
+  .grande .turno-mio { font-size: 1.05rem; color: var(--testo); }
+  .grande .turno-libri { font-size: 1.4rem; line-height: 1.6; }
+  .grande .righe p, .grande .piede, .grande .fine-nota, .grande .stato-voce, .grande .riga-tessera, .grande .eta, .grande .attesa, .grande .avviso { font-size: 1rem; }
+  .grande .occhiello { font-size: .85rem; }
+  .grande textarea { font-size: 1.15rem; min-height: 7rem; }
+  .grande .bottoni { flex-direction: column; align-items: stretch; gap: .9rem; }
+  .grande .bottoni button, .grande #entra { width: 100%; min-height: 3.4rem; font-size: 1.1rem; align-self: stretch; }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--testo);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .foglio {
+    max-width: var(--colonna);
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+  }
+
+  .segno { display: block; width: 46px; height: 34px; }
+  .segno .barra-teal   { fill: var(--teal); }
+  .segno .barra-avorio { fill: var(--quieto); }
+  .segno .linea        { fill: var(--testo); opacity: .5; }
+
+  .apertura { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.1rem, 7vw, 2.9rem);
+    line-height: 1.1;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .sottotitolo {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--quieto);
+    margin: 0;
+  }
+
+  .soglia {
+    border-top: 1px solid var(--riga);
+    border-bottom: 1px solid var(--riga);
+    padding: 1.75rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .occhiello {
+    font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--teal); margin: 0;
+  }
+
+  .righe { display: flex; flex-direction: column; gap: .8rem; }
+  .righe p { margin: 0; color: var(--quieto); }
+  .righe strong { color: var(--testo); font-weight: 500; }
+  .eta { font-size: .88rem; font-style: italic; }
+
+  .numeri {
+    display: flex; flex-wrap: wrap; gap: .35rem 1.1rem;
+    font-size: .92rem; color: var(--allarme) !important;
+  }
+  .numeri b { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  button {
+    font-family: var(--sans); font-size: .95rem; font-weight: 500;
+    color: var(--fondo); background: var(--teal);
+    border: 0; border-radius: 2px; padding: .8rem 1.4rem;
+    cursor: pointer; align-self: flex-start; transition: opacity .15s ease;
+  }
+  button:hover { opacity: .85; }
+  button:disabled { opacity: .4; cursor: default; }
+  button#fai-foglio { background: var(--allarme); color: var(--fondo); font-weight: 600; }
+  button.quieto { background: transparent; color: var(--quieto); border: 1px solid var(--riga); }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+  .conversazione { display: flex; flex-direction: column; gap: 2.25rem; }
+
+  .turno-mio {
+    font-size: .98rem; color: var(--quieto);
+    border-left: 2px solid var(--riga); padding-left: 1.1rem;
+    white-space: pre-wrap;
+  }
+  .turno-libri {
+    font-family: var(--serif); font-size: 1.28rem; line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  /* Il capitolo nominato dentro la risposta, cliccabile come un link qualunque nel testo:
+     niente pulsante, niente spinta — solo sottolineato, come da regola 3 della casa. */
+  .turno-libri a { color: inherit; text-decoration: underline; text-decoration-color: var(--teal); text-underline-offset: 3px; }
+  .turno-libri a:hover { color: var(--teal); }
+  .attesa {
+    font-size: .78rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--quieto);
+  }
+  .attesa::after { content: "· · ·"; animation: punti 1.6s steps(4, end) infinite; }
+  @keyframes punti { 0% { content: ""; } 25% { content: "·"; } 50% { content: "· ·"; } 75% { content: "· · ·"; } }
+  @media (prefers-reduced-motion: reduce) { .attesa::after { animation: none; } }
+
+  .avviso {
+    font-size: .92rem; color: var(--allarme);
+    border-left: 2px solid var(--allarme); padding-left: 1.1rem;
+    white-space: pre-wrap;
+  }
+
+  /* «Hai finito, o vuoi continuare?»: la domanda che la pagina fa da sola quando cala il
+     silenzio. Serve a chi si ferma prima del tetto e se ne va senza il foglio. */
+  .chiesta {
+    border-left: 2px solid var(--teal); padding-left: 1.1rem;
+    display: flex; flex-direction: column; gap: .8rem;
+  }
+  .chiesta p { margin: 0; font-family: var(--serif); font-size: 1.2rem; line-height: 1.45; }
+  .chiesta .sotto { font-family: var(--sans); font-size: .9rem; color: var(--quieto); }
+  .chiesta .bottoni button { align-self: auto; }
+
+  .campo { display: flex; flex-direction: column; gap: .9rem; }
+
+  textarea {
+    font-family: var(--sans); font-size: 1rem; line-height: 1.55;
+    color: var(--testo); background: var(--fondo-alt);
+    border: 1px solid var(--riga); border-radius: 2px;
+    padding: 1rem 1.1rem; width: 100%; min-height: 8.5rem; resize: vertical;
+  }
+  textarea::placeholder { color: var(--quieto); opacity: .7; }
+  textarea:focus { border-color: var(--teal); outline: none; }
+
+  .bottoni { display: flex; gap: .7rem; align-items: center; flex-wrap: wrap; }
+  /* La voce all'andata (VOCE.md § 2-A): mentre ascolta, il bottone cambia parole e prende un punto che batte. */
+  #parla.ascolta { border-color: var(--teal); color: var(--teal); }
+  #parla.ascolta::before {
+    content: ""; display: inline-block; width: .55em; height: .55em; border-radius: 50%;
+    background: var(--allarme); margin-right: .55em; vertical-align: middle;
+    animation: batte 1.2s ease-in-out infinite;
+  }
+  @keyframes batte { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { #parla.ascolta::before { animation: none; } }
+  .stato-voce { margin: 0; font-size: .92rem; color: var(--quieto); }
+  /* Il bottone «Aa» in alto: passa da normale a grande e viceversa. */
+  .strumenti { display: flex; justify-content: flex-end; margin-bottom: -1.5rem; }
+  #grande { font-family: var(--serif); font-size: 1.05rem; padding: .4rem .7rem; letter-spacing: .02em; }
+  #grande[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); }
+  /* La lettura a voce (VOCE.md § 3-A): mentre è accesa il bottone lo dice. */
+  #leggi[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); }
+
+  .piede {
+    border-top: 1px solid var(--riga); padding-top: 1.5rem;
+    display: flex; flex-direction: column; gap: .7rem;
+    font-size: .84rem; color: var(--quieto);
+  }
+  .piede p { margin: 0; }
+  .piede a { color: var(--quieto); text-decoration: underline; text-underline-offset: 3px; }
+  .piede a:hover { color: var(--teal); }
+
+  /* Il foglio di fine conversazione: si fa nel telefono, dalla conversazione qui sopra. */
+  .foglio-fine {
+    border-top: 1px solid var(--riga);
+    padding-top: 2rem;
+    display: flex; flex-direction: column; gap: 1.6rem;
+  }
+  .foglio-fine h2 {
+    font-family: var(--serif); font-weight: 500; font-size: 1.7rem; line-height: 1.15; margin: 0;
+  }
+  .foglio-fine h3 {
+    font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--teal); margin: 0 0 .6rem;
+  }
+  .foglio-fine p { margin: 0; }
+  .fine-portato {
+    font-family: var(--serif); font-size: 1.15rem; line-height: 1.5; font-style: italic;
+    border-left: 2px solid var(--riga); padding-left: 1.1rem; white-space: pre-wrap; margin: 0;
+  }
+  .fine-libro { display: flex; flex-direction: column; gap: .45rem; padding: .9rem 0; border-top: 1px solid var(--riga); }
+  .fine-libro:last-of-type { border-bottom: 1px solid var(--riga); }
+  .fine-titolo { font-family: var(--serif); font-size: 1.25rem; }
+  .fine-stato { font-size: .84rem; color: var(--quieto); }
+  .fine-cap { font-size: .98rem; }
+  .fine-cap b { font-weight: 500; }
+  .fine-link { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin-top: .3rem; font-size: .9rem; }
+  .fine-nota a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+  .fine-link a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+  .fine-nota { font-size: .9rem; color: var(--quieto); }
+  .fine-conv { display: flex; flex-direction: column; gap: 1.1rem; }
+  .fine-conv .turno-mio { font-size: .92rem; }
+  .fine-conv .turno-libri { font-size: 1.08rem; }
+  .fine-programma {
+    display: inline-block; font-family: var(--sans); font-size: .68rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--allarme); margin-bottom: .3rem;
+  }
+  .fine-riscontro { display: flex; flex-direction: column; gap: .6rem; }
+  .fine-tessera { display: flex; flex-direction: column; gap: .6rem; }
+  /* La pagina del libro, per chi ha la tessera: arriva dopo la risposta, si legge qui. */
+  .pagina-libro {
+    border: 1px solid var(--riga); border-left: 3px solid var(--teal); border-radius: 2px;
+    background: var(--fondo-alt); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: .8rem;
+  }
+  .pagina-libro .di { font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--teal); }
+  .pagina-libro .cap { font-family: var(--serif); font-size: 1.35rem; line-height: 1.2; }
+  .pagina-libro .sotto { font-family: var(--serif); font-style: italic; color: var(--quieto); margin-top: -.4rem; }
+  .pagina-libro .testo { font-family: var(--serif); font-size: 1.15rem; line-height: 1.55; white-space: pre-wrap; }
+  .pagina-libro .testo.chiuso { max-height: 14rem; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+  .pagina-libro .sezione { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--quieto); margin: .8rem 0 .2rem; }
+  .pagina-libro .fondo { font-size: .84rem; color: var(--quieto); display: flex; flex-wrap: wrap; gap: .4rem .9rem; align-items: center; }
+  .pagina-libro .fondo a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+  .pagina-libro button { padding: .5rem .9rem; font-size: .86rem; }
+  /* La riga della tessera, sopra la casella: c'è solo se c'è una tessera. */
+  .riga-tessera { margin: 0; font-size: .84rem; color: var(--quieto); }
+  .riga-tessera a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+  .fine-bottoni { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
+  .fine-esito { font-size: .9rem; color: var(--quieto); }
+
+  @media print {
+    :root, :root[data-theme="dark"] { --fondo: #fff; --fondo-alt: #fff; --riga: #ccc; --testo: #111; --quieto: #555; --teal: #2f5f5a; --allarme: #8E4A33; }
+    body { font-size: 12pt; }
+    .foglio > *:not(.foglio-fine) { display: none !important; }
+    .foglio { padding: 0; }
+    .foglio-fine { border-top: 0; padding-top: 0; }
+    .fine-bottoni, .fine-esito, .fine-riscontro { display: none !important; }
+    .pagina-libro { display: none !important; }   /* le pagine si leggono qui, non si stampano */
+    a { color: inherit; }
+  }
+
+  /* Dentro l'app (…?dentro=1): la testata la mette l'app, qui resta la soglia e la conversazione. */
+  .dentro .apertura { display: none; }
+  .dentro .foglio { padding-top: 1rem; }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="foglio">
+
+  <div class="strumenti">
+    <button id="grande" type="button" class="quieto" aria-pressed="false" aria-label="Testo più grande" title="Testo più grande">Aa</button>
+  </div>
+
+  <header class="apertura">
+    <svg class="segno" viewBox="0 0 46 34" role="img" aria-label="Due barre che si fermano su una linea">
+      <rect class="barra-teal"   x="14" y="2" width="4" height="24"></rect>
+      <rect class="barra-avorio" x="26" y="9" width="4" height="17"></rect>
+      <rect class="linea"        x="4" y="27" width="38" height="1.5"></rect>
+    </svg>
+
+    <h1>Cosa ti sta succedendo?</h1>
+
+    <p class="sottotitolo">Scrivilo come viene. Non serve che sia in ordine, e non serve che sia importante.</p>
+  </header>
+
+  <section class="soglia" id="soglia">
+    <p class="occhiello">Prima di cominciare, cinque righe</p>
+    <div class="righe">
+      <p><strong>Qui stai scrivendo a un programma, non a una persona.</strong></p>
+      <p>Non è una seduta e non è terapia: non facciamo diagnosi, non parliamo di malattie, non curiamo niente.</p>
+      <p>Quello che facciamo è ascoltarti, farti qualche domanda, e portarti alla pagina di un libro di Davide Scuderi in cui quella cosa è già scritta. Alla fine ti proponiamo i suoi libri: li vendiamo noi. Molti stanno per uscire: te lo diciamo quando è così.</p>
+      <!-- Riga della fase di prova senza libri (SOLO_CONVERSAZIONE = "si" nel worker), chiusa da Davide il 06/09/2026 («metti i libri dentro adesso»):
+      <p>Quello che facciamo è ascoltarti e farti qualche domanda. Questa è una prova: non ti proponiamo niente, né libri né altro.</p> -->
+      <p><strong>Quello che scrivi non lo conserviamo.</strong> Resta in questa pagina finché è aperta. Chiudila, e non resta niente da nessuna parte.</p>
+      <p>Conserviamo un numero: quale situazione della vita hai portato (scelta da un elenco chiuso, non dalle tue parole), e se per quella cosa avevo o no una pagina da offrirti. È l'unico modo che conoscerò cosa scrivere. Spiegato nel dettaglio: <a href="../privacy.html#conto-foglie">leggi la sezione sulla privacy</a>.</p>
+      <p id="riga-voce" hidden><span id="riga-parla" hidden>Puoi anche <strong>parlare invece di scrivere</strong>: la voce la trasforma in testo il tuo telefono, col suo servizio (Google o Apple), e qui arriva solo il testo. Lo vedi comparire e puoi correggerlo prima di mandare.</span> <span id="riga-leggi" hidden>Se vuoi, <strong>le risposte te le legge la voce del telefono</strong>: niente esce dal telefono.</span></p>
+      <p>Se di mezzo c'è violenza, o stai pensando di farti del male, questo non è il posto:</p>
+      <p class="numeri">
+        <span><b>112</b> emergenza</span>
+        <span><b>1522</b> antiviolenza e stalking</span>
+        <span>Telefono Amico <b>02 2327 2327</b></span>
+      </p>
+      <div class="campo">
+        <label for="data-nascita" class="eta">Quando sei nato/a? (Serve essere maggiorenni, dai 14 anni in su con consenso dei genitori.)</label>
+        <input id="data-nascita" type="date" required>
+        <p id="eta-errore" class="eta" style="color: var(--allarme); display: none;"></p>
+      </div>
+    </div>
+    <button id="entra" type="button" disabled>Ho capito, cominciamo</button>
+  </section>
+
+  <main class="conversazione" id="conversazione" hidden></main>
+
+  <section class="campo" id="campo" hidden>
+    <label class="occhiello" for="scrivi">Raccontamelo</label>
+    <p class="riga-tessera" id="riga-tessera" hidden></p>
+    <textarea id="scrivi" placeholder="Come viene. Non serve che sia in ordine."></textarea>
+    <div class="bottoni">
+      <button id="manda" type="button">Manda</button>
+      <button id="parla" type="button" class="quieto" aria-pressed="false" hidden>Parla</button>
+      <button id="leggi" type="button" class="quieto" aria-pressed="false" hidden>Leggimela</button>
+      <button id="ferma" type="button" class="quieto" hidden>Ferma</button>
+      <button id="fai-foglio" type="button" class="quieto" hidden>Il foglio di stasera</button>
+    </div>
+    <p class="stato-voce" id="stato-voce" hidden aria-live="polite"></p>
+  </section>
+
+  <section class="foglio-fine" id="foglio-fine" hidden aria-live="polite"></section>
+
+  <footer class="piede">
+    <p>Qui risponde un programma costruito sui libri di Davide Scuderi, non Davide in tempo reale. È automatico e può sbagliare: non prenderlo per verità.</p>
+    <p>Non è un servizio di emergenza. <b>112</b> · <b>1522</b> · Telefono Amico <b>02 2327 2327</b>.</p>
+    <p><a href="../index.html">I libri</a> · <a href="../privacy.html">Come trattiamo quello che scrivi</a></p>
+  </footer>
+
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/catalogo.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // L'indirizzo del pezzo in mezzo. Vedi ACCENSIONE.md.
+  var SERVIZIO = "https://conversazione.davidescuderi1981.workers.dev";
+
+  // La parola dell'invito, presa dal link: ...parliamone.html?p=gloria
+  var PAROLA = new URLSearchParams(location.search).get("p") || "";
+  // Dentro l'app (…?dentro=1): niente testata, e i link dell'app aprono l'app, non una scheda nuova.
+  var DENTRO = new URLSearchParams(location.search).get("dentro") === "1";
+  if (DENTRO) document.documentElement.classList.add("dentro");
+
+  // Il programma ambassador (09/09/2026, come in app.js): se la persona arriva qui con un
+  // link tipo parliamone.html?rif=stefania, si tiene la parola nello stesso posto e con la
+  // stessa chiave che legge l'app (negozio-rif) — stessa origine (davidemcb.github.io/libri),
+  // quindi quando la si manda verso app/#negozio la trova già lì, senza doverla ripassare
+  // nell'indirizzo. Non si controlla il nome, lo fa il worker quando arriva l'acquisto.
+  (function () {
+    try {
+      var rif = new URLSearchParams(location.search).get("rif");
+      if (rif) localStorage.setItem("negozio-rif", rif.trim().toLowerCase());
+    } catch (e) {}
+  })();
+
+  // La tessera (08/09/2026, LA-TESSERA-COME-FUNZIONA.md): il biglietto firmato sta nel telefono,
+  // come la chiave del cassetto. Arriva dal link dell'email (…parliamone.html?t=T1.…) o da
+  // tessera.html, e si manda con ogni domanda: il tetto lo conta il server sul biglietto.
+  // Non è quello che scrivi: quello resta nella pagina e basta, come dice la soglia.
+  var CHIAVE_TESSERA = "tessera";
+  var TESSERA = "";
+  var statoTessera = "";   // valida:<restano> · finita · scaduta · invalida — lo dice il server a ogni risposta
+  // La tessera si nomina nel foglio solo se il worker dice che è in vendita (TESSERA = "si"):
+  // finché è spenta, o il worker vivo non la conosce ancora, il foglio non la nomina e non fa prezzi.
+  // Chi ha già una tessera valida la vede lo stesso. Una GET sola, all'apertura, senza modello.
+  var tesseraInVendita = false;
+  fetch(SERVIZIO + "/tessera/listino", { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) { tesseraInVendita = !!(d && d.accesa === true); riempiTessera(); })
+    .catch(function () { tesseraInVendita = false; });
+  (function () {
+    var dalLink = new URLSearchParams(location.search).get("t") || "";
+    if (dalLink && !/^T1\.[a-z]+\.\d+\.\d+\.[0-9a-f]+\.[0-9a-f]+$/.test(dalLink)) dalLink = "";
+    try {
+      if (dalLink) localStorage.setItem(CHIAVE_TESSERA, dalLink);
+      TESSERA = localStorage.getItem(CHIAVE_TESSERA) || "";
+    } catch (e) { TESSERA = dalLink; }
+    // Il biglietto non resta nella barra dell'indirizzo: se ne va, e resta la pagina di sempre.
+    if (dalLink && history.replaceState) {
+      var resto = [];
+      if (PAROLA) resto.push("p=" + encodeURIComponent(PAROLA));
+      if (DENTRO) resto.push("dentro=1");
+      history.replaceState(null, "", location.pathname + (resto.length ? "?" + resto.join("&") : ""));
+    }
+  })();
+  function scadenzaTessera(t) { var p = (t || "").split("."); return p.length === 6 ? Number(p[3]) : 0; }
+  function tesseraValida() { return !!TESSERA && scadenzaTessera(TESSERA) * 1000 > Date.now() && statoTessera !== "invalida"; }
+  function dataTessera(sec) {
+    try { return new Date(sec * 1000).toLocaleString("it-IT", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }); }
+    catch (e) { return ""; }
+  }
+  var rigaTessera = document.getElementById("riga-tessera");
+  function mostraStatoTessera() {
+    if (!TESSERA) { rigaTessera.hidden = true; return; }
+    var testo = "";
+    if (statoTessera === "invalida") testo = "La tessera salvata qui non è valida. Se l'hai comprata, riaprila dal link dell'email.";
+    else if (statoTessera === "scaduta" || !tesseraValida()) testo = "La tessera è scaduta il " + dataTessera(scadenzaTessera(TESSERA)) + ". Restano i dieci messaggi al giorno di tutti.";
+    else if (statoTessera === "finita") testo = "Tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + ". Per questo periodo ha finito le sue domande: restano i dieci messaggi al giorno di tutti, senza le pagine.";
+    else if (statoTessera.indexOf("valida:") === 0) testo = "Tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + " · " + statoTessera.slice(7) + " domande con le pagine in questo periodo.";
+    else testo = "Tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + ".";
+    rigaTessera.textContent = testo;
+    rigaTessera.hidden = false;
+  }
+
+  var soglia = document.getElementById("soglia");
+  var conv   = document.getElementById("conversazione");
+  var campo  = document.getElementById("campo");
+  var scrivi = document.getElementById("scrivi");
+  var manda  = document.getElementById("manda");
+  var ferma  = document.getElementById("ferma");
+  var faiFoglio = document.getElementById("fai-foglio");
+  var foglioFine = document.getElementById("foglio-fine");
+  var entrata = document.getElementById("entra");
+  var dataNascita = document.getElementById("data-nascita");
+  var etaErrore = document.getElementById("eta-errore");
+
+  function validaEta() {
+    if (!dataNascita.value) { entrata.disabled = true; return; }
+    var data = new Date(dataNascita.value);
+    var oggi = new Date();
+    var eta = oggi.getFullYear() - data.getFullYear();
+    var mese = oggi.getMonth() - data.getMonth();
+    if (mese < 0 || (mese === 0 && oggi.getDate() < data.getDate())) eta--;
+    etaErrore.style.display = "none";
+    if (eta < 14) {
+      etaErrore.textContent = "Devi avere almeno 14 anni per entrare.";
+      etaErrore.style.display = "block";
+      entrata.disabled = true;
+    } else {
+      entrata.disabled = false;
+    }
+  }
+  dataNascita.addEventListener("change", validaEta);
+  dataNascita.addEventListener("input", validaEta);
+
+  var turni = [];       // vive solo qui: niente localStorage, niente cronologia, niente server
+  var tutti = [];       // la conversazione intera, per il foglio: stessa vita di `turni`, stessa promessa
+  var chiusoPerOggi = false;
+  var attesa = null;
+  var controllo = null;
+
+  // La domanda del silenzio (decisa da Davide il 07/09/2026): quasi nessuno arriva ai dieci
+  // messaggi del tetto: si smette prima e si chiude la pagina, e il foglio non lo vede nessuno.
+  // Dopo un po' di silenzio la pagina chiede una cosa sola — hai finito, o vuoi continuare? — e
+  // a «ho finito» dà il foglio: com'è andata, i libri, la conversazione. Non insiste: due volte
+  // in tutto, mai mentre sta scrivendo, mai mentre una risposta è per strada.
+  var ATTESA_DOMANDA = 45000;   // il silenzio dopo cui si chiede, la prima volta (dimezzato il 09/09/2026: molti se ne andavano prima)
+  var DOMANDE_AL_MASSIMO = 2;
+  var orologioDomanda = null;
+  var bloccoDomanda = null;
+  var domandeFatte = 0;
+  var haFinito = false;
+
+  // La chiave del cassetto: nasce qui, resta qui. Il server la usa per chiudere la risposta e
+  // non la conserva. Serve perché sul telefono chi cambia app mentre aspetta perdeva la risposta.
+  var chiave = null;        // CryptoKey
+  var chiaveBase64 = "";
+  var haCrypto = !!(window.crypto && window.crypto.subtle && window.isSecureContext);
+
+  document.getElementById("entra").addEventListener("click", function () {
+    soglia.hidden = true;
+    conv.hidden = false;
+    campo.hidden = false;
+    blocco("turno-libri",
+      "Sono un programma, non una persona.\n" +
+      "Ti aiuto a dare un nome a quello che senti — le situazioni della vita, il corpo, i sentimenti.\n" +
+      "Non parlo di legge, di soldi, di medicina: per quelle ci sono l'avvocato, il commercialista, il medico.\n" +
+      "Non ti dirò cosa fare.\n" +
+      "Se una cosa è già scritta in un libro di Davide, ti do il capitolo intero — cliccabile qui sotto, nella risposta.\n" +
+      "Cosa ti sta succedendo?");
+    scrivi.focus();
+    preparaChiave();
+    mostraStatoTessera();
+  });
+
+  function preparaChiave() {
+    if (!haCrypto) return;
+    window.crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["decrypt"]).then(function (k) {
+      chiave = k;
+      return window.crypto.subtle.exportKey("raw", k);
+    }).then(function (grezza) {
+      chiaveBase64 = aBase64(new Uint8Array(grezza));
+    }).catch(function () { chiave = null; chiaveBase64 = ""; });
+  }
+
+  function aBase64(byte) {
+    var s = "";
+    for (var i = 0; i < byte.length; i++) s += String.fromCharCode(byte[i]);
+    return btoa(s);
+  }
+  function daBase64(testo) {
+    var s = atob(testo);
+    var fuori = new Uint8Array(s.length);
+    for (var i = 0; i < s.length; i++) fuori[i] = s.charCodeAt(i);
+    return fuori;
+  }
+
+  function blocco(classe, testo) {
+    var d = document.createElement("div");
+    d.className = classe;
+    d.textContent = testo;
+    conv.appendChild(d);
+    d.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    return d;
+  }
+
+  function chiudiAttesa() {
+    if (attesa) { attesa.remove(); attesa = null; }
+    ferma.hidden = true;
+    manda.disabled = false;
+    controllo = null;
+  }
+
+  function pausa(ms, segnale) {
+    return new Promise(function (ok, no) {
+      var t = setTimeout(ok, ms);
+      if (segnale) segnale.addEventListener("abort", function () { clearTimeout(t); no(abortato()); }, { once: true });
+    });
+  }
+  function abortato() { var e = new Error("fermato"); e.name = "AbortError"; return e; }
+
+  // Quando la persona torna sulla pagina, si va subito a vedere se la risposta è pronta.
+  var sveglia = null;
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && sveglia) sveglia();
+  });
+
+  ferma.addEventListener("click", function () { if (controllo) controllo.abort(); });
+  manda.addEventListener("click", invia);
+  scrivi.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) invia();
+  });
+  // Sta scrivendo: l'orologio del silenzio riparte da capo.
+  scrivi.addEventListener("input", function () { if (orologioDomanda) armaDomanda(); });
+
+  async function invia() {
+    var testo = scrivi.value.trim();
+    if (!testo || manda.disabled) return;
+
+    togliDomanda();
+    haFinito = false;   // ha ripreso a parlare: più tardi si potrà richiedere
+    if (!chiusoPerOggi) foglioFine.hidden = true;   // il foglio di prima è vecchio: si rifà dopo
+    scrivi.value = "";
+    manda.disabled = true;
+    blocco("turno-mio", testo);
+
+    turni.push({ role: "user", content: testo });
+    tutti.push({ role: "user", content: testo });
+    while (turni.length > 20) turni.splice(0, 2);   // si buttano i giri vecchi, non il presente
+
+    var colCassetto = !!(chiave && chiaveBase64);
+    attesa = blocco("attesa", colCassetto ? "Un momento. Puoi anche cambiare app: la risposta ti aspetta qui " : "Un momento, resta qui ");
+    ferma.hidden = false;
+    controllo = new AbortController();
+
+    var risposta = null;
+    var raccolto = "";
+    var biglietto = "";
+    var inizio = Date.now();
+    var finito = false;
+    nuovaLettura();   // la voce, se accesa, riparte da capo con questa risposta
+
+    function mostra(t) {
+      if (attesa) { attesa.remove(); attesa = null; }
+      if (!risposta) risposta = blocco("turno-libri", "");
+      raccolto = t;
+      risposta.textContent = raccolto;
+      leggiAPezzi(raccolto, false);   // frase per frase, mentre arriva
+    }
+
+    function concludi() {
+      chiudiAttesa();
+      leggiAPezzi(raccolto, true);    // quello che resta
+      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); applicaLinkCapitoli(risposta, raccolto); dopoRisposta(raccolto); }
+      else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; blocco("avviso", "Non è uscito niente. Premi Manda e riprova."); }
+      if (!chiusoPerOggi) scrivi.focus();
+    }
+
+    try {
+      var corpo = { parola: PAROLA, turni: turni };
+      if (colCassetto) corpo.chiave = chiaveBase64;
+      if (tesseraValida()) { corpo.tessera = TESSERA; corpo.pagine = pagineDate.map(function (p) { return p.libro + ":" + p.numero; }); }
+
+      var r = await fetch(SERVIZIO, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(corpo),
+        signal: controllo.signal,
+      });
+
+      if (!r.ok) {
+        var dettaglio = await r.json().catch(function () { return {}; });
+        chiudiAttesa();
+        turni.pop(); tutti.pop();
+        scrivi.value = testo;
+        blocco("avviso", dettaglio.errore || "Non riesco a rispondere adesso. Riprova fra poco.");
+        return;
+      }
+
+      biglietto = r.headers.get("x-biglietto") || "";
+      var st = r.headers.get("x-tessera") || "";
+      if (st) { statoTessera = st; mostraStatoTessera(); }
+
+      // Il flusso, parola per parola.
+      var lettore = r.body.getReader();
+      var testoDec = new TextDecoder();
+      var avanzo = "";
+      var evento = "";   // «pagina» quando la riga di dati che segue è una pagina di un libro
+      while (true) {
+        var pezzo = await lettore.read();
+        if (pezzo.done) break;
+        avanzo += testoDec.decode(pezzo.value, { stream: true });
+        var righe = avanzo.split("\n");
+        avanzo = righe.pop();
+        for (var i = 0; i < righe.length; i++) {
+          if (righe[i] === "event: fine") { finito = true; continue; }
+          if (righe[i].indexOf("event: ") === 0) { evento = righe[i].slice(7); continue; }
+          if (righe[i].indexOf("data: ") !== 0) continue;
+          var dato;
+          try { dato = JSON.parse(righe[i].slice(6)); } catch (e) { evento = ""; continue; }
+          if (evento === "pagina") { evento = ""; mostraPagina(dato); continue; }
+          evento = "";
+          if (!dato.testo) continue;
+          mostra(raccolto + dato.testo);
+        }
+      }
+
+      if (!finito && biglietto) {
+        // La copia della pagina si è fermata prima della fine: si ritira quella del cassetto.
+        mostra(await ritira(biglietto, inizio, controllo.signal));
+      } else if (finito && biglietto) {
+        svuota(biglietto);
+      }
+      concludi();
+
+    } catch (e) {
+      if (e && e.name === "AbortError") {
+        chiudiAttesa();
+        if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); applicaLinkCapitoli(risposta, raccolto); dopoRisposta(raccolto); }
+        else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; }
+        return;
+      }
+      if (biglietto && !finito) {
+        // Il telefono ha tagliato la richiesta (di solito: si è cambiata app). La risposta
+        // però è nel cassetto: si va a ritirarla.
+        try {
+          if (!attesa) attesa = blocco("attesa", "La risposta ti aspetta nel cassetto: la sto ritirando ");
+          mostra(await ritira(biglietto, inizio, controllo.signal));
+          concludi();
+          return;
+        } catch (e2) {
+          e = e2;
+        }
+      }
+      chiudiAttesa();
+      if (e && e.name === "AbortError") {
+        if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); applicaLinkCapitoli(risposta, raccolto); dopoRisposta(raccolto); }
+        else { if (risposta) risposta.remove(); turni.pop(); tutti.pop(); scrivi.value = testo; }
+        return;
+      }
+      if (raccolto) { turni.push({ role: "assistant", content: raccolto }); tutti.push({ role: "assistant", content: raccolto }); applicaLinkCapitoli(risposta, raccolto); dopoRisposta(raccolto); blocco("avviso", "Si è interrotto per strada. Riprova."); }
+      else {
+        if (risposta) risposta.remove();
+        turni.pop(); tutti.pop();
+        scrivi.value = testo;
+        blocco("avviso", (e && e.name === "TimeoutError")
+          ? "La risposta non è arrivata in tempo. Il tuo messaggio è tornato nella casella: premi Manda."
+          : "Si è interrotto per strada. Il tuo messaggio è tornato nella casella: premi Manda.");
+      }
+    }
+  }
+
+  /* ------------------------------------------------------------------ le pagine dei libri
+   * Deciso da Davide il 08/09/2026: la tessera compra pagine, mai tempo. Con la tessera ogni
+   * risposta porta i capitoli sulla situazione, per intero: arrivano dal server come
+   * «event: pagina», dopo il testo, e si leggono qui. Non si stampano e non vanno nel foglio:
+   * un capitolo per volta, a schermo (DOVE-STA-IL-MATERIALE.md § 3).
+   */
+  var pagineDate = [];   // {libro, numero, titolo, titoloLibro}: quelle già arrivate, per non richiederle
+
+  function libroDelCatalogo(chiave) {
+    for (var i = 0; i < CAT.libri.length; i++) if (CAT.libri[i].chiave === chiave) return CAT.libri[i];
+    return null;
+  }
+
+  function mostraPagina(p) {
+    if (!p || !p.testo || !p.libro) return;
+    pagineDate.push({ libro: p.libro, numero: p.numero, titolo: p.titolo, titoloLibro: p.titoloLibro });
+    var box = el("div", "pagina-libro");
+    box.appendChild(el("div", "di", (p.titoloLibro || p.libro) + " · di Davide Scuderi"));
+    box.appendChild(el("div", "cap", "Capitolo " + p.numero + " · " + p.titolo));
+    if (p.sotto) box.appendChild(el("div", "sotto", p.sotto));
+    var testo = el("div", "testo chiuso");
+    // Le sezioni dentro il capitolo arrivano come righe «§ Titolo».
+    p.testo.split("\n").forEach(function (riga, i) {
+      if (riga.indexOf("§ ") === 0) { testo.appendChild(el("span", "sezione", riga.slice(2))); return; }
+      if (i) testo.appendChild(document.createTextNode("\n"));
+      testo.appendChild(document.createTextNode(riga));
+    });
+    box.appendChild(testo);
+    var fondo = el("div", "fondo");
+    var apri = el("button", "quieto", "Leggi tutta la pagina"); apri.type = "button";
+    apri.addEventListener("click", function () {
+      var chiuso = testo.classList.toggle("chiuso");
+      apri.textContent = chiuso ? "Leggi tutta la pagina" : "Chiudi la pagina";
+      if (chiuso) box.scrollIntoView({ block: "start", behavior: "smooth" });
+    });
+    fondo.appendChild(apri);
+    var libro = libroDelCatalogo(p.libro);
+    if (libro) {
+      linkLibro(libro).forEach(function (l) {
+        var a = el("a", null, l.testo);
+        a.href = l.href; a.target = DENTRO && l.href.indexOf("http") !== 0 ? "_top" : "_blank"; a.rel = "noopener";
+        fondo.appendChild(a);
+      });
+      // L'assaggio audio (§ ASSAGGIO_AUDIO sopra): stesso tono sobrio dei link di lettura, mai un
+      // pulsante. Solo per i sette capitoli già liberi in audio; per gli altri capitoli di un libro
+      // con audiolibro, una riga che lo dice e basta, senza link (l'audiolibro è in vendita).
+      var fileAssaggio = ASSAGGIO_AUDIO[p.libro + ":" + p.numero];
+      if (fileAssaggio) {
+        var ascolta = el("a", null, "Ascolta un assaggio di questo capitolo");
+        ascolta.href = fileAssaggio;
+        ascolta.target = DENTRO ? "_top" : "_blank"; ascolta.rel = "noopener";
+        fondo.appendChild(ascolta);
+      } else if (LIBRI_CON_AUDIOLIBRO[p.libro]) {
+        fondo.appendChild(el("span", null, "L'audio di questo capitolo c'è nell'audiolibro completo, in vendita."));
+      }
+    } else if (!p.vendita) fondo.appendChild(el("span", null, "Sta per uscire."));
+    box.appendChild(fondo);
+    conv.appendChild(box);
+  }
+
+  // La risposta è arrivata intera dal flusso: la copia nel cassetto non serve più, si svuota.
+  function svuota(biglietto) {
+    setTimeout(function () {
+      fetch(SERVIZIO + "/risposta?b=" + biglietto, { cache: "no-store" }).catch(function () {});
+    }, 4000);
+  }
+
+  // Si ritira dal cassetto. Non si bussa prima di mezzo minuto dall'inizio: il contatore di
+  // Cloudflare tiene a mente per un minuto un «non c'è», e bussare troppo presto lo ritarda.
+  // Al ritorno sulla pagina la «sveglia» fa bussare subito.
+  async function ritira(biglietto, inizio, segnale) {
+    if (Date.now() - inizio > 600000) { var scaduto = new Error("scaduto"); scaduto.name = "TimeoutError"; throw scaduto; }
+    var primo = inizio + 30000 - Date.now();
+    if (primo > 0) await pausa(primo, segnale);
+    while (Date.now() - inizio < 240000) {
+      if (segnale.aborted) throw abortato();
+      try {
+        var r = await fetch(SERVIZIO + "/risposta?b=" + biglietto, { signal: segnale, cache: "no-store" });
+        if (r.ok) {
+          var d = await r.json();
+          if (d.pronta) {
+            var chiaro = new TextDecoder().decode(await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: daBase64(d.iv) }, chiave, daBase64(d.dati)));
+            // Dal 08/09/2026 nel cassetto c'è {testo, pagine}; se non è JSON, è il testo e basta.
+            try {
+              var dentro = JSON.parse(chiaro);
+              if (dentro && typeof dentro.testo === "string") {
+                (dentro.pagine || []).forEach(function (p) { setTimeout(function () { mostraPagina(p); }, 0); });
+                return dentro.testo;
+              }
+            } catch (e) { /* testo semplice */ }
+            return chiaro;
+          }
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") throw e;
+        // rete caduta un attimo: si ribussa
+      }
+      await new Promise(function (ok, no) {
+        var t = setTimeout(function () { sveglia = null; ok(); }, document.visibilityState === "hidden" ? 5000 : 2000);
+        sveglia = function () { sveglia = null; clearTimeout(t); ok(); };
+        segnale.addEventListener("abort", function () { clearTimeout(t); sveglia = null; no(abortato()); }, { once: true });
+      });
+    }
+    var e = new Error("tempo"); e.name = "TimeoutError"; throw e;
+  }
+
+  /* ------------------------------------------------------------------ il foglio di stasera
+   * Deciso da Davide il 06/09/2026 (IL-DOPO.md § 7). Al «per oggi basta», o quando la persona
+   * lo chiede, la pagina fa un foglio con: quello che ha scritto, i capitoli che il
+   * Bibliotecario ha nominato (verificati sul catalogo: numero e titolo veri, non quelli del
+   * modello), dove si compra ogni libro o «sta per uscire», la pratica del corpo se il corpo
+   * è uscito, e la conversazione com'è andata, con segnato cosa ha detto il programma di suo.
+   * Si costruisce qui, dal testo che la pagina ha davanti. Il server non lo vede mai.
+   */
+
+  var CAT = window.CATALOGO || { libri: [], corpo: [] };
+  var SITO = window.SITO || {};
+  var PAGINE_LIBRO = { duau: "da-uomo-a-uomo.html", sv: "senza-veli.html", pac: "prenditi-a-carezze.html" };
+
+  // Assaggio audio del capitolo, deciso da Davide il 09/09/2026: SOLO per i capitoli già scelti
+  // come «capitolo gratis» in versione testo (gli stessi PDF di SITO/capitoli/) — mai un'anteprima
+  // più ampia. Chiave "libro:numero" con lo stesso numero del catalogo (window.CATALOGO), verso un
+  // file mp3 in SITO/audio/. «Prenditi a carezze» non c'è: il suo estratto è Prologo + Capitolo 1
+  // insieme, non un capitolo pulito, quindi niente assaggio per quel libro.
+  var ASSAGGIO_AUDIO = {
+    "duau:3":  "audio/da-uomo-a-uomo-capitolo-padre.mp3",
+    "duau:7":  "audio/da-uomo-a-uomo-capitolo-tradimento.mp3",
+    "duau:8":  "audio/da-uomo-a-uomo-capitolo-separarsi.mp3",
+    "duau:11": "audio/da-uomo-a-uomo-capitolo-figli.mp3",
+    "duau:12": "audio/da-uomo-a-uomo-capitolo-solitudine.mp3",
+    "sv:49":   "audio/senza-veli-capitolo-la-donna-che-regge-tutto-i.mp3",
+    "sv:50":   "audio/senza-veli-capitolo-la-donna-che-regge-tutto-ii.mp3"
+  };
+  // I libri che hanno un audiolibro (anche se non ancora in vendita): per un capitolo senza
+  // assaggio pronto si dice solo che l'audio esiste nel libro completo, senza link — è in vendita,
+  // non gratis, e oggi non esiste ancora un link diretto dove venderlo.
+  var LIBRI_CON_AUDIOLIBRO = { duau: true, sv: true, pac: true };
+
+  // Dove va a finire un riscontro, se la persona decide di darlo. Parte da lei, con le sue parole,
+  // dalla sua app: qui non si manda niente e non si allega niente della conversazione.
+  var RISCONTRO = {
+    whatsapp: "393481514382",                                  // il numero pubblico di Davide
+    email: SITO.emailPubblica || "davidescuderi1981@gmail.com",
+    apertura: "Ciao Davide, ho provato «Cosa ti sta succedendo?». Ti dico com'è andata: "
+  };
+
+  // Il link per recensire un libro su Amazon, ricavato dall'ASIN che sta in config.js.
+  function recensioneAmazon(libro) {
+    var A = SITO.amazon || {};
+    var m = /\/dp\/([A-Z0-9]{10})/.exec(A[libro.config + "Cartaceo"] || A[libro.config + "Ebook"] || "");
+    return m ? "https://www.amazon.it/review/create-review?asin=" + m[1] : "";
+  }
+
+  function eTetto(testo) {
+    return /^\s*per oggi basta|^\s*per questo mese ho finito il fiato/i.test(testo || "");
+  }
+
+  function dopoRisposta(testo) {
+    faiFoglio.textContent = nomeFoglio();
+    faiFoglio.hidden = false;
+    if (eTetto(testo)) {
+      chiusoPerOggi = true;
+      scrivi.disabled = true;
+      manda.disabled = true;
+      scrivi.placeholder = "Ci sono anche domani.";
+      mostraFoglio(true);
+      return;
+    }
+    armaDomanda();
+  }
+
+  faiFoglio.addEventListener("click", function () { mostraFoglio(); });
+
+  /* ---------------------------------------------------------------- hai finito, o continuiamo?
+   * Il tetto (dieci messaggi al giorno) chiude da sé con «per oggi basta». Chi si ferma prima
+   * non chiude niente: sta zitto e se ne va. Qui la pagina, dopo un silenzio, glielo chiede.
+   */
+  function armaDomanda() {
+    fermaOrologio();
+    if (chiusoPerOggi || haFinito || bloccoDomanda) return;
+    if (domandeFatte >= DOMANDE_AL_MASSIMO) return;
+    if (giriFatti() < 1) return;   // già dalla prima risposta (soglia abbassata il 09/09/2026: prima serviva la seconda)
+    orologioDomanda = setTimeout(chiediSeHaFinito, domandeFatte === 0 ? ATTESA_DOMANDA : ATTESA_DOMANDA * 2);
+  }
+
+  function fermaOrologio() {
+    if (orologioDomanda) { clearTimeout(orologioDomanda); orologioDomanda = null; }
+  }
+
+  function togliDomanda() {
+    fermaOrologio();
+    if (bloccoDomanda) { bloccoDomanda.remove(); bloccoDomanda = null; }
+  }
+
+  function giriFatti() {
+    var n = 0;
+    for (var i = 0; i < tutti.length; i++) if (tutti[i].role === "assistant") n++;
+    return n;
+  }
+
+  function chiediSeHaFinito() {
+    orologioDomanda = null;
+    if (chiusoPerOggi || haFinito || bloccoDomanda) return;
+    if (manda.disabled) return;                       // una risposta è per strada: non si interrompe
+    if (scrivi.value.trim()) { armaDomanda(); return; }   // sta scrivendo: si aspetta
+    if (document.visibilityState !== "visible") {     // è in un'altra app: si riprova dopo, e non conta
+      orologioDomanda = setTimeout(chiediSeHaFinito, 30000);
+      return;
+    }
+    domandeFatte++;
+
+    bloccoDomanda = el("div", "chiesta");
+    bloccoDomanda.appendChild(el("p", null, "Hai finito, o vuoi continuare?"));
+    bloccoDomanda.appendChild(el("p", "sotto",
+      "Se hai finito ti lascio il foglio di " + momento() + ": le pagine dei libri che sono uscite, dove si "
+      + "trovano, e la conversazione com'è andata. Se invece vuoi continuare, scrivi pure."));
+    var righe = el("div", "bottoni");
+    var continua = el("button", "quieto", "Voglio continuare");
+    var finisci = el("button", null, "Ho finito");
+    continua.type = "button";
+    finisci.type = "button";
+    // «Voglio continuare»: la domanda sparisce e l'orologio riparte, più lungo. Poi basta.
+    continua.addEventListener("click", function () { togliDomanda(); armaDomanda(); scrivi.focus(); });
+    finisci.addEventListener("click", chiudiConversazione);
+    righe.appendChild(finisci);
+    righe.appendChild(continua);
+    bloccoDomanda.appendChild(righe);
+    conv.appendChild(bloccoDomanda);
+    bloccoDomanda.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+
+  // «Ho finito»: non si chiude niente a chiave — se le torna in mente qualcosa scrive ancora —
+  // ma da qui in poi c'è il foglio, e nel foglio la domanda «com'è andata?».
+  function chiudiConversazione() {
+    togliDomanda();
+    haFinito = true;
+    faiFoglio.hidden = true;
+    scrivi.placeholder = "Se ti torna in mente qualcosa, sono qui.";
+    mostraFoglio(true);
+  }
+
+  // Minuscolo, senza accenti, senza asterischi e virgolette: così «*L'Alce*», «L’Alce» e «l'alce» sono la stessa cosa.
+  function piatto(t) {
+    return (t || "")
+      .replace(/[’‘`´]/g, "'")
+      .replace(/[*_«»"“”]/g, "")
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .toLowerCase();
+  }
+
+  // Come piatto(), ma tiene anche la mappa: per ogni carattere del testo appiattito, l'indice
+  // del carattere corrispondente nel testo originale. Serve per ritagliare dal testo vero (con
+  // maiuscole, accenti e corsivi) lo stesso pezzo che il riconoscimento trova nel testo piatto —
+  // è così che «capitolo 3» dentro la risposta diventa un link senza perdere la sua scrittura.
+  function piattoConMappa(t) {
+    t = t || "";
+    var fuori = "";
+    var mappa = [];
+    for (var i = 0; i < t.length; i++) {
+      var c = t[i];
+      if (c === "'" || c === "‘" || c === "`" || c === "´") { fuori += "'"; mappa.push(i); continue; }
+      if (c === "*" || c === "_" || c === "«" || c === "»" || c === '"' || c === "“" || c === "”") continue;
+      var norm = c.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+      for (var j = 0; j < norm.length; j++) { fuori += norm[j]; mappa.push(i); }
+    }
+    return { testo: fuori, mappa: mappa };
+  }
+
+  function scappa(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+  // Dove ogni libro è nominato in un testo già piatto: [{libro, inizio, fine}], in ordine.
+  function menzioni(t) {
+    var fuori = [];
+    CAT.libri.forEach(function (libro) {
+      libro.alias.forEach(function (alias) {
+        var re = new RegExp("(^|[^a-z])(" + scappa(alias) + ")(?![a-z])", "g");
+        var m;
+        while ((m = re.exec(t))) {
+          var inizio = m.index + m[1].length;
+          fuori.push({ libro: libro, inizio: inizio, fine: inizio + m[2].length });
+        }
+      });
+    });
+    fuori.sort(function (a, b) { return a.inizio - b.inizio; });
+    // Se due alias si sovrappongono («la banana guarda in giu» e «la banana»), resta il più lungo.
+    var puliti = [];
+    fuori.forEach(function (m) {
+      var ultimo = puliti[puliti.length - 1];
+      if (ultimo && m.inizio < ultimo.fine) { if (m.fine - m.inizio > ultimo.fine - ultimo.inizio) puliti[puliti.length - 1] = m; }
+      else puliti.push(m);
+    });
+    return puliti;
+  }
+
+  /* Il nucleo comune del riconoscimento capitoli: dato il testo di UN turno del programma,
+   * trova ogni «capitolo N[, N e N…]» e gli assegna il libro giusto — subito dopo («capitolo 7
+   * di Da uomo a uomo», «capitolo 3 dell'Alce»), oppure poco prima («L'ex non è un nemico,
+   * capitolo 21»), oppure l'ultimo libro nominato (anche in un turno precedente, `libroDiPartenza`).
+   * Un numero che nel catalogo del libro non esiste — il modello lo ha inventato — resta fuori:
+   * la stessa regola vale sia per «il foglio di stasera» (`trovaPagine`) sia per il link dentro
+   * il fumetto della risposta (`applicaLinkCapitoli`), perché usano tutte e due questa funzione.
+   * `inizioOrig`/`fineOrig` sono gli indici nel TESTO ORIGINALE del turno (non in quello piatto),
+   * grazie a piattoConMappa: servono a ritagliare il pezzo vero da avvolgere in un link.
+   */
+  function capitoliNelTesto(testoOriginale, libroDiPartenza) {
+    var pm = piattoConMappa(testoOriginale);
+    var t = pm.testo, mappa = pm.mappa;
+    var libri = menzioni(t);
+    var risultati = [];
+    var re = /capitol[oi]\s+(\d+)((?:\s*(?:,|e|o|ed|il|e il|al|all')\s*\d+)*)/g;
+    var m;
+    var ultimoLibro = libroDiPartenza || null;
+    while ((m = re.exec(t))) {
+      var numeri = [Number(m[1])];
+      var altri = m[2].match(/\d+/g) || [];
+      altri.forEach(function (n) { numeri.push(Number(n)); });
+      var inizio = m.index, fine = m.index + m[0].length;
+
+      var libro = null, i;
+      for (i = 0; i < libri.length; i++) {
+        if (libri[i].inizio >= fine && libri[i].inizio - fine <= 40 && /^[\s,:;]*(?:di|del|dell'|dello|della|de|nel|nell'|in)?\s*$/.test(t.slice(fine, libri[i].inizio))) { libro = libri[i].libro; break; }
+      }
+      if (!libro) {
+        for (i = libri.length - 1; i >= 0; i--) {
+          if (libri[i].fine <= inizio && inizio - libri[i].fine <= 120) { libro = libri[i].libro; break; }
+        }
+      }
+      if (!libro) {
+        for (i = libri.length - 1; i >= 0; i--) { if (libri[i].fine <= inizio) { libro = libri[i].libro; break; } }
+      }
+      if (!libro) libro = ultimoLibro;
+      if (!libro) continue;
+
+      var validi = numeri.filter(function (n) { return !!libro.capitoli[String(n)]; });
+      if (!validi.length) continue;   // il modello ha nominato un capitolo che non c'è: non conta, non si linka
+
+      risultati.push({
+        inizioOrig: mappa[inizio],
+        fineOrig: (fine - 1 < mappa.length) ? mappa[fine - 1] + 1 : testoOriginale.length,
+        libro: libro,
+        numeriValidi: validi
+      });
+    }
+    if (libri.length) ultimoLibro = libri[libri.length - 1].libro;
+    return { risultati: risultati, ultimoLibro: ultimoLibro };
+  }
+
+  // I capitoli nominati: [{libro, numero}], solo quelli che nel catalogo esistono davvero.
+  function trovaPagine() {
+    var trovati = [];
+    var visti = {};
+    var ultimoLibro = null;   // il libro nominato per ultimo, anche in una risposta precedente
+
+    tutti.forEach(function (turno) {
+      if (turno.role !== "assistant") return;
+      var esito = capitoliNelTesto(turno.content, ultimoLibro);
+      ultimoLibro = esito.ultimoLibro;
+      esito.risultati.forEach(function (r) {
+        r.numeriValidi.forEach(function (n) {
+          var k = r.libro.chiave + ":" + n;
+          if (visti[k]) return;
+          visti[k] = true;
+          trovati.push({ libro: r.libro, numero: n });
+        });
+      });
+    });
+    return trovati;
+  }
+
+  // Avvolge, dentro il testo originale del turno, ogni «capitolo N» riconosciuto (e verificato
+  // sul catalogo) in un link — verso lo stesso posto in cui oggi punterebbe quel libro nel foglio
+  // finale (linkLibro). Il resto del testo resta testo semplice. Ritorna anche l'ultimo libro
+  // nominato, per tenere il filo da una risposta all'altra.
+  function nodoRispostaConLink(testoOriginale, libroDiPartenza) {
+    var esito = capitoliNelTesto(testoOriginale, libroDiPartenza);
+    var frag = document.createDocumentFragment();
+    var pos = 0;
+    esito.risultati.forEach(function (r) {
+      if (r.inizioOrig > pos) frag.appendChild(document.createTextNode(testoOriginale.slice(pos, r.inizioOrig)));
+      var pezzo = testoOriginale.slice(r.inizioOrig, r.fineOrig);
+      var link = linkLibro(r.libro)[0];
+      if (link) {
+        var a = document.createElement("a");
+        a.textContent = pezzo;
+        a.href = link.href;
+        a.target = DENTRO && link.href.indexOf("http") !== 0 ? "_top" : "_blank";
+        a.rel = "noopener";
+        frag.appendChild(a);
+      } else {
+        frag.appendChild(document.createTextNode(pezzo));
+      }
+      pos = r.fineOrig;
+    });
+    if (pos < testoOriginale.length) frag.appendChild(document.createTextNode(testoOriginale.slice(pos)));
+    return { frag: frag, ultimoLibro: esito.ultimoLibro };
+  }
+
+  // Il filo dei link dentro le risposte (indipendente da quello del foglio, che si ricalcola da
+  // zero ogni volta): l'ultimo libro nominato, anche in una risposta precedente della stessa
+  // conversazione, così «capitolo 21» da solo — dopo un turno che ha già nominato il libro — trova
+  // comunque la sua casa.
+  var ultimoLibroLink = null;
+
+  // Sostituisce il testo semplice già mostrato in un fumetto di risposta con la versione dove i
+  // capitoli nominati (e verificati) sono link, discreti come un link qualunque nel testo — non un
+  // pulsante «Compra ora»: la regola 3 della casa vale anche qui.
+  function applicaLinkCapitoli(elemento, testo) {
+    if (!elemento || !testo) return;
+    var esito = nodoRispostaConLink(testo, ultimoLibroLink);
+    ultimoLibroLink = esito.ultimoLibro;
+    elemento.textContent = "";
+    elemento.appendChild(esito.frag);
+  }
+
+  // I segni del corpo usciti nella conversazione, al massimo due, prima quelli con la voce.
+  function trovaCorpo() {
+    var t = piatto(tutti.map(function (x) { return x.content; }).join("\n"));
+    var usciti = [];
+    CAT.corpo.forEach(function (segno) {
+      var primo = -1;
+      segno.parole.forEach(function (parola) {
+        var m = new RegExp("(^|[^a-z])" + scappa(parola)).exec(t);
+        if (m && (primo < 0 || m.index < primo)) primo = m.index;
+      });
+      if (primo >= 0) usciti.push({ segno: segno, dove: primo });
+    });
+    usciti.sort(function (a, b) { return (b.segno.audio - a.segno.audio) || (a.dove - b.dove); });
+    return usciti.slice(0, 2).map(function (u) { return u.segno; });
+  }
+
+  function statoLibro(libro) {
+    if (libro.vendita === "sito") return "l'ebook si compra dal sito · il cartaceo sta per uscire";
+    return libro.vendita ? "in vendita" : "sta per uscire";
+  }
+
+  // I due libri che il negozio diretto (Stripe, dentro l'app) vende oggi — 09/09/2026, la chiave
+  // è la stessa di libro.config perché così li ha nominati costruisci_negozio.py. Per questi due,
+  // il link dell'ebook "dal sito" porta al negozio nuovo (dove passa il 20% ambassador) invece che
+  // a Gumroad; per tutti gli altri libri resta come prima, perché lì non si comprano ancora.
+  var NEGOZIO_DIRETTO = { duau: true, sv: true };
+
+  function linkLibro(libro) {
+    var fuori = [];
+    // vendita: true = Amazon e sito · "sito" = solo l'ebook dal sito (Gumroad), il cartaceo non è ancora
+    // su Amazon (decisione di Davide dell'08/09/2026, MARKETING/DUE-CANALI-DUE-RITMI.md § 6.2) · false = non ancora.
+    if (libro.vendita && libro.config) {
+      var A = SITO.amazon || {}, G = SITO.gumroad || {};
+      var ebookAmazon = A[libro.config + "Ebook"], cartaceo = A[libro.config + "Cartaceo"];
+      var ebookSito = NEGOZIO_DIRETTO[libro.config]
+        ? "app/#negozio?libro=" + encodeURIComponent(libro.config)
+        : G[libro.config + "Ebook"];
+      if (ebookSito) fuori.push({ testo: "Ebook, subito, dal sito", href: ebookSito });
+      else if (ebookAmazon) fuori.push({ testo: "Ebook su Amazon", href: ebookAmazon });
+      if (cartaceo) fuori.push({ testo: "Cartaceo su Amazon", href: cartaceo });
+      if (libro.vendita === "sito" && !cartaceo) fuori.push({ testo: "Il cartaceo sta per uscire · lasciami l'email e ti avviso", href: "avvisami.html?libro=" + encodeURIComponent(libro.chiave) + "&cosa=cartaceo" });
+      if (PAGINE_LIBRO[libro.config]) fuori.push({ testo: "La pagina del libro", href: PAGINE_LIBRO[libro.config] });
+      if (!fuori.length) fuori.push({ testo: "Sta per uscire · lasciami l'email e ti avviso", href: "avvisami.html?libro=" + encodeURIComponent(libro.chiave) });
+    } else {
+      fuori.push({ testo: "Sta per uscire · lasciami l'email e ti avviso", href: "avvisami.html?libro=" + encodeURIComponent(libro.chiave) });
+    }
+    return fuori;
+  }
+
+  function el(tag, classe, testo) {
+    var d = document.createElement(tag);
+    if (classe) d.className = classe;
+    if (testo != null) d.textContent = testo;
+    return d;
+  }
+
+  function dataOggi() {
+    try { return new Date().toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" }); }
+    catch (e) { return ""; }
+  }
+
+  /* «Stasera» solo se è sera davvero, nell'ora del telefono di chi legge: di giorno «oggi».
+   * Prima il foglio si chiamava «di stasera» a qualunque ora (riscontro 05-bis, 08/09/2026). */
+  function momento() {
+    try { var h = new Date().getHours(); return (h >= 18 || h < 5) ? "stasera" : "oggi"; }
+    catch (e) { return "oggi"; }
+  }
+  function nomeFoglio() { return "Il foglio di " + momento(); }
+
+  function mostraFoglio(chiusura) {
+    if (!tutti.length) return;
+    var finita = !!chiusura || chiusoPerOggi || haFinito;
+    var pagine = trovaPagine();
+    // Con la tessera, anche le pagine lette stasera (arrivate col testo, non solo nominate).
+    pagineDate.forEach(function (p) {
+      var libro = libroDelCatalogo(p.libro);
+      if (!libro || !libro.capitoli[String(p.numero)]) return;
+      if (pagine.some(function (x) { return x.libro.chiave === p.libro && x.numero === p.numero; })) return;
+      pagine.push({ libro: libro, numero: p.numero });
+    });
+    var corpo = trovaCorpo();
+    var primo = null;
+    for (var i = 0; i < tutti.length; i++) if (tutti[i].role === "user") { primo = tutti[i].content; break; }
+    var confine = tutti.some(function (x) { return x.role === "assistant" && /non sta in un libro/i.test(x.content); });
+    // A chi sono usciti i numeri di emergenza non si chiede nessun favore: nessuna recensione,
+    // niente. È la stessa regola che il prompt dà al Bibliotecario (SE LA PERSONA STA SALUTANDO).
+    var grave = tutti.some(function (x) { return x.role === "assistant" && /\b1522\b/.test(x.content); });
+    var chiediComEAndata = finita && !grave;
+
+    foglioFine.innerHTML = "";
+
+    foglioFine.appendChild(el("p", "occhiello", nomeFoglio() + (dataOggi() ? " · " + dataOggi() : "")));
+    foglioFine.appendChild(el("h2", null,
+      chiusoPerOggi ? "Per oggi basta. Questo te lo porti via."
+      : finita ? "Va bene così. Questo te lo porti via."
+      : "Quello che è uscito, in una pagina."));
+
+    if (primo) {
+      var s1 = el("div");
+      s1.appendChild(el("h3", null, "Quello che hai portato"));
+      s1.appendChild(el("p", "fine-portato", primo.length > 700 ? primo.slice(0, 700).replace(/\s+\S*$/, "") + "…" : primo));
+      foglioFine.appendChild(s1);
+    }
+
+    var s2 = el("div");
+    s2.appendChild(el("h3", null, pagineDate.length ? "Le pagine che hai letto" : "Le pagine che sono uscite"));
+    if (!pagine.length) {
+      s2.appendChild(el("p", "fine-nota", "Stasera non è uscita nessuna pagina dei libri: quello che hai letto l'ha detto il programma, e non porta la firma di Davide."));
+    } else {
+      // Raggruppati per libro, nell'ordine in cui sono usciti.
+      var ordine = [], perLibro = {};
+      pagine.forEach(function (p) {
+        if (!perLibro[p.libro.chiave]) { perLibro[p.libro.chiave] = { libro: p.libro, numeri: [] }; ordine.push(p.libro.chiave); }
+        perLibro[p.libro.chiave].numeri.push(p.numero);
+      });
+      ordine.forEach(function (k) {
+        var g = perLibro[k];
+        var box = el("div", "fine-libro");
+        box.appendChild(el("div", "fine-titolo", g.libro.titolo));
+        box.appendChild(el("div", "fine-stato", "di Davide Scuderi · " + statoLibro(g.libro)));
+        g.numeri.sort(function (a, b) { return a - b; }).forEach(function (n) {
+          var riga = el("div", "fine-cap");
+          riga.appendChild(document.createTextNode("capitolo " + n + " · "));
+          riga.appendChild(el("b", null, g.libro.capitoli[String(n)]));
+          box.appendChild(riga);
+        });
+        var link = el("div", "fine-link");
+        linkLibro(g.libro).forEach(function (l) {
+          var a = el("a", null, l.testo);
+          a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+          link.appendChild(a);
+        });
+        box.appendChild(link);
+        s2.appendChild(box);
+      });
+      s2.appendChild(el("p", "fine-nota", "Numero e titolo dei capitoli sono quelli dei libri, non quelli del programma: se un capitolo nominato non esisteva, qui non c'è."));
+    }
+    if (confine) s2.appendChild(el("p", "fine-nota", "Una parte di quello che hai letto l'ha detta il programma di suo, non un libro: nella conversazione qui sotto è segnata."));
+    foglioFine.appendChild(s2);
+
+    if (corpo.length) {
+      var s3 = el("div");
+      s3.appendChild(el("h3", null, "Se il corpo si è fatto sentire"));
+      s3.appendChild(el("p", "fine-nota", "Un minuto col corpo, nell'app: non è un esercizio, è compagnia. Se ti va."));
+      var link3 = el("div", "fine-link");
+      corpo.forEach(function (segno) {
+        var a = el("a", null, segno.voce + (segno.audio ? " · con la voce di Davide" : ""));
+        a.href = "app/#pratica/" + segno.chiave; a.target = DENTRO ? "_top" : "_blank"; a.rel = "noopener";
+        link3.appendChild(a);
+      });
+      s3.appendChild(link3);
+      foglioFine.appendChild(s3);
+    }
+
+    if (chiediComEAndata) foglioFine.appendChild(chiediRiscontro(pagine));
+    // La tessera si nomina solo qui: dopo, quando ha detto «ho finito», mai dentro la
+    // conversazione e mai a chi sono usciti i numeri (le quattro regole di LA-BIBLIOTECA.md § 1).
+    if (finita && !grave) foglioFine.appendChild(sezioneTessera());
+
+    var s4 = el("div");
+    s4.appendChild(el("h3", null, "La conversazione, com'è andata"));
+    var conv4 = el("div", "fine-conv");
+    tutti.forEach(function (x) {
+      var d = el("div", x.role === "user" ? "turno-mio" : "turno-libri");
+      if (x.role === "assistant" && /non sta in un libro/i.test(x.content)) {
+        d.appendChild(el("span", "fine-programma", "Qui parla il programma, non un libro"));
+        d.appendChild(document.createElement("br"));
+      }
+      d.appendChild(document.createTextNode(x.content));
+      conv4.appendChild(d);
+    });
+    s4.appendChild(conv4);
+    foglioFine.appendChild(s4);
+
+    if (chiusoPerOggi) {
+      // Il «per oggi basta» rimanda alla pagina della settimana: è quella dell'app, un tema a settimana dai libri.
+      var s5 = el("div");
+      s5.appendChild(el("h3", null, "Intanto"));
+      var p5 = el("p", "fine-nota", "");
+      p5.appendChild(document.createTextNode("Ci sono anche domani. Intanto c'è "));
+      var a5 = el("a", null, "la pagina della settimana");
+      a5.href = "app/#settimana"; a5.target = DENTRO ? "_top" : "_blank"; a5.rel = "noopener";
+      p5.appendChild(a5);
+      p5.appendChild(document.createTextNode(": un tema a settimana, dai libri, con una riga al giorno."));
+      s5.appendChild(p5);
+      foglioFine.appendChild(s5);
+    }
+
+    foglioFine.appendChild(el("p", "fine-nota", "Questo foglio l'ha fatto la pagina nel tuo telefono, dalla conversazione qui sopra. Nessuno l'ha visto e non è stato mandato da nessuna parte. Se lo vuoi domani, salvalo adesso: chiusa la pagina, non resta niente."));
+
+    var bottoni = el("div", "fine-bottoni");
+    var salva = el("button", null, "Salvalo (PDF)"); salva.type = "button";
+    var manda2 = el("button", "quieto", "Mandalo a te stesso"); manda2.type = "button";
+    var esito = el("span", "fine-esito", "");
+    salva.addEventListener("click", function () { window.print(); });
+    manda2.addEventListener("click", function () {
+      var testo = testoFoglio(pagine, corpo, primo, chiediComEAndata);
+      if (navigator.share) {
+        navigator.share({ title: nomeFoglio(), text: testo }).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(testo).then(function () { esito.textContent = "Copiato. Incollalo in una nota, o in un messaggio a te stesso."; },
+          function () { esito.textContent = "Non riesco a copiare: seleziona il testo e copialo tu."; });
+      } else esito.textContent = "Seleziona il testo e copialo.";
+    });
+    bottoni.appendChild(salva); bottoni.appendChild(manda2); bottoni.appendChild(esito);
+    foglioFine.appendChild(bottoni);
+
+    foglioFine.hidden = false;
+    foglioFine.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  /* La recensione. Si chiede una volta sola, alla fine, e non parte niente da sola: si apre
+   * WhatsApp o la posta con una riga già scritta, e da lì scrive lei quello che vuole. Della
+   * conversazione non si allega niente — non la vede nessuno, e non deve cominciare adesso.
+   * Chi un libro l'ha già letto trova qui anche dove si recensisce: è la cosa che li fa trovare. */
+  function chiediRiscontro(pagine) {
+    var s = el("div", "fine-riscontro");
+    s.appendChild(el("h3", null, "Com'è andata?"));
+    s.appendChild(el("p", "fine-nota",
+      "Se ti va, due righe a Davide: cosa ti è servito e cosa no. Le legge lui. Scrivi solo quello "
+      + "che vuoi tu: della conversazione qui sopra non parte niente, e nessuno la vede."));
+
+    var dove = el("div", "fine-link");
+    var testo = encodeURIComponent(RISCONTRO.apertura);
+    [
+      { testo: "Scrivilo su WhatsApp", href: "https://wa.me/" + RISCONTRO.whatsapp + "?text=" + testo },
+      { testo: "Scrivilo per email", href: "mailto:" + RISCONTRO.email + "?subject=" + encodeURIComponent("Com'è andata") + "&body=" + testo }
+    ].forEach(function (l) {
+      var a = el("a", null, l.testo);
+      a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+      dove.appendChild(a);
+    });
+    s.appendChild(dove);
+
+    // Solo i libri già in vendita, e solo quelli usciti stasera: a chi non li ha, non si chiede niente.
+    var visti = {}, recensibili = [];
+    pagine.forEach(function (p) {
+      // Un libro che si vende solo dal sito (vendita === "sito") non ha una pagina Amazon: niente da recensire.
+      if (visti[p.libro.chiave] || p.libro.vendita !== true || !p.libro.config) return;
+      visti[p.libro.chiave] = true;
+      var href = recensioneAmazon(p.libro);
+      if (href) recensibili.push({ testo: "Recensisci " + p.libro.titolo, href: href });
+    });
+    if (recensibili.length) {
+      s.appendChild(el("p", "fine-nota",
+        "E se uno di questi libri l'hai già letto: una recensione su Amazon è il modo in cui lo trova "
+        + "qualcun altro che sta come te."));
+      var suAmazon = el("div", "fine-link");
+      recensibili.forEach(function (l) {
+        var a = el("a", null, l.testo);
+        a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+        suAmazon.appendChild(a);
+      });
+      s.appendChild(suAmazon);
+    }
+    return s;
+  }
+
+  /* «Se vuoi tornare»: prima il gratis, che c'è sempre; poi la tessera, senza fretta. */
+  function sezioneTessera() {
+    var s = el("div", "fine-tessera");
+    s.appendChild(el("h3", null, "Se vuoi tornare"));
+    if (tesseraValida()) {
+      s.appendChild(el("p", "fine-nota", "Hai una tessera fino al " + dataTessera(scadenzaTessera(TESSERA))
+        + (statoTessera === "finita" ? ". Per questo periodo ha finito le sue domande: intanto restano i dieci messaggi al giorno di tutti, senza le pagine." : ". Torna quando vuoi: la pagina se la ricorda, e a ogni domanda ti apre le pagine.")));
+      return s;
+    }
+    s.appendChild(el("p", "fine-nota", "Domani ci sono di nuovo, gratis: dieci messaggi al giorno, per tutti, sempre."));
+    // Il paragrafo della tessera va qui dentro, ma solo se il listino del worker dice che è in
+    // vendita: lo riempie riempiTessera(), adesso se il listino è già arrivato, o quando arriva.
+    s.appendChild(el("div", "fine-tessera-vendita"));
+    riempiTessera();
+    return s;
+  }
+
+  function riempiTessera() {
+    var dove = foglioFine.querySelector(".fine-tessera-vendita");
+    if (!dove || !tesseraInVendita || dove.firstChild) return;
+    var p = el("p", "fine-nota", "");
+    p.appendChild(document.createTextNode("Se vuoi leggere le pagine c'è "));
+    var a = el("a", null, "la tessera");
+    a.href = "tessera.html"; a.target = DENTRO ? "_top" : "_blank"; a.rel = "noopener";
+    p.appendChild(a);
+    p.appendChild(document.createTextNode(": a ogni domanda, i capitoli dei libri sulla tua situazione, per intero, da leggere qui. Un giorno a 2,90 €, e poi la settimana, il mese, i sei mesi. Nessuna fretta: la trovi anche domani, e anche senza."));
+    dove.appendChild(p);
+  }
+
+  function testoFoglio(pagine, corpo, primo, finita) {
+    var r = ["IL FOGLIO DI STASERA" + (dataOggi() ? " · " + dataOggi() : ""), ""];
+    if (primo) r.push("Quello che hai portato:", primo, "");
+    r.push("Le pagine che sono uscite:");
+    if (!pagine.length) r.push("nessuna pagina dei libri, " + momento() + ": quello che hai letto l'ha detto il programma.");
+    var visti = {};
+    pagine.forEach(function (p) {
+      if (!visti[p.libro.chiave]) {
+        visti[p.libro.chiave] = true;
+        r.push("", p.libro.titolo + " (Davide Scuderi) · " + statoLibro(p.libro));
+        linkLibro(p.libro).forEach(function (l) { r.push("  " + l.testo + ": " + (/^https?:/.test(l.href) ? l.href : "https://davidemcb.github.io/libri/" + l.href)); });
+      }
+      r.push("  capitolo " + p.numero + " · " + p.libro.capitoli[String(p.numero)]);
+    });
+    if (corpo.length) {
+      r.push("", "Se il corpo si è fatto sentire, un minuto col corpo nell'app:");
+      corpo.forEach(function (s) { r.push("  " + s.voce + ": https://davidemcb.github.io/libri/app/#pratica/" + s.chiave); });
+    }
+    if (finita) {
+      r.push("", "Com'è andata? Se ti va, due righe a Davide: cosa ti è servito e cosa no.",
+             "  WhatsApp: https://wa.me/" + RISCONTRO.whatsapp,
+             "  Email: " + RISCONTRO.email);
+      r.push("", "Se vuoi tornare: domani ci sono di nuovo, gratis, dieci messaggi al giorno.");
+      if (tesseraValida()) r.push("Hai una tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + ".");
+      else r.push("Se vuoi leggere le pagine c'è la tessera (a ogni domanda, i capitoli sulla tua situazione), da 2,90 € un giorno: https://davidemcb.github.io/libri/tessera.html");
+    }
+    r.push("", "La conversazione, com'è andata:", "");
+    tutti.forEach(function (x) {
+      if (x.role === "user") r.push("TU: " + x.content, "");
+      else r.push((/non sta in un libro/i.test(x.content) ? "[qui parla il programma, non un libro]\n" : "") + x.content, "");
+    });
+    r.push("Fatto nel telefono, dalla pagina davidemcb.github.io/libri/parliamone.html. Nessuno l'ha visto.");
+    return r.join("\n");
+  }
+
+  /* La prova del foglio senza spendere venti messaggi: ...parliamone.html?prova=foglio
+   * Carica una conversazione d'esempio (sul modello delle prove del 06/09) e mostra il foglio.
+   * Non chiama il servizio. Serve a Davide per vederlo, e a chi lavora sulla pagina. */
+  var PROVA = new URLSearchParams(location.search).get("prova");
+  if (PROVA === "foglio" || PROVA === "domanda") {
+    var ESEMPIO = [
+      ["user", "Mia moglie mi ha tradito. L'ho scoperto stasera, dal telefono. Lei dorme, io sono in cucina e non riesco a stare fermo."],
+      ["assistant", "Va bene. Prima i fatti, uno alla volta.\nQuando l'hai visto: stasera, o è da giorni che lo sospettavi?\nLo sa che l'hai visto?\nDomani hai qualcosa che devi fare per forza?"],
+      ["user", "Stasera. Non lo sa. Domani lavoro, ho un turno alle sette. Ho un nodo in gola che non va né su né giù e non mi sento le mani."],
+      ["assistant", "Allora due cose stanno nella stessa mano, e vanno separate.\nUna è quello che hai letto stasera. L'altra è cosa farne, e quella non è di stasera: è di dopo.\nIl nodo in gola e le mani che non senti non sono un guasto: è il corpo che ha ricevuto la notizia prima della testa, e la tiene ferma lì finché non decidi tu.\nNel capitolo 3 dell'Alce, Il telefono che non dovevi guardare, c'è un uomo nella tua stessa cucina: le settimane in cui ogni cosa sembra un segnale, e la notte in cui guarda davvero.\nE il capitolo 7 di *Da uomo a uomo*, Il tradimento, dice una cosa che stanotte serve: lo capisci prima di avere una prova, e il corpo resta in allerta anche quando non serve più.\nNon sei obbligato a decidere niente prima delle sette.\nCosa vorresti che fosse vero, domattina?"],
+      ["user", "Vorrei che non fosse successo. Ma è successo. Non so se glielo dico domani o aspetto."],
+      ["assistant", "Questa non sta in un libro: te la dico io.\nDirlo domani e aspettare non sono due scelte: sono due tempi. Domani puoi decidere solo il tempo, non il resto.\nL'ex non è un nemico, capitolo 21, Non devi perdonare nessuno, parla di quello che ti diranno dopo: che devi perdonare per stare meglio. Non è per stanotte, ma è bene sapere che c'è.\nAdesso il turno delle sette è la cosa più concreta che hai. Cosa ti serve per arrivarci?"],
+      ["user", "Un caffè e non pensare. Grazie."],
+      ["assistant", "Per oggi basta. Non è un giudizio: è che dopo un po' serve dormirci sopra. Ci sono anche domani."]
+    ];
+    // ...?prova=domanda si ferma a metà, come chi smette prima del tetto, e fa vedere la domanda.
+    var pezzo = PROVA === "domanda" ? ESEMPIO.slice(0, 4) : ESEMPIO;
+    document.getElementById("entra").click();
+    pezzo.forEach(function (t) {
+      tutti.push({ role: t[0], content: t[1] });
+      turni.push({ role: t[0], content: t[1] });
+      var b = blocco(t[0] === "user" ? "turno-mio" : "turno-libri", t[1]);
+      if (t[0] === "assistant") applicaLinkCapitoli(b, t[1]);
+    });
+    dopoRisposta(pezzo[pezzo.length - 1][1]);
+    if (PROVA === "domanda") { fermaOrologio(); chiediSeHaFinito(); }
+  }
+
+  /* La prova dell'assaggio audio, senza il servizio: ...parliamone.html?prova=pagina
+   * Mostra tre pagine finte per vedere le tre situazioni dell'assaggio audio (09/09/2026):
+   * un capitolo con l'assaggio pronto, un capitolo dello stesso libro senza, e un libro senza
+   * audiolibro. Non chiama il servizio, non tocca il vero window.CATALOGO. */
+  if (PROVA === "pagina") {
+    document.getElementById("entra").click();
+    mostraPagina({ libro: "duau", numero: 7, titolo: "Il tradimento", titoloLibro: "Da uomo a uomo",
+      testo: "§ Apertura\nLo capisci prima di avere una prova, e il corpo resta in allerta anche quando non serve più." });
+    mostraPagina({ libro: "duau", numero: 9, titolo: "La relazione che resta", titoloLibro: "Da uomo a uomo",
+      testo: "§ Apertura\nCapitolo di prova senza assaggio pronto, per vedere la riga senza link." });
+    mostraPagina({ libro: "alce", numero: 3, titolo: "Il telefono che non dovevi guardare", titoloLibro: "L'Alce",
+      testo: "§ Apertura\nLibro senza audiolibro: qui non deve cambiare niente rispetto a prima." });
+  }
+
+  // ─── La voce all'andata (08/09/2026, VOCE.md § 2-A) ─────────────────────────────────────
+  // Si tocca «Parla», si parla, il telefono trascrive col suo servizio (Google o Apple: la
+  // stessa cosa del microfono sulla tastiera), il testo compare nella casella e si manda come se
+  // fosse scritto. Il worker non lo sa e non cambia di una riga. Se il browser non sa trascrivere
+  // (Firefox, qualche computer), il bottone e la riga della soglia non compaiono: la pagina è
+  // quella di sempre. L'audio non passa mai di qui: dal telefono arriva solo il testo.
+  var Riconoscimento = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  var parla = document.getElementById("parla");
+  var statoVoce = document.getElementById("stato-voce");
+  var ascolto = null;        // il riconoscimento in corso, o null
+  var voceBase = "";         // quello che c'era già nella casella quando si è premuto «Parla»
+
+  if (Riconoscimento) {
+    parla.hidden = false;
+    document.getElementById("riga-voce").hidden = false;
+  }
+
+  function diciVoce(testo) {
+    statoVoce.textContent = testo || "";
+    statoVoce.hidden = !testo;
+  }
+
+  function iniziaAscolto() {
+    if (ascolto || !Riconoscimento) return;
+    var r = new Riconoscimento();
+    r.lang = "it-IT";
+    r.interimResults = true;   // le parole compaiono mentre si parla
+    r.continuous = true;       // non si ferma alla prima pausa (dove il telefono lo permette)
+    r.maxAlternatives = 1;
+    voceBase = scrivi.value.trim();
+
+    r.onresult = function (e) {
+      // Si ricostruisce tutto ogni volta: l'elenco dei risultati è quello dell'intera
+      // sessione, e così non si raddoppia niente, qualunque telefono sia.
+      var finale = "", provvisorio = "";
+      for (var i = 0; i < e.results.length; i++) {
+        var pezzo = e.results[i][0].transcript;
+        if (e.results[i].isFinal) finale += pezzo + " "; else provvisorio += pezzo;
+      }
+      var detto = (finale + provvisorio).replace(/\s+/g, " ").trim();
+      scrivi.value = [voceBase, detto].filter(Boolean).join(" ");
+      if (orologioDomanda) armaDomanda();   // sta parlando: l'orologio del silenzio riparte
+    };
+    r.onerror = function (e) {
+      var perche = e && e.error;
+      if (perche === "not-allowed" || perche === "service-not-allowed") {
+        diciVoce("Il microfono qui non è permesso. Puoi scrivere: va bene lo stesso.");
+      } else if (perche === "no-speech") {
+        diciVoce("Non ho sentito niente. Tocca di nuovo «Parla», oppure scrivi.");
+      } else if (perche !== "aborted") {
+        diciVoce("La voce adesso non funziona. Puoi scrivere.");
+      }
+    };
+    r.onend = function () {
+      ascolto = null;
+      parla.textContent = "Parla";
+      parla.classList.remove("ascolta");
+      parla.setAttribute("aria-pressed", "false");
+    };
+
+    try { r.start(); } catch (e) { diciVoce("La voce adesso non funziona. Puoi scrivere."); return; }
+    ascolto = r;
+    diciVoce("");
+    parla.textContent = "Sto ascoltando · tocca per finire";
+    parla.classList.add("ascolta");
+    parla.setAttribute("aria-pressed", "true");
+  }
+
+  function fermaAscolto() {
+    if (ascolto) { try { ascolto.stop(); } catch (e) { /* già fermo */ } }
+  }
+
+  parla.addEventListener("click", function () { if (ascolto) fermaAscolto(); else iniziaAscolto(); });
+  // Se mentre ascolta la persona scrive, o manda: l'ascolto si ferma, e vince quello che ha in casella.
+  scrivi.addEventListener("input", fermaAscolto);
+  manda.addEventListener("click", fermaAscolto);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState !== "visible") fermaAscolto();
+  });
+
+  // ─── La modalità «grande» (08/09/2026, VOCE.md § 8) ─────────────────────────────────────
+  // Per chi legge male: carta chiara sempre, tutto più grande, bottoni alti. Si accende col
+  // bottone «Aa» in alto o col link ?grande=si (da mandare a chi non deve cercare niente);
+  // il telefono se lo ricorda. ?grande=no la spegne e lo ricorda.
+  var CHIAVE_GRANDE = "grande";
+  var grandeBtn = document.getElementById("grande");
+  function eGrande() { return document.documentElement.classList.contains("grande"); }
+  function mettiGrande(si, ricorda) {
+    document.documentElement.classList.toggle("grande", si);
+    grandeBtn.setAttribute("aria-pressed", si ? "true" : "false");
+    grandeBtn.title = si ? "Testo normale" : "Testo più grande";
+    grandeBtn.setAttribute("aria-label", grandeBtn.title);
+    if (ricorda) { try { localStorage.setItem(CHIAVE_GRANDE, si ? "si" : "no"); } catch (e) { /* niente memoria */ } }
+  }
+  (function () {
+    var q = new URLSearchParams(location.search).get("grande");
+    var salvato = "";
+    try { salvato = localStorage.getItem(CHIAVE_GRANDE) || ""; } catch (e) { /* niente memoria */ }
+    if (q === "si" || q === "no") mettiGrande(q === "si", true);
+    else if (salvato) mettiGrande(salvato === "si", false);
+  })();
+  grandeBtn.addEventListener("click", function () { mettiGrande(!eGrande(), true); });
+
+  // ─── La lettura a voce (08/09/2026, VOCE.md § 3-A) ──────────────────────────────────────
+  // La voce del telefono legge le risposte, frase per frase mentre arrivano. Niente esce dal
+  // telefono: non c'è nessun fornitore in mezzo. Si accende con «Leggimela» e il telefono se lo
+  // ricorda; nella modalità grande è accesa di partenza (chi legge male non deve cercarla).
+  // Se il browser non sa leggere, il bottone non compare.
+  var Sintesi = window.speechSynthesis || null;
+  var CHIAVE_LETTURA = "lettura";
+  var leggi = document.getElementById("leggi");
+  var letturaAccesa = false;
+  var lettoFino = 0;          // fin dove, nella risposta in corso, la voce è già arrivata
+  var voceScelta;             // la voce italiana del telefono, quando la si trova
+  var sbloccata = false;      // iPhone fa partire una voce solo dopo un tocco: il primo lo sblocca
+
+  function mettiLettura(si, ricorda) {
+    letturaAccesa = !!si && !!Sintesi;
+    leggi.textContent = letturaAccesa ? "Leggimela: sì" : "Leggimela";
+    leggi.setAttribute("aria-pressed", letturaAccesa ? "true" : "false");
+    if (!letturaAccesa) zittisci();
+    if (ricorda) { try { localStorage.setItem(CHIAVE_LETTURA, si ? "si" : "no"); } catch (e) { /* niente memoria */ } }
+  }
+  function voceItaliana() {
+    if (voceScelta !== undefined) return voceScelta;
+    var voci = (Sintesi && Sintesi.getVoices && Sintesi.getVoices()) || [];
+    if (!voci.length) return null;   // non ancora caricate: si riprova alla prossima frase
+    var it = voci.filter(function (v) { return /^it([-_]|$)/i.test(v.lang || ""); });
+    var locali = it.filter(function (v) { return v.localService; });
+    voceScelta = locali[0] || it[0] || null;
+    return voceScelta;
+  }
+  function pronuncia(testo) {
+    if (!Sintesi || !testo) return;
+    var u = new SpeechSynthesisUtterance(testo);
+    u.lang = "it-IT";
+    u.rate = 0.95;
+    var v = voceItaliana();
+    if (v) u.voice = v;
+    Sintesi.speak(u);
+  }
+  function zittisci() { if (Sintesi) { try { Sintesi.cancel(); } catch (e) { /* già zitta */ } } }
+  function sblocca() {
+    if (sbloccata || !Sintesi || !letturaAccesa) return;
+    sbloccata = true;
+    try { Sintesi.speak(new SpeechSynthesisUtterance(" ")); } catch (e) { /* pazienza */ }
+  }
+  function nuovaLettura() { zittisci(); lettoFino = 0; }
+  // Legge, della risposta in corso, le frasi complete non ancora lette. Alla fine, tutto il resto.
+  function leggiAPezzi(testo, finale) {
+    if (!letturaAccesa || !Sintesi || !testo) return;
+    var fino;
+    if (finale) fino = testo.length;
+    else {
+      var re = /[.!?…][»")]?(?=\s|$)|\n/g, m, ultima = -1;
+      re.lastIndex = lettoFino;
+      while ((m = re.exec(testo)) !== null) ultima = m.index + m[0].length;
+      if (ultima < 0) return;
+      fino = ultima;
+    }
+    var pezzo = testo.slice(lettoFino, fino).replace(/\s+/g, " ").trim();
+    lettoFino = Math.max(lettoFino, fino);
+    if (pezzo) pronuncia(pezzo);
+  }
+
+  if (Sintesi) {
+    leggi.hidden = false;
+    document.getElementById("riga-leggi").hidden = false;
+    document.getElementById("riga-voce").hidden = false;
+    var salvataLettura = "";
+    try { salvataLettura = localStorage.getItem(CHIAVE_LETTURA) || ""; } catch (e) { /* niente memoria */ }
+    mettiLettura(salvataLettura ? salvataLettura === "si" : eGrande(), false);
+    leggi.addEventListener("click", function () {
+      var ora = !letturaAccesa;
+      mettiLettura(ora, true);
+      if (ora) {
+        sblocca();
+        // Appena accesa, legge l'ultima risposta se c'è: così si sente subito com'è.
+        for (var i = tutti.length - 1; i >= 0; i--) {
+          if (tutti[i].role === "assistant") { lettoFino = 0; pronuncia(tutti[i].content); break; }
+        }
+      }
+    });
+    manda.addEventListener("click", sblocca);
+    ferma.addEventListener("click", zittisci);
+    document.getElementById("entra").addEventListener("click", sblocca);
+    if (Sintesi.addEventListener) Sintesi.addEventListener("voiceschanged", function () { voceScelta = undefined; });
+  }
+  // La riga «parlare invece di scrivere» si vede solo se il telefono sa trascrivere.
+  if (Riconoscimento) document.getElementById("riga-parla").hidden = false;
+})();
+</script>
+
+</body>
+</html>
