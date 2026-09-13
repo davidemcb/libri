@@ -63,6 +63,40 @@
     'Se sei in pericolo adesso: <strong>112</strong>.<br>Antiviolenza e stalking: <strong>1522</strong>, gratuito, giorno e notte.<br>' +
     'Telefono Amico: <strong>02 2327 2327</strong>.</div>';
 
+  // La tecnica (Davide, 13/09/2026: «libro, audiolibro, tecnica a 2,99»): per il segno del corpo che i
+  // capitoli nominano, prima la pratica di un minuto dell'app (gratis, con la voce di Davide), poi la
+  // pratica intera su quella zona, 2,99 € nel negozio dell'app (le dodici di MARKETING/APP/le-pratiche/).
+  var PRATICA_MINUTO = {cranio:"Il peso della testa", cuore:"Una sola mano sul petto", gola:"Il nodo, senza mandarlo giù",
+    mandibola:"I denti che si toccano", mani:"Una mano tiene l’altra", occhi:"Il buio delle mani", piedi:"Dove appoggia tutto il resto",
+    respiro:"Guardarlo senza cambiarlo", schiena:"Vicino, non sopra", sonno:"Sono qui, non ti spengo", spalle:"Una mano sulla spalla",
+    stanchezza:"Lascia che qualcosa regga te", stomaco:"Dove finisce il non detto", tutto:"Dai piedi alla testa", viso:"La faccia tiene la posa", vuoto:"Se non senti niente"};
+  var CORPO_VOCE = {spalle:"Le spalle alte", mandibola:"La mandibola stretta", respiro:"Il respiro corto", sonno:"Non dormo", stomaco:"Lo stomaco chiuso",
+    gola:"Un nodo in gola", stanchezza:"Stanco anche da fermo", mani:"Le mani che non stanno ferme", cuore:"Il cuore che batte forte", schiena:"La schiena che tira",
+    vuoto:"Non sento niente", piedi:"I piedi per terra", occhi:"Gli occhi stanchi", viso:"La faccia tesa", cranio:"La testa piena", tutto:"Tutto il corpo"};
+  var PRATICA_INTERA = {piedi:["pratica_01","Quello che tocca il pavimento"], stomaco:["pratica_03","Il muscolo che non hai mai toccato"], vuoto:["pratica_03","Il muscolo che non hai mai toccato"],
+    schiena:["pratica_04","Quella che lavora anche quando stai fermo"], respiro:["pratica_05","Quello che si chiude prima che te ne accorga"], cuore:["pratica_05","Quello che si chiude prima che te ne accorga"],
+    spalle:["pratica_06","Alzate in un momento che non ricordi"], gola:["pratica_07","Quello che tiene su la testa"], mandibola:["pratica_08","Quella che lavora anche di notte"],
+    viso:["pratica_09","La faccia che c’è oggi"], occhi:["pratica_09","La faccia che c’è oggi"], cranio:["pratica_10","La testa dentro le mani"],
+    mani:["pratica_11","Le due cose che stringono"], tutto:["pratica_12","Dal basso in su"], stanchezza:["pratica_12","Dal basso in su"], sonno:["pratica_12","Dal basso in su"]};
+  function bloccoTecnica(caps){
+    var conta = {};
+    caps.forEach(function(c){ (c.corpo || []).forEach(function(k){ conta[k] = (conta[k] || 0) + 1; }); });
+    var segni = Object.keys(conta).filter(function(k){ return PRATICA_MINUTO[k]; }).sort(function(a, b){ return conta[b] - conta[a]; }).slice(0, 2);
+    if (!segni.length) return "";
+    var h = '<section class="sez"><div class="testata"><p class="lbl">La tecnica</p><h2>Prima delle parole, il corpo.</h2>' +
+      '<p class="sotto">I capitoli qui sopra nominano un punto preciso. Una mano lì, e niente altro da fare.</p></div>';
+    segni.forEach(function(k){
+      h += '<div class="capitolo"><p class="lbl">' + esc(CORPO_VOCE[k]) + '</p><p class="titolo">«' + esc(PRATICA_MINUTO[k]) + '»</p>' +
+        '<p class="muted">Un minuto, con la voce di Davide, gratis.</p>' +
+        '<div class="azioni"><a class="btn btn-vuoto" href="index.html#pratica/' + esc(k) + '">Una mano qui, adesso</a></div></div>';
+    });
+    var intera = PRATICA_INTERA[segni[0]];
+    if (intera) h += '<div class="capitolo"><p class="lbl">Se vuoi restarci di più</p><p class="titolo">«' + esc(intera[1]) + '»</p>' +
+      '<p class="muted">La pratica intera su questa zona, sei minuti circa, registrata da Davide.</p>' +
+      '<div class="azioni"><a class="btn btn-pieno" href="index.html#negozio?libro=' + esc(intera[0]) + '">La pratica intera · 2,99 €</a></div></div>';
+    return h + '</section>';
+  }
+
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
   function area(k){ for (var i = 0; i < D.aree.length; i++) if (D.aree[i].chiave === k) return D.aree[i]; return null; }
   function nodo(a, k){ for (var i = 0; i < a.nodi.length; i++) if (a.nodi[i].chiave === k) return a.nodi[i]; return null; }
@@ -209,7 +243,7 @@
         ? 'Su questa frase esatta nessun capitolo si ferma. Ma sulla situazione sì: ' + (gruppi.length === 1 ? 'è in questo libro.' : 'è in questi libri, il primo è quello più vicino.')
         : (gruppi.length === 1 ? 'Questa cosa è già scritta. È in questo libro, in ' + (caps.length === 1 ? 'questo capitolo.' : 'questi capitoli.') : 'Questa cosa è già scritta in più libri. Il primo è quello più vicino a te.')) +
       '</p></div></section>';
-    return testa + gruppi.map(function(g){ return bloccoLibro(g, s.chiave, 4, s.delicata); }).join("") +
+    return testa + gruppi.map(function(g){ return bloccoLibro(g, s.chiave, 4, s.delicata); }).join("") + bloccoTecnica(caps) +
       '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#s/' + esc(a.chiave) + '/' + esc(n.chiave) + '/' + esc(s.chiave) + '">Un\'altra frase</a><a class="btn btn-linea" href="#">Ricomincio</a></div></section>' + piede();
   }
 
