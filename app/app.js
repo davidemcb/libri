@@ -880,5 +880,23 @@
       vista.innerHTML = '<section class="sez"><div class="testata"><h1>Non riesco a leggere le pagine.</h1><p class="sotto">Controlla la rete e riprova tra un momento.</p></div><div class="azioni"><button class="btn btn-vuoto" type="button" onclick="location.reload()">Riprova</button></div></section>';
     });
 
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+  /* L'aggiornamento da solo (Davide, 13/09/2026: «ma l'app non si aggiorna in automatico?»).
+     I file arrivano sempre dalla rete, quindi ogni apertura è già aggiornata. Qui si copre il caso
+     dell'app lasciata aperta sul telefono: quando torna in primo piano dopo più di dieci minuti si
+     ricarica da sola, e quando si installa un guscio nuovo (VERSIONE in sw.js) si ricarica subito. */
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").then(function(reg){
+      document.addEventListener("visibilitychange", function(){ if (!document.hidden && reg.update) reg.update().catch(function(){}); });
+    }).catch(function(){});
+    var giaRicaricata = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function(){
+      if (giaRicaricata || !navigator.serviceWorker.controller) return;   // la prima installazione non ricarica
+      giaRicaricata = true; location.reload();
+    });
+  }
+  var nascostaDa = 0;
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden) { nascostaDa = Date.now(); return; }
+    if (nascostaDa && Date.now() - nascostaDa > 10 * 60 * 1000) location.reload();
+  });
 })();
