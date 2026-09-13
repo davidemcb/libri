@@ -27,6 +27,9 @@
   .porte a{color:var(--accent);text-decoration:none;font-size:1.05rem}
   .numeri{background:var(--raise);border-left:3px solid var(--terra);padding:.9rem 1rem;line-height:1.7}
   .indietro{font-family:Archivo,system-ui,sans-serif;font-size:.78rem;color:var(--muted);text-decoration:none}
+  .cerca{display:flex;gap:.6rem;align-items:stretch}
+  .cerca input{flex:1 1 auto;min-width:0;font:inherit;font-size:1.1rem;padding:.75rem .9rem;color:var(--text);background:#fff;border:1px solid var(--sabbia-line);border-radius:3px}
+  .cerca .btn{flex:0 0 auto}
 </style>
 </head>
 <body>
@@ -138,6 +141,10 @@
     ["psicologo", ["psicologo", "aiutare-lui-lei", "non-so-chiedere"]],
     ["invecchiare", ["corpo-cambia", "forza-che-cala", "ricominciare-a-cinquanta", "sesso-dopo-i-sessanta", "pensione", "ormoni-uomo"]],
     ["abbraccio", ["abbraccio-mancante", "contatto", "non-mi-tocca"]],
+    ["respiro", ["ansia-corpo", "tensione", "ascolto", "stress-che-si-vede", "paura"]],
+    ["diaframma", ["ansia-corpo", "tensione", "ascolto", "stress-che-si-vede"]],
+    ["mandibola", ["tensione", "rabbia-trattenuta", "sonno", "stress-che-si-vede"]],
+    ["stomaco", ["ansia-corpo", "tensione", "non-detto-famiglia", "ascolto"]],
     ["morte", ["paura-della-morte", "lutto", "pianto"]]
   ];
   var DOVE = null;   // chiave situazione → {area, nodo, sit}, costruito al primo uso
@@ -195,7 +202,7 @@
   }
   function piede(){
     return '<section class="sez" style="margin-top:3rem"><p class="muted piccolo" style="text-align:center;line-height:1.9">' +
-      '<em>Il corpo è il primo posto.</em><br>Niente da scrivere, niente che resta: tocchi, e ogni tocco è una parola già scritta nei libri. Nessuna intelligenza artificiale.<br>' +
+      '<em>Il corpo è il primo posto.</em><br>Niente che resta: quello che scrivi lo cerca il telefono, da solo, e non parte verso nessuno. Ogni risposta è una pagina già scritta nei libri. Nessuna intelligenza artificiale.<br>' +
       '<a href="index.html">L\'app</a> · <a href="' + esc(BASE_SITO) + '" target="_blank" rel="noopener">Il sito</a> · ' +
       '<a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Privacy</a></p></section>';
   }
@@ -207,12 +214,65 @@
   }
 
   /* ---------- 1. Cosa ti sta succedendo? ---------- */
+  /* La ricerca (Davide, 13/09/2026: «non c'è una funzione cerca, dove lei può scrivere ansia, o
+     tradimento, o altro?»). Si scrive, ma la ricerca avviene QUI, nel telefono, sui dati già
+     scaricati: niente parte verso un server, niente resta. Cerca nelle parole comuni (PAROLE),
+     nelle situazioni, nelle frasi dell'albero e nei capitoli. */
+  function piatto(t){ return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim(); }
+  function radiceCerca(w){ return w.length > 6 ? w.slice(0, 6) : w.length > 4 ? w.slice(0, 5) : w; }
+  var FERMA = {"non":1,"mi":1,"mio":1,"mia":1,"il":1,"la":1,"di":1,"che":1,"e":1,"a":1,"un":1,"una":1,"ho":1,"sono":1,"con":1,"per":1,"da":1,"in":1,"ma":1,"lo":1,"le":1,"si":1,"ti":1,"ci":1,"ne":1,"se":1,"del":1,"della":1,"al":1,"come":1,"cosa":1,"piu":1,"anche":1};
+  function vistaCerca(q){
+    var testo = piatto(decodeURIComponent(q || ""));
+    var parole = testo.split(" ").filter(function(w){ return w && !FERMA[w] && w.length > 2; }).map(radiceCerca);
+    if (!parole.length) return vistaInizio();
+    function colpisce(s){ var p = piatto(s); return parole.every(function(w){ return p.indexOf(w) >= 0; }); }
+    function colpisceUna(s){ var p = piatto(s); return parole.some(function(w){ return p.indexOf(w) >= 0; }); }
+    var punti = {};
+    function segna(k, n){ if (dove(k)) punti[k] = (punti[k] || 0) + n; }
+    PAROLE.forEach(function(p){ if (parole.some(function(w){ return piatto(p[0]).indexOf(w) === 0 || w.indexOf(piatto(p[0])) === 0; })) p[1].forEach(function(k, i){ segna(k, 20 - i * 2); }); });
+    var frasi = [];
+    D.aree.forEach(function(a){ a.nodi.forEach(function(n){ n.situazioni.forEach(function(s){
+      if (colpisce(s.voce)) segna(s.chiave, 8);
+      else if (colpisceUna(s.voce)) segna(s.chiave, 3);
+      s.domande.forEach(function(x, i){ if (colpisce(x)) { segna(s.chiave, 4); frasi.push({a:a, n:n, s:s, i:i, x:x}); } });
+    }); }); });
+    D.capitoli.forEach(function(c){ if (colpisce(c.titolo) || colpisce(c.di)) c.sit.forEach(function(k, i){ segna(k, i ? 1 : 2); }); });
+    var trovate = Object.keys(punti).sort(function(a, b){ return punti[b] - punti[a]; }).slice(0, 10);
+    var briciole = scala([{voce:"Il bibliotecario", href:"#"}, {voce:"Cerca"}]);
+    if (!trovate.length) {
+      return '<section class="sez">' + briciole + '<div class="testata"><p class="lbl">Hai scritto</p><h1>«' + esc(decodeURIComponent(q)) + '»</h1>' +
+        '<p class="sotto">Questa parola nell\'albero non la trovo. Prova con una parola più semplice, o parti dagli argomenti.</p></div>' + modulo() +
+        '<div class="azioni"><a class="btn btn-vuoto" href="#">Gli argomenti</a><a class="btn btn-vuoto" href="#corpo">Parto dal corpo</a></div></section>' + piede();
+    }
+    var righe = trovate.map(function(k){ var x = dove(k); var nc = capitoliDi(k).length;
+      return {href:"#s/" + x.area.chiave + "/" + x.nodo.chiave + "/" + x.sit.chiave, titolo:x.sit.voce, sotto:x.area.voce + " › " + x.nodo.voce + (nc ? " · " + nc + (nc === 1 ? " capitolo" : " capitoli") : " · ancora nessun capitolo")}; });
+    var h = '<section class="sez">' + briciole + '<div class="testata"><p class="lbl">Hai scritto</p><h1>«' + esc(decodeURIComponent(q)) + '»</h1>' +
+      '<p class="sotto">Queste sono le situazioni che ci stanno dietro. Scegli quella che ti somiglia adesso.</p></div>' + modulo(decodeURIComponent(q)) + elenco(righe);
+    if (frasi.length) h += '<div class="testata" style="margin-top:1rem"><p class="lbl">Frasi che la contengono</p></div>' +
+      elenco(frasi.slice(0, 8).map(function(f){ return {href:"#r/" + f.a.chiave + "/" + f.n.chiave + "/" + f.s.chiave + "/" + f.i, titolo:"«" + f.x + "»", sotto:f.s.voce}; }));
+    return h + '<div class="azioni"><a class="btn btn-linea" href="#">Ricomincio</a></div></section>' + piede();
+  }
+  function modulo(valore){
+    return '<form class="cerca" data-cerca><label class="lbl" for="q" style="position:absolute;left:-9999px">Cerca una parola</label>' +
+      '<input id="q" type="search" name="q" value="' + esc(valore || "") + '" placeholder="ansia, tradimento, mio figlio…" autocomplete="off" autocapitalize="none" enterkeyhint="search">' +
+      '<button class="btn btn-pieno" type="submit">Cerca</button></form>' +
+      '<p class="conto">La ricerca avviene qui, nel telefono: quello che scrivi non parte e non resta.</p>';
+  }
+  document.addEventListener("submit", function(ev){
+    var f = ev.target.closest && ev.target.closest("form[data-cerca]");
+    if (!f) return;
+    ev.preventDefault();
+    var q = (f.querySelector("input[name=q]").value || "").trim();
+    if (q) location.hash = "#q/" + encodeURIComponent(q);
+  });
+
   function vistaInizio(){
     return '<section class="sez"><div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
-      '<p class="sotto">Non devi scrivere niente. Tocca la cosa che ti somiglia di più, poi un\'altra, poi un\'altra: in tre o quattro tocchi sei sul capitolo del libro in cui quella cosa è già scritta. Lì mi faccio da parte.</p></div>' +
+      '<p class="sotto">Scrivi una parola, o tocca: in tre o quattro passi sei sul capitolo del libro in cui quella cosa è già scritta. Lì mi faccio da parte.</p></div>' +
+      modulo() +
+      '<div class="scelte scelte-lunghe">' + PAROLE.slice(0, 12).map(function(p){ return '<a class="btn btn-vuoto" href="#p/' + esc(p[0]) + '" style="flex:0 0 auto">' + esc(p[0]) + '</a>'; }).join("") + '<a class="btn btn-linea" href="#parole" style="flex:0 0 auto">tutte le parole</a></div>' +
+      '<div class="testata" style="margin-top:1rem"><p class="lbl">Oppure per argomento</p></div>' +
       elenco(D.aree.map(function(a){ return {href:"#a/" + a.chiave, titolo:a.voce, sotto:a.domanda}; })) +
-      '<div class="testata" style="margin-top:.6rem"><p class="lbl">Oppure con una parola sola</p><p class="sotto">Ansia, tradimento, figli, lavoro, sonno: tocca la parola e ti faccio vedere cosa c\'è dietro.</p></div>' +
-      '<div class="scelte scelte-lunghe">' + PAROLE.slice(0, 10).map(function(p){ return '<a class="btn btn-vuoto" href="#p/' + esc(p[0]) + '" style="flex:0 0 auto">' + esc(p[0]) + '</a>'; }).join("") + '<a class="btn btn-linea" href="#parole" style="flex:0 0 auto">tutte le parole</a></div>' +
       '<div class="testata" style="margin-top:.6rem"><p class="lbl">Oppure parti dal corpo</p><p class="sotto">Se non sai dirlo a parole ma il corpo lo dice: le spalle, lo stomaco, il sonno.</p></div>' +
       '<div class="azioni"><a class="btn btn-vuoto" href="#corpo">Parto da quello che sento nel corpo</a></div>' +
       '<p class="conto">' + D.conto.libri + ' libri · ' + D.conto.capitoli + ' capitoli · ' + D.conto.situazioni + ' situazioni</p>' +
@@ -345,6 +405,7 @@
       case "r": html = vistaRisultato(h[1], h[2], h[3], h[4]); break;
       case "corpo": html = vistaCorpo(); break;
       case "parole": html = vistaParole(); break;
+      case "q": html = vistaCerca(h.slice(1).join("/")); break;
       case "p": html = vistaParola(h[1]); break;
       case "c": html = vistaSegno(h[1]); break;
       default: html = vistaInizio();
