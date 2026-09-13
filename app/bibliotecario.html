@@ -30,6 +30,12 @@
   .cerca{display:flex;gap:.6rem;align-items:stretch}
   .cerca input{flex:1 1 auto;min-width:0;font:inherit;font-size:1.1rem;padding:.75rem .9rem;color:var(--text);background:#fff;border:1px solid var(--sabbia-line);border-radius:3px}
   .cerca .btn{flex:0 0 auto}
+  .cerca .btn.ascolta{background:#C0684B;color:#FBF6EC;border-color:#C0684B;animation:pulsa 1s ease-in-out infinite}
+  @keyframes pulsa{0%,100%{opacity:1}50%{opacity:.55}}
+  .voce-stato{margin-top:.7rem;padding:.8rem 1rem;border-radius:3px;background:var(--raise);border-left:3px solid var(--accent);font-size:1.02rem;line-height:1.55}
+  .voce-stato.attesa{border-left-color:#C0684B}
+  .voce-stato.ok{border-left-color:var(--accent)}
+  .voce-stato.errore{border-left-color:#8a2f2f}
 </style>
 </head>
 <body>
@@ -276,10 +282,11 @@
   function modulo(valore){
     return '<form class="cerca" data-cerca><label class="lbl" for="q" style="position:absolute;left:-9999px">Cerca una parola</label>' +
       '<input id="q" type="search" name="q" value="' + esc(valore || "") + '" placeholder="ansia, tradimento, mio figlio…" autocomplete="off" autocapitalize="none" enterkeyhint="search">' +
-      (VOCE ? '<button class="btn btn-vuoto" type="button" data-voce title="Dillo a voce" aria-label="Dillo a voce">🎤</button>' : '') +
+      (VOCE ? '<button class="btn btn-vuoto" type="button" data-voce title="Dillo a voce" aria-label="Dillo a voce">🎤 Parla</button>' : '') +
       '<button class="btn btn-pieno" type="submit">Cerca</button></form>' +
+      (VOCE ? '<p class="voce-stato" data-voce-stato hidden></p>' : '') +
       '<p class="conto">La ricerca avviene qui, nel telefono: quello che scrivi non parte e non resta.' +
-      (VOCE ? ' Se lo dici a voce, la trascrizione la fa il telefono (Google o Apple), come la dettatura della tastiera.' : '') + '</p>';
+      (VOCE ? ' Se tocchi «Parla», la trascrizione la fa il telefono (Google o Apple), come la dettatura della tastiera.' : '') + '</p>';
   }
   /* A voce (Davide, 13/09/2026: «possiamo mettere, dove c'è cerca, anche la possibilità di mettere audio?»).
      È il riconoscimento vocale del browser: l'audio lo trascrive Google o Apple, come il microfono
@@ -290,13 +297,27 @@
     var b = ev.target.closest && ev.target.closest("[data-voce]");
     if (!b || !VOCE) return;
     var input = b.parentNode.querySelector("input[name=q]");
+    var stato = b.parentNode.parentNode.querySelector("[data-voce-stato]");
+    function di(testo, classe){ if (!stato) return; stato.hidden = false; stato.className = "voce-stato " + (classe || ""); stato.textContent = testo; }
     var r = new VOCE();
     r.lang = "it-IT"; r.interimResults = false; r.maxAlternatives = 1;
-    b.disabled = true; b.textContent = "…"; input.placeholder = "Dillo adesso";
-    r.onresult = function(e){ var t = e.results[0][0].transcript || ""; input.value = t; if (t.trim()) location.hash = "#q/" + encodeURIComponent(t.trim()); };
-    r.onerror = function(){ input.placeholder = "Non ho sentito: scrivi, o riprova"; };
-    r.onend = function(){ b.disabled = false; b.textContent = "🎤"; };
-    try { r.start(); } catch (e) { b.disabled = false; b.textContent = "🎤"; }
+    var sentito = false;
+    b.disabled = true; b.classList.add("ascolta"); b.textContent = "● Ti ascolto";
+    di("Parla adesso. Di’ come lo diresti tu, per esempio: «ho ansia», «mio figlio non mi parla più». Se il telefono ti chiede il permesso del microfono, di’ sì.", "attesa");
+    r.onstart = function(){ di("Ti ascolto… parla adesso.", "attesa"); };
+    r.onresult = function(e){
+      var t = (e.results[0][0].transcript || "").trim(); sentito = true; input.value = t;
+      di("Ho sentito: «" + t + "». Cerco.", "ok");
+      if (t) setTimeout(function(){ location.hash = "#q/" + encodeURIComponent(t); }, 400);
+    };
+    r.onerror = function(e){
+      var perche = (e && e.error) || "";
+      di(perche === "not-allowed" || perche === "service-not-allowed"
+        ? "Il microfono è bloccato: dai il permesso nelle impostazioni del browser, oppure scrivi qui sopra."
+        : "Non ho sentito niente. Tocca «Parla» e riprova, oppure scrivi qui sopra.", "errore");
+    };
+    r.onend = function(){ b.disabled = false; b.classList.remove("ascolta"); b.textContent = "🎤 Parla"; if (!sentito && stato && stato.className.indexOf("errore") < 0) di("Non ho sentito niente. Tocca «Parla» e riprova, oppure scrivi qui sopra.", "errore"); };
+    try { r.start(); } catch (err) { b.disabled = false; b.classList.remove("ascolta"); b.textContent = "🎤 Parla"; di("Su questo telefono la voce non funziona: scrivi qui sopra.", "errore"); }
   });
   document.addEventListener("submit", function(ev){
     var f = ev.target.closest && ev.target.closest("form[data-cerca]");
