@@ -734,6 +734,53 @@
       '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#pratica">Un altro punto del corpo</a></div></section>' + piede();
   }
 
+  /* ---------- le pratiche gratuite da 1 minuto ---------- */
+  var PRATICHE_GRATUITE = [
+    {corpo:"cuore", titolo:"Il cuore", audio:"cuore.mp3"},
+    {corpo:"gola", titolo:"La gola", audio:"gola.mp3"},
+    {corpo:"mandibola", titolo:"La mandibola", audio:"mandibola.mp3"},
+    {corpo:"mani", titolo:"Le mani", audio:"mani.mp3"},
+    {corpo:"respiro", titolo:"Il respiro", audio:"respiro.mp3"},
+    {corpo:"schiena", titolo:"La schiena", audio:"schiena.mp3"},
+    {corpo:"sonno", titolo:"Il sonno", audio:"sonno.mp3"},
+    {corpo:"spalle", titolo:"Le spalle", audio:"spalle.mp3"},
+    {corpo:"stanchezza", titolo:"La stanchezza", audio:"stanchezza.mp3"},
+    {corpo:"stomaco", titolo:"Lo stomaco", audio:"stomaco.mp3"},
+    {corpo:"vuoto", titolo:"Il vuoto", audio:"vuoto.mp3"}
+  ];
+
+  function trovaPraticaGratuita(chiave){
+    for (var i = 0; i < PRATICHE_GRATUITE.length; i++) if (PRATICHE_GRATUITE[i].corpo === chiave) return PRATICHE_GRATUITE[i];
+    return null;
+  }
+
+  function vistaPratiche(chiave){
+    if (!chiave) {   // lista di tutte le 11 pratiche
+      return '<section class="sez"><div class="testata"><p class="lbl">Pratiche gratuite</p><h1>Un minuto col corpo</h1>' +
+        '<p class="sotto">Undici tecniche di un minuto: una mano dove senti, e niente altro da fare. Condividile con chi ne ha bisogno.</p></div>' +
+        '<ul class="lista pratiche-lista">' +
+        PRATICHE_GRATUITE.map(function(pr){
+          return '<li class="pratica-item"><p class="titolo">' + esc(pr.titolo) + '</p>' +
+            '<p class="muted piccolo">Circa 1 minuto · con la voce di Davide</p>' +
+            '<div class="azioni-pratica">' +
+            '<button class="btn btn-pieno" type="button" data-riproduci="' + esc(pr.corpo) + '">Ascolta</button>' +
+            '<button class="btn btn-vuoto" type="button" data-condividi-audio="' + esc(pr.corpo) + '">Condividi</button>' +
+            '</div></li>';
+        }).join("") +
+        '</ul><p class="muted piccolo prosa" style="text-align:center;margin-top:1.6rem">Sono gratuite. Non è una cura e non promette niente: è un minuto di ascolto. Un dolore vero si porta dal medico.</p></section>' + piede();
+    }
+    var pr = trovaPraticaGratuita(chiave);
+    if (!pr) return nonTrovato();
+    return '<section class="sez"><div class="testata"><p class="lbl">Un minuto col corpo</p><h1>' + esc(pr.titolo) + '</h1>' +
+      '<p class="sotto">Con la voce di Davide, circa un minuto. Metti una mano dove senti e ascolta.</p></div>' +
+      '<audio controls preload="none" src="audio/' + esc(pr.audio) + '" class="player-audio" style="width:100%;margin-block:1rem"></audio>' +
+      '<p class="muted piccolo">Non è una cura e non promette niente: è un minuto di ascolto. Un dolore vero si porta dal medico.</p></section>' +
+      '<section class="sez somiglia" data-pratica-gratuita="1"><p class="lbl">È stata utile?</p>' +
+      '<div class="azioni"><button class="btn btn-vuoto" type="button" data-somiglia="si">Sì</button><button class="btn btn-vuoto" type="button" data-somiglia="no">No</button></div>' +
+      '<p class="muted piccolo" data-esito></p></section>' +
+      '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#pratiche">Un\'altra pratica</a></div></section>' + piede();
+  }
+
   function vistaPagina(id, area, situazione){
     var pg = trovaPagina(id);
     if (!pg) return nonTrovato();
@@ -760,9 +807,31 @@
     if (sez.getAttribute("data-pratica")) {
       esito.innerHTML = si ? "Bene. La trovi sempre qui, quando serve."
         : 'Va bene lo stesso: non tutte funzionano per tutti. <a href="#pratica">Provane un\'altra</a>, o <a href="#dimmi">dimmi cosa non ha funzionato</a>.';
+    } else if (sez.getAttribute("data-pratica-gratuita")) {
+      esito.innerHTML = si ? "Bene. La trovi sempre qui, quando serve."
+        : 'Va bene lo stesso: non tutte funzionano per tutti. <a href="#pratiche">Provane un\'altra</a>, o <a href="#dimmi">dimmi cosa non ha funzionato</a>.';
     } else if (si) esito.textContent = "Allora è tua. Se ti va, passala a qualcuno a cui somiglia.";
     else if (altra) esito.innerHTML = 'Allora non era quella. <a href="#pagina/' + esc(altra) + '">Prova l\'altra pagina</a>, oppure <a href="#trova">ricomincia</a>.';
     else esito.innerHTML = 'Allora non era quella. <a href="#trova">Ricomincia</a>, oppure <a href="#dimmi">dimmi cosa cercavi</a>.';
+  });
+
+  /* ---------- pratiche gratuite ---------- */
+  vista.addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-riproduci]");
+    if (!b) return;
+    location.hash = "#pratiche/" + b.getAttribute("data-riproduci");
+  });
+
+  vista.addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-condividi-audio]");
+    if (!b) return;
+    ev.preventDefault();
+    var corpo = b.getAttribute("data-condividi-audio");
+    var pr = trovaPraticaGratuita(corpo);
+    if (!pr) return;
+    var testo = "Un minuto per " + pr.titolo.toLowerCase() + ": la voce di Davide ti accompagna. Provalo quando hai un minuto.";
+    var url = URL_APP + "#pratiche/" + corpo;
+    condividi("Un minuto col corpo — " + pr.titolo, testo, url, "Condividi questa pratica");
   });
 
   /* ---------- rotte ---------- */
@@ -778,6 +847,7 @@
       case "trova": html = vistaTrova(h[1], h[2]); break;
       case "pagina": html = vistaPagina((h[1] || "").split("?")[0]); break;
       case "pratica": html = vistaPratica(h[1]); break;
+      case "pratiche": html = vistaPratiche(h[1]); break;
       case "parla": html = vistaParla(); break;
       case "libri": html = vistaLibri(); break;
       case "negozio": html = vistaNegozio(((h[0] || "").split("?")[1] || "")); break;

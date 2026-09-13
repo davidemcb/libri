@@ -191,3 +191,14 @@ audio{margin-block:.3rem}
 .parla{gap:.8rem}
 .cornice{display:block;width:100%;height:calc(100vh - 13rem);min-height:30rem;border:1px solid var(--line);border-radius:6px;background:transparent}
 @supports (height:100dvh){.cornice{height:calc(100dvh - 13rem)}}
+
+/* ---------- pratiche gratuite ---------- */
+.pratiche-lista{list-style:none;padding:0;margin:0;display:grid;gap:1.2rem}
+.pratica-item{
+  background:var(--sabbia);border:1px solid var(--sabbia-line);
+  padding:1.2rem 1.2rem 1rem;border-radius:3px;display:grid;gap:.8rem;
+}
+.pratica-item .titolo{font-size:1.3rem;line-height:1.2;margin-bottom:.2rem}
+.azioni-pratica{display:flex;gap:.6rem;flex-wrap:wrap}
+.azioni-pratica .btn{flex:1 1 auto;font-size:.78rem;padding:.7rem .9rem}
+.player-audio{display:block;margin-block:1rem;accent-color:var(--terra)}
