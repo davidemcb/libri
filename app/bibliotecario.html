@@ -260,9 +260,28 @@
   function modulo(valore){
     return '<form class="cerca" data-cerca><label class="lbl" for="q" style="position:absolute;left:-9999px">Cerca una parola</label>' +
       '<input id="q" type="search" name="q" value="' + esc(valore || "") + '" placeholder="ansia, tradimento, mio figlio…" autocomplete="off" autocapitalize="none" enterkeyhint="search">' +
+      (VOCE ? '<button class="btn btn-vuoto" type="button" data-voce title="Dillo a voce" aria-label="Dillo a voce">🎤</button>' : '') +
       '<button class="btn btn-pieno" type="submit">Cerca</button></form>' +
-      '<p class="conto">La ricerca avviene qui, nel telefono: quello che scrivi non parte e non resta.</p>';
+      '<p class="conto">La ricerca avviene qui, nel telefono: quello che scrivi non parte e non resta.' +
+      (VOCE ? ' Se lo dici a voce, la trascrizione la fa il telefono (Google o Apple), come la dettatura della tastiera.' : '') + '</p>';
   }
+  /* A voce (Davide, 13/09/2026: «possiamo mettere, dove c'è cerca, anche la possibilità di mettere audio?»).
+     È il riconoscimento vocale del browser: l'audio lo trascrive Google o Apple, come il microfono
+     della tastiera; a noi non arriva niente, e la parola trascritta resta nel telefono come quella
+     scritta (VOCE.md § 6). Il bottone compare solo dove il telefono lo sa fare. */
+  var VOCE = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  document.addEventListener("click", function(ev){
+    var b = ev.target.closest && ev.target.closest("[data-voce]");
+    if (!b || !VOCE) return;
+    var input = b.parentNode.querySelector("input[name=q]");
+    var r = new VOCE();
+    r.lang = "it-IT"; r.interimResults = false; r.maxAlternatives = 1;
+    b.disabled = true; b.textContent = "…"; input.placeholder = "Dillo adesso";
+    r.onresult = function(e){ var t = e.results[0][0].transcript || ""; input.value = t; if (t.trim()) location.hash = "#q/" + encodeURIComponent(t.trim()); };
+    r.onerror = function(){ input.placeholder = "Non ho sentito: scrivi, o riprova"; };
+    r.onend = function(){ b.disabled = false; b.textContent = "🎤"; };
+    try { r.start(); } catch (e) { b.disabled = false; b.textContent = "🎤"; }
+  });
   document.addEventListener("submit", function(ev){
     var f = ev.target.closest && ev.target.closest("form[data-cerca]");
     if (!f) return;
