@@ -613,7 +613,12 @@
           '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Oppure cerca da solo</p><p class="sotto">Tocca l\'argomento: ti accompagno fino alla pagina senza scrivere niente.</p></div>'
         : '<div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
           '<p class="sotto">Qui c\'è un bibliotecario che conosce a memoria i libri di Davide. Non dà risposte. Ti accompagna fino alla pagina in cui il tuo problema è già scritto, e lì si fa da parte: la risposta, se c\'è, è tua.</p></div>';
-      return '<section class="sez">' + testata +
+      // Il bibliotecario a bivi (13/09/2026): dalla frase della persona al capitolo, su tutti i libri, senza scrivere niente.
+      var bivi = '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Per scelte, un tocco alla volta</p>' +
+        '<p class="sotto">Parti da come lo diresti tu e arriva al capitolo, su tutti i libri della casa, anche quelli che escono più avanti.</p></div>' +
+        '<div class="azioni"><a class="btn btn-pieno" href="bibliotecario.html">Dimmi come lo diresti</a></div>';
+      return '<section class="sez">' + testata + bivi +
+        '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Oppure le pagine dell\'app</p></div>' +
         '<ul class="lista">' + dati.aree.map(function(ar){
           return '<li><a class="blocco" href="#trova/' + esc(ar.chiave) + '"><p class="titolo">' + esc(ar.voce) + '</p><p class="muted piccolo">' +
             esc(ar.situazioni.map(voceSituazione).slice(0, 3).join(" · ")) + (ar.situazioni.length > 3 ? " · …" : "") + '</p></a></li>';
