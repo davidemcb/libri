@@ -226,32 +226,44 @@
   function piatto(t){ return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim(); }
   function radiceCerca(w){ return w.length > 6 ? w.slice(0, 6) : w.length > 4 ? w.slice(0, 5) : w; }
   var FERMA = {"non":1,"mi":1,"mio":1,"mia":1,"il":1,"la":1,"di":1,"che":1,"e":1,"a":1,"un":1,"una":1,"ho":1,"sono":1,"con":1,"per":1,"da":1,"in":1,"ma":1,"lo":1,"le":1,"si":1,"ti":1,"ci":1,"ne":1,"se":1,"del":1,"della":1,"al":1,"come":1,"cosa":1,"piu":1,"anche":1};
+  // La rete di sicurezza, la stessa del worker del Brucaliffo (regola 4 di BRUCALIFFO-PROVA.md):
+  // grossolana di proposito. Se scatta, i numeri veri stanno in cima a qualsiasi risultato.
+  var CAMPANELLO = [/\b(mi|farmi|farsi)\s+(del\s+)?male\b/i, /\b(ammazzarmi|uccidermi|suicid|farla\s+finita|non\s+voglio\s+pi[uù]\s+vivere|non\s+ce\s+la\s+faccio\s+pi[uù]\s+a\s+vivere)/i,
+    /\b(sparire|scomparire)\s+per\s+sempre\b/i, /\b(la|lo)\s+(ammazzo|uccido)\b/i, /\b(mi|ti|lo|la)\s+(picchia|picchiava|mena|menava|malmena)\b/i,
+    /\bmi\s+ha\s+(picchiat|menat|malmenat|preso\s+a\s+(botte|calci|pugni|schiaff))/i, /\b(botte|schiaffi|pugni)\s+(a\s+casa|in\s+casa|da\s+(lui|lei))\b/i, /\bviolent(a|ata|ato|armi)\b/i, /\bstupr/i];
+  function grave(t){ return CAMPANELLO.some(function(r){ return r.test(t); }); }
   function vistaCerca(q){
     var testo = piatto(decodeURIComponent(q || ""));
+    var allarme = grave(decodeURIComponent(q || "")) ? NUMERI : "";
     var parole = testo.split(" ").filter(function(w){ return w && !FERMA[w] && w.length > 2; }).map(radiceCerca);
     if (!parole.length) return vistaInizio();
     function colpisce(s){ var p = piatto(s); return parole.every(function(w){ return p.indexOf(w) >= 0; }); }
     function colpisceUna(s){ var p = piatto(s); return parole.some(function(w){ return p.indexOf(w) >= 0; }); }
     var punti = {};
     function segna(k, n){ if (dove(k)) punti[k] = (punti[k] || 0) + n; }
+    function quante(s){ var p = piatto(s); var n = 0; parole.forEach(function(w){ if (p.indexOf(w) >= 0) n++; }); return n; }
     PAROLE.forEach(function(p){ if (parole.some(function(w){ return piatto(p[0]).indexOf(w) === 0 || w.indexOf(piatto(p[0])) === 0; })) p[1].forEach(function(k, i){ segna(k, 20 - i * 2); }); });
+    // Anche una frase intera («mio marito non mi parla più e dormiamo in due stanze»): ogni situazione
+    // vale per quante parole della frase ritrova nella sua voce, nelle sue frasi e nei suoi capitoli.
     var frasi = [];
     D.aree.forEach(function(a){ a.nodi.forEach(function(n){ n.situazioni.forEach(function(s){
-      if (colpisce(s.voce)) segna(s.chiave, 8);
-      else if (colpisceUna(s.voce)) segna(s.chiave, 3);
-      s.domande.forEach(function(x, i){ if (colpisce(x)) { segna(s.chiave, 4); frasi.push({a:a, n:n, s:s, i:i, x:x}); } });
+      segna(s.chiave, quante(s.voce) * 5);
+      var meglio = 0;
+      s.domande.forEach(function(x, i){ var q = quante(x); if (q > meglio) meglio = q; if (q && (colpisce(x) || q >= 2)) frasi.push({a:a, n:n, s:s, i:i, x:x, q:q}); });
+      segna(s.chiave, meglio * 4);
     }); }); });
-    D.capitoli.forEach(function(c){ if (colpisce(c.titolo) || colpisce(c.di)) c.sit.forEach(function(k, i){ segna(k, i ? 1 : 2); }); });
+    D.capitoli.forEach(function(c){ var q = quante(c.titolo + " " + c.di); if (q) c.sit.forEach(function(k, i){ segna(k, q * (i ? 1 : 2)); }); });
+    frasi.sort(function(a, b){ return b.q - a.q; });
     var trovate = Object.keys(punti).sort(function(a, b){ return punti[b] - punti[a]; }).slice(0, 10);
     var briciole = scala([{voce:"Il bibliotecario", href:"#"}, {voce:"Cerca"}]);
     if (!trovate.length) {
-      return '<section class="sez">' + briciole + '<div class="testata"><p class="lbl">Hai scritto</p><h1>«' + esc(decodeURIComponent(q)) + '»</h1>' +
+      return '<section class="sez">' + briciole + allarme + '<div class="testata"><p class="lbl">Hai scritto</p><h1>«' + esc(decodeURIComponent(q)) + '»</h1>' +
         '<p class="sotto">Questa parola nell\'albero non la trovo. Prova con una parola più semplice, o parti dagli argomenti.</p></div>' + modulo() +
         '<div class="azioni"><a class="btn btn-vuoto" href="#">Gli argomenti</a><a class="btn btn-vuoto" href="#corpo">Parto dal corpo</a></div></section>' + piede();
     }
     var righe = trovate.map(function(k){ var x = dove(k); var nc = capitoliDi(k).length;
       return {href:"#s/" + x.area.chiave + "/" + x.nodo.chiave + "/" + x.sit.chiave, titolo:x.sit.voce, sotto:x.area.voce + " › " + x.nodo.voce + (nc ? " · " + nc + (nc === 1 ? " capitolo" : " capitoli") : " · ancora nessun capitolo")}; });
-    var h = '<section class="sez">' + briciole + '<div class="testata"><p class="lbl">Hai scritto</p><h1>«' + esc(decodeURIComponent(q)) + '»</h1>' +
+    var h = '<section class="sez">' + briciole + allarme + '<div class="testata"><p class="lbl">Hai scritto</p><h1>«' + esc(decodeURIComponent(q)) + '»</h1>' +
       '<p class="sotto">Queste sono le situazioni che ci stanno dietro. Scegli quella che ti somiglia adesso.</p></div>' + modulo(decodeURIComponent(q)) + elenco(righe);
     if (frasi.length) h += '<div class="testata" style="margin-top:1rem"><p class="lbl">Frasi che la contengono</p></div>' +
       elenco(frasi.slice(0, 8).map(function(f){ return {href:"#r/" + f.a.chiave + "/" + f.n.chiave + "/" + f.s.chiave + "/" + f.i, titolo:"«" + f.x + "»", sotto:f.s.voce}; }));
