@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Il bibliotecario — Davide Scuderi</title>
+<meta name="description" content="Parti da quello che ti sta succedendo e arriva, per scelte, al capitolo del libro in cui è già scritto. Niente da scrivere, niente che resta.">
+<meta name="theme-color" content="#FBF6EC">
+<link rel="icon" href="icona-192.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="app.css?v=11">
+<style>
+  /* Solo quello che l'app non ha già. */
+  .frase{font-size:clamp(1.22rem,4vw,1.5rem);line-height:1.4}
+  .lista li.scelta{padding:0}
+  .lista li.scelta a{display:block;padding:1rem 0;text-decoration:none}
+  .lista li.scelta a:active{background:var(--raise)}
+  .conto{font-family:Archivo,system-ui,sans-serif;font-size:.7rem;letter-spacing:.06em;color:var(--muted)}
+  .capitolo{display:grid;gap:.35rem;padding:1rem 0;border-top:1px solid var(--line)}
+  .capitolo .titolo{font-size:1.3rem;line-height:1.25}
+  .capitolo .cit{font-style:italic;color:var(--text)}
+  .libro-trovato{display:grid;gap:.6rem}
+  .libro-trovato h2{font-size:clamp(1.55rem,4.6vw,2rem);line-height:1.2}
+  .porte{display:grid;gap:.5rem}
+  .porte a{color:var(--accent);text-decoration:none;font-size:1.05rem}
+  .numeri{background:var(--raise);border-left:3px solid var(--terra);padding:.9rem 1rem;line-height:1.7}
+  .indietro{font-family:Archivo,system-ui,sans-serif;font-size:.78rem;color:var(--muted);text-decoration:none}
+</style>
+</head>
+<body>
+
+<header class="testa">
+  <a class="marchio" href="#">Il bibliotecario</a>
+  <a class="indietro" href="index.html" style="margin-left:auto">Torna all'app</a>
+</header>
+
+<main id="vista" class="vista" aria-live="polite">
+  <p class="attesa muted">Un attimo.</p>
+</main>
+
+<script src="../assets/config.js"></script>
+<script>
+/* Il super bibliotecario (13/09/2026). Nessun testo libero, nessun modello, nessun server,
+   nessun dato: la persona tocca, e ogni tocco è una parola già scritta. Legge
+   bibliotecario.json (generato da MARKETING/APP/costruisci_bibliotecario.py) e i link di
+   vendita da ../assets/config.js, come tutto il sito. */
+(function(){
+  "use strict";
+  var C = window.SITO || {amazon:{}, gumroad:{}};
+  var BASE_SITO = new URL("../", location.href).href;
+  var vista = document.getElementById("vista");
+  var D = null;
+
+  // I libri in vendita: dove si comprano, come nell'app.
+  var VENDITA = {
+    duau: {cartaceo:C.amazon.duauCartaceo, ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoCartaceo:"19,90 €", prezzoEbook:"5,99 €", cover:"../img/duau.jpg"},
+    sv:   {cartaceo:C.amazon.svCartaceo,   ebook:C.gumroad.svEbook   || C.amazon.svEbook,   prezzoCartaceo:"19,90 €", prezzoEbook:"4,99 €", cover:"../img/senzaveli.jpg"},
+    pac:  {cartaceo:C.amazon.pacCartaceo,  ebook:C.gumroad.pacEbook  || C.amazon.pacEbook,  prezzoCartaceo:"9,90 €",  prezzoEbook:"4,99 €", cover:"../img/prenditi.jpg"}
+  };
+  var NUMERI = '<div class="numeri"><p class="lbl" style="margin-bottom:.4rem">Prima di tutto</p>' +
+    'Se sei in pericolo adesso: <strong>112</strong>.<br>Antiviolenza e stalking: <strong>1522</strong>, gratuito, giorno e notte.<br>' +
+    'Telefono Amico: <strong>02 2327 2327</strong>.</div>';
+
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function area(k){ for (var i = 0; i < D.aree.length; i++) if (D.aree[i].chiave === k) return D.aree[i]; return null; }
+  function nodo(a, k){ for (var i = 0; i < a.nodi.length; i++) if (a.nodi[i].chiave === k) return a.nodi[i]; return null; }
+  function situazione(n, k){ for (var i = 0; i < n.situazioni.length; i++) if (n.situazioni[i].chiave === k) return n.situazioni[i]; return null; }
+  function nodoDaPorta(p){ var x = p.split("/"); var a = area(x[0]); var n = a && nodo(a, x[1]); return n ? {area:a, nodo:n} : null; }
+  function libro(k){ return D.libri[k] || {titolo:k, stato:"cantiere"}; }
+  function capitoliDi(sit){ return D.capitoli.filter(function(c){ return c.sit.indexOf(sit) >= 0; }); }
+  function capitoliPerDomanda(dom){ return D.capitoli.filter(function(c){ return c.dom.indexOf(dom) >= 0; }); }
+  function capitoliPerCorpo(k){ return D.capitoli.filter(function(c){ return c.corpo.indexOf(k) >= 0; }); }
+  function contaNodo(n){ var s = {}; n.situazioni.forEach(function(x){ capitoliDi(x.chiave).forEach(function(c){ s[c.libro + "/" + c.n] = 1; }); }); return Object.keys(s).length; }
+
+  function pesoLibro(k){ var L = libro(k); return L.vendita ? 0 : L.prenotabile ? (L.stato === "lavorazione" ? 1 : 2) : 3; }
+  function ordina(caps, sit){
+    return caps.slice().sort(function(a, b){
+      var pa = pesoLibro(a.libro) * 10 + (sit && a.sit[0] === sit ? 0 : 1);
+      var pb = pesoLibro(b.libro) * 10 + (sit && b.sit[0] === sit ? 0 : 1);
+      return pa - pb || a.libro.localeCompare(b.libro) || a.n - b.n;
+    });
+  }
+  function perLibro(caps){   // conserva l'ordine dei libri come arrivano
+    var ordine = [], gruppi = {};
+    caps.forEach(function(c){ if (!gruppi[c.libro]) { gruppi[c.libro] = []; ordine.push(c.libro); } gruppi[c.libro].push(c); });
+    return ordine.map(function(k){ return {chiave:k, libro:libro(k), capitoli:gruppi[k]}; });
+  }
+
+  function scala(passi){
+    return '<p class="perche scala">' + passi.map(function(p, i){
+      return (i ? " › " : "") + (p.href ? '<a href="' + esc(p.href) + '">' + esc(p.voce) + '</a>' : esc(p.voce));
+    }).join("") + '</p>';
+  }
+  function piede(){
+    return '<section class="sez" style="margin-top:3rem"><p class="muted piccolo" style="text-align:center;line-height:1.9">' +
+      '<em>Il corpo è il primo posto.</em><br>Niente da scrivere, niente che resta: tocchi, e ogni tocco è una parola già scritta nei libri. Nessuna intelligenza artificiale.<br>' +
+      '<a href="index.html">L\'app</a> · <a href="' + esc(BASE_SITO) + '" target="_blank" rel="noopener">Il sito</a> · ' +
+      '<a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Privacy</a></p></section>';
+  }
+  function elenco(voci){   // voci: [{href, titolo, sotto}]
+    return '<ul class="lista">' + voci.map(function(v){
+      return '<li class="scelta"><a class="blocco" href="' + esc(v.href) + '"><p class="frase">' + esc(v.titolo) + '</p>' +
+        (v.sotto ? '<p class="muted piccolo">' + esc(v.sotto) + '</p>' : '') + '</a></li>';
+    }).join("") + '</ul>';
+  }
+
+  /* ---------- 1. Cosa ti sta succedendo? ---------- */
+  function vistaInizio(){
+    return '<section class="sez"><div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
+      '<p class="sotto">Non devi scrivere niente. Tocca la cosa che ti somiglia di più, poi un\'altra, poi un\'altra: in tre o quattro tocchi sei sul capitolo del libro in cui quella cosa è già scritta. Lì mi faccio da parte.</p></div>' +
+      elenco(D.aree.map(function(a){ return {href:"#a/" + a.chiave, titolo:a.voce, sotto:a.domanda}; })) +
+      '<div class="testata" style="margin-top:.6rem"><p class="lbl">Oppure parti dal corpo</p><p class="sotto">Se non sai dirlo a parole ma il corpo lo dice: le spalle, lo stomaco, il sonno.</p></div>' +
+      '<div class="azioni"><a class="btn btn-vuoto" href="#corpo">Parto da quello che sento nel corpo</a></div>' +
+      '<p class="conto">' + D.conto.libri + ' libri · ' + D.conto.capitoli + ' capitoli · ' + D.conto.situazioni + ' situazioni</p>' +
+      '</section>' + piede();
+  }
+
+  /* ---------- 2. L'area: la sua domanda, i suoi nodi ---------- */
+  function vistaArea(ka){
+    var a = area(ka); if (!a) return nonTrovato();
+    return '<section class="sez">' + scala([{voce:"Il bibliotecario", href:"#"}, {voce:a.voce}]) +
+      '<div class="testata"><p class="lbl">' + esc(a.voce) + '</p><h1>' + esc(a.domanda || "Più preciso.") + '</h1><p class="sotto">Se nessuna è esatta, prendi quella vicina.</p></div>' +
+      elenco(a.nodi.map(function(n){
+        var k = contaNodo(n);
+        return {href:"#n/" + a.chiave + "/" + n.chiave, titolo:n.voce, sotto:n.situazioni.map(function(s){ return s.voce; }).slice(0, 3).join(" · ") + (n.situazioni.length > 3 ? " · …" : "") + (k ? " — " + k + (k === 1 ? " capitolo" : " capitoli") : "")};
+      })) +
+      '<div class="azioni"><a class="btn btn-linea" href="#">Un\'altra cosa</a></div></section>' + piede();
+  }
+
+  /* ---------- 3. Il nodo: le situazioni, e le porte verso altri nodi ---------- */
+  function vistaNodo(ka, kn){
+    var a = area(ka); var n = a && nodo(a, kn); if (!n) return nonTrovato();
+    var porte = (n.porte || []).map(nodoDaPorta).filter(Boolean);
+    return '<section class="sez">' + scala([{voce:"Il bibliotecario", href:"#"}, {voce:a.voce, href:"#a/" + a.chiave}, {voce:n.voce}]) +
+      '<div class="testata"><p class="lbl">' + esc(n.voce) + '</p><h1>Qual è la tua?</h1><p class="sotto">Ogni riga è una situazione diversa. Scegli quella che ti somiglia adesso.</p></div>' +
+      elenco(n.situazioni.map(function(s){
+        var k = capitoliDi(s.chiave).length;
+        return {href:"#s/" + a.chiave + "/" + n.chiave + "/" + s.chiave, titolo:s.voce, sotto:k ? k + (k === 1 ? " capitolo" : " capitoli") : "ancora nessun capitolo"};
+      })) +
+      (porte.length ? '<div class="testata" style="margin-top:.4rem"><p class="lbl">Forse invece è un\'altra cosa</p></div><div class="porte">' +
+        porte.map(function(p){ return '<a href="#n/' + esc(p.area.chiave) + '/' + esc(p.nodo.chiave) + '">' + esc(p.nodo.voce) + ' <span class="muted piccolo">(' + esc(p.area.voce) + ')</span></a>'; }).join("") + '</div>' : '') +
+      '<div class="azioni"><a class="btn btn-linea" href="#a/' + esc(a.chiave) + '">Indietro</a></div></section>' + piede();
+  }
+
+  /* ---------- 4. La situazione: la frase esatta ---------- */
+  function vistaSituazione(ka, kn, ks){
+    var a = area(ka); var n = a && nodo(a, kn); var s = n && situazione(n, ks); if (!s) return nonTrovato();
+    var base = "#r/" + a.chiave + "/" + n.chiave + "/" + s.chiave + "/";
+    var voci = s.domande.map(function(d, i){
+      var k = capitoliPerDomanda(d).length;
+      return {href: base + i, titolo: d, sotto: k ? k + (k === 1 ? " capitolo" : " capitoli") : "sulla situazione, non su questa frase"};
+    });
+    voci.push({href: base + "_", titolo: "Nessuna di queste, ma è qui.", sotto: "Tutti i capitoli su «" + s.voce + "»"});
+    return '<section class="sez">' + scala([{voce:"Il bibliotecario", href:"#"}, {voce:a.voce, href:"#a/" + a.chiave}, {voce:n.voce, href:"#n/" + a.chiave + "/" + n.chiave}, {voce:s.voce}]) +
+      (s.delicata ? NUMERI : '') +
+      '<div class="testata"><p class="lbl">' + esc(s.voce) + '</p><h1>Come lo diresti?</h1><p class="sotto">Sono frasi vere, dette da persone vere. Tocca quella che diresti tu.</p></div>' +
+      elenco(voci) +
+      '<div class="azioni"><a class="btn btn-linea" href="#n/' + esc(a.chiave) + '/' + esc(n.chiave) + '">Indietro</a></div></section>' + piede();
+  }
+
+  /* ---------- 5. Il libro, e il capitolo ---------- */
+  function bottoniLibro(k, L){
+    var v = VENDITA[k];
+    if (L.vendita && v) {
+      return '<div class="azioni">' +
+        (v.ebook ? '<a class="btn btn-pieno" href="' + esc(v.ebook) + '" target="_blank" rel="noopener">Ebook · ' + esc(v.prezzoEbook) + '</a>' : '') +
+        (v.cartaceo ? '<a class="btn btn-vuoto" href="' + esc(v.cartaceo) + '" target="_blank" rel="noopener">Cartaceo · ' + esc(v.prezzoCartaceo) + '</a>' : '') + '</div>';
+    }
+    if (L.prenotabile) return '<div class="azioni"><a class="btn btn-vuoto" href="../avvisami.html?titolo=' + encodeURIComponent(L.titolo) + '" target="_blank" rel="noopener">Avvisami quando esce</a></div>';
+    return '';
+  }
+  function statoLibro(L){ return L.vendita ? "In vendita" : !L.prenotabile ? "Non in vendita" : L.stato === "lavorazione" ? "Libro in lavorazione" : "Libro in cantiere"; }
+  function bloccoLibro(g, sit, tetto, numeriGiaDati){
+    var L = g.libro, caps = g.capitoli;
+    var mostra = tetto ? caps.slice(0, tetto) : caps;
+    return '<section class="sez libro-trovato"><div class="testata"><p class="lbl">' + esc(statoLibro(L)) + '</p><h2>' + esc(L.titolo) + '</h2>' +
+      (L.sotto ? '<p class="sotto">' + esc(L.sotto) + '</p>' : '') + '</div>' +
+      (g.chiave === "scale" && !numeriGiaDati ? NUMERI : '') +
+      '<div>' + mostra.map(function(c){
+        return '<div class="capitolo"><p class="lbl">Capitolo ' + c.n + (sit && c.sit[0] === sit ? ' · è il suo posto' : '') + '</p>' +
+          '<p class="titolo">' + esc(c.titolo) + '</p><p class="muted">' + esc(c.di) + '</p><p class="cit">«' + esc(c.cit) + '»</p>' +
+          (c.pagina ? '<p><a class="btn btn-linea" href="index.html#pagina/' + esc(c.pagina) + '">Leggi la pagina, adesso</a></p>' : '') + '</div>';
+      }).join("") +
+      (caps.length > mostra.length ? '<p class="muted piccolo" style="padding-top:.6rem">' + (caps.length - mostra.length === 1 ? 'E un altro capitolo' : 'E altri ' + (caps.length - mostra.length) + ' capitoli') + ' dello stesso libro.</p>' : '') + '</div>' +
+      bottoniLibro(g.chiave, L) + '</section>';
+  }
+  function vistaRisultato(ka, kn, ks, i){
+    var a = area(ka); var n = a && nodo(a, kn); var s = n && situazione(n, ks); if (!s) return nonTrovato();
+    var domanda = i === "_" ? null : s.domande[+i];
+    if (i !== "_" && !domanda) return nonTrovato();
+    var caps = domanda ? capitoliPerDomanda(domanda) : [];
+    var ripiego = false;
+    if (!caps.length) { caps = capitoliDi(s.chiave); ripiego = !!domanda; }
+    caps = ordina(caps, s.chiave);
+    var briciole = scala([{voce:"Il bibliotecario", href:"#"}, {voce:a.voce, href:"#a/" + a.chiave}, {voce:n.voce, href:"#n/" + a.chiave + "/" + n.chiave}, {voce:s.voce, href:"#s/" + a.chiave + "/" + n.chiave + "/" + s.chiave}]);
+    if (!caps.length) {
+      return '<section class="sez">' + briciole + (s.delicata ? NUMERI : '') +
+        '<div class="testata"><p class="lbl">' + esc(s.voce) + '</p><h1>Per questo non ho ancora un capitolo.</h1>' +
+        '<p class="sotto">Non ti do una frase per riempire il vuoto. È una delle cose che Davide deve ancora scrivere, e adesso lo sa.</p></div>' +
+        '<div class="azioni"><a class="btn btn-vuoto" href="index.html#settimana">La pagina della settimana</a><a class="btn btn-vuoto" href="#">Un\'altra cosa</a></div></section>' + piede();
+    }
+    var gruppi = perLibro(caps);
+    var testa = '<section class="sez">' + briciole + (s.delicata ? NUMERI : '') +
+      '<div class="testata"><p class="lbl">' + (domanda ? "Hai detto" : esc(s.voce)) + '</p>' +
+      (domanda ? '<h1>«' + esc(domanda) + '»</h1>' : '<h1>' + esc(s.voce) + '</h1>') +
+      '<p class="sotto">' + (ripiego
+        ? 'Su questa frase esatta nessun capitolo si ferma. Ma sulla situazione sì: ' + (gruppi.length === 1 ? 'è in questo libro.' : 'è in questi libri, il primo è quello più vicino.')
+        : (gruppi.length === 1 ? 'Questa cosa è già scritta. È in questo libro, in ' + (caps.length === 1 ? 'questo capitolo.' : 'questi capitoli.') : 'Questa cosa è già scritta in più libri. Il primo è quello più vicino a te.')) +
+      '</p></div></section>';
+    return testa + gruppi.map(function(g){ return bloccoLibro(g, s.chiave, 4, s.delicata); }).join("") +
+      '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#s/' + esc(a.chiave) + '/' + esc(n.chiave) + '/' + esc(s.chiave) + '">Un\'altra frase</a><a class="btn btn-linea" href="#">Ricomincio</a></div></section>' + piede();
+  }
+
+  /* ---------- Dal corpo ---------- */
+  function vistaCorpo(){
+    return '<section class="sez">' + scala([{voce:"Il bibliotecario", href:"#"}, {voce:"Il corpo"}]) +
+      '<div class="testata"><p class="lbl">Il corpo</p><h1>Cosa fa il corpo?</h1><p class="sotto">I libri nominano il corpo prima delle parole. Tocca il segno che riconosci.</p></div>' +
+      elenco(D.corpo.map(function(c){ var k = capitoliPerCorpo(c.chiave).length; return {href:"#c/" + c.chiave, titolo:c.voce, sotto:k ? k + (k === 1 ? " capitolo" : " capitoli") : "nessun capitolo"}; }).filter(function(v){ return v.sotto !== "nessun capitolo"; })) +
+      '<div class="azioni"><a class="btn btn-linea" href="#">Indietro</a></div></section>' + piede();
+  }
+  function vistaSegno(k){
+    var voce = null; D.corpo.forEach(function(c){ if (c.chiave === k) voce = c.voce; });
+    if (!voce) return nonTrovato();
+    var caps = ordina(capitoliPerCorpo(k), null);
+    var gruppi = perLibro(caps);
+    return '<section class="sez">' + scala([{voce:"Il bibliotecario", href:"#"}, {voce:"Il corpo", href:"#corpo"}, {voce:voce}]) +
+      '<div class="testata"><p class="lbl">Il corpo</p><h1>' + esc(voce) + '</h1><p class="sotto">Questi capitoli lo nominano. Non dicono perché: raccontano una persona a cui succede.</p></div></section>' +
+      gruppi.map(function(g){ return bloccoLibro(g, null, 3); }).join("") +
+      '<section class="sez"><div class="azioni"><a class="btn btn-linea" href="#corpo">Un altro segno</a><a class="btn btn-linea" href="#">Ricomincio</a></div></section>' + piede();
+  }
+
+  function nonTrovato(){ return '<section class="sez"><div class="testata"><h1>Qui non c\'è niente.</h1></div><div class="azioni"><a class="btn btn-vuoto" href="#">Ricomincio</a></div></section>' + piede(); }
+
+  function mostra(){
+    var h = (location.hash || "#").slice(1).split("/").map(decodeURIComponent);
+    var html;
+    switch (h[0]) {
+      case "a": html = vistaArea(h[1]); break;
+      case "n": html = vistaNodo(h[1], h[2]); break;
+      case "s": html = vistaSituazione(h[1], h[2], h[3]); break;
+      case "r": html = vistaRisultato(h[1], h[2], h[3], h[4]); break;
+      case "corpo": html = vistaCorpo(); break;
+      case "c": html = vistaSegno(h[1]); break;
+      default: html = vistaInizio();
+    }
+    vista.innerHTML = html;
+    window.scrollTo(0, 0);
+  }
+
+  fetch("bibliotecario.json", {cache:"no-cache"}).then(function(r){ return r.json(); }).then(function(d){
+    D = d; mostra(); window.addEventListener("hashchange", mostra);
+  }).catch(function(){
+    vista.innerHTML = '<section class="sez"><div class="testata"><h1>Il bibliotecario non risponde.</h1><p class="sotto">Riprova fra un momento.</p></div></section>';
+  });
+})();
+</script>
+</body>
+</html>
