@@ -32,6 +32,13 @@
   .cerca .btn{flex:0 0 auto}
   .cerca .btn.ascolta{background:#C0684B;color:#FBF6EC;border-color:#C0684B;animation:pulsa 1s ease-in-out infinite}
   @keyframes pulsa{0%,100%{opacity:1}50%{opacity:.55}}
+  .voce-foglio{position:fixed;inset:0;z-index:40}
+  .voce-sfondo{position:absolute;inset:0;background:rgba(58,49,40,.45)}
+  .voce-corpo{position:absolute;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);border-radius:12px 12px 0 0;padding:1.4rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom));display:grid;gap:.9rem;min-height:46vh}
+  .voce-corpo .lbl.ascolta{color:#C0684B;animation:pulsa 1s ease-in-out infinite}
+  .voce-corpo .lbl.ascolta::before{content:"● ";}
+  .voce-testo{font-size:clamp(1.5rem,5.5vw,2.1rem);line-height:1.35;min-height:5.5rem}
+  .voce-aiuto{color:var(--muted);font-size:.98rem;line-height:1.5}
   .voce-stato{margin-top:.7rem;padding:.8rem 1rem;border-radius:3px;background:var(--raise);border-left:3px solid var(--accent);font-size:1.02rem;line-height:1.55}
   .voce-stato.attesa{border-left-color:#C0684B}
   .voce-stato.ok{border-left-color:var(--accent)}
@@ -284,7 +291,6 @@
       '<input id="q" type="search" name="q" value="' + esc(valore || "") + '" placeholder="ansia, tradimento, mio figlio…" autocomplete="off" autocapitalize="none" enterkeyhint="search">' +
       (VOCE ? '<button class="btn btn-vuoto" type="button" data-voce title="Dillo a voce" aria-label="Dillo a voce">🎤 Parla</button>' : '') +
       '<button class="btn btn-pieno" type="submit">Cerca</button></form>' +
-      (VOCE ? '<p class="voce-stato" data-voce-stato hidden></p>' : '') +
       '<p class="conto">La ricerca avviene qui, nel telefono: quello che scrivi non parte e non resta.' +
       (VOCE ? ' Se tocchi «Parla», la trascrizione la fa il telefono (Google o Apple), come la dettatura della tastiera.' : '') + '</p>';
   }
@@ -293,31 +299,73 @@
      della tastiera; a noi non arriva niente, e la parola trascritta resta nel telefono come quella
      scritta (VOCE.md § 6). Il bottone compare solo dove il telefono lo sa fare. */
   var VOCE = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  var FOGLIO = null, RIC = null;
+  function foglioVoce(){
+    if (FOGLIO) return FOGLIO;
+    FOGLIO = document.createElement("div");
+    FOGLIO.className = "voce-foglio"; FOGLIO.hidden = true;
+    FOGLIO.innerHTML = '<div class="voce-sfondo" data-voce-chiudi></div>' +
+      '<div class="voce-corpo" role="dialog" aria-modal="true" aria-label="Dillo a voce">' +
+      '<p class="lbl" data-voce-titolo>Ti ascolto</p>' +
+      '<p class="voce-testo" data-voce-testo><span class="muted">Parla adesso. Le parole compaiono qui.</span></p>' +
+      '<p class="voce-aiuto" data-voce-aiuto>Di’ come lo diresti tu: «ho ansia», «mio figlio non mi parla più». Se il telefono chiede il permesso del microfono, di’ sì.</p>' +
+      '<div class="azioni"><button class="btn btn-pieno" type="button" data-voce-cerca disabled>Cerca</button>' +
+      '<button class="btn btn-vuoto" type="button" data-voce-riprova hidden>Riprova</button>' +
+      '<button class="btn btn-linea" type="button" data-voce-chiudi>Chiudi</button></div></div>';
+    document.body.appendChild(FOGLIO);
+    return FOGLIO;
+  }
+  var FINALE = "", PARZIALE = "";
+  function mostraVoce(){
+    var el = FOGLIO.querySelector("[data-voce-testo]");
+    var f = FINALE.trim(), p = PARZIALE.trim();
+    if (!f && !p) { el.innerHTML = '<span class="muted">Parla adesso. Le parole compaiono qui.</span>'; }
+    else el.innerHTML = esc(f) + (p ? ' <span class="muted">' + esc(p) + '</span>' : '');
+    FOGLIO.querySelector("[data-voce-cerca]").disabled = !(f || p);
+  }
+  function ascolta(){
+    if (!VOCE) return;
+    var titolo = FOGLIO.querySelector("[data-voce-titolo]"), aiuto = FOGLIO.querySelector("[data-voce-aiuto]"), riprova = FOGLIO.querySelector("[data-voce-riprova]");
+    FINALE = ""; PARZIALE = ""; mostraVoce();
+    riprova.hidden = true; titolo.textContent = "Ti ascolto"; titolo.className = "lbl ascolta";
+    aiuto.textContent = "Di’ come lo diresti tu: «ho ansia», «mio figlio non mi parla più». Se il telefono chiede il permesso del microfono, di’ sì.";
+    RIC = new VOCE();
+    RIC.lang = "it-IT"; RIC.interimResults = true; RIC.continuous = true; RIC.maxAlternatives = 1;
+    RIC.onresult = function(e){
+      var fin = "", par = "";
+      for (var i = 0; i < e.results.length; i++) { var r = e.results[i]; if (r.isFinal) fin += r[0].transcript + " "; else par += r[0].transcript + " "; }
+      FINALE = fin; PARZIALE = par; mostraVoce();
+    };
+    RIC.onerror = function(e){
+      var perche = (e && e.error) || "";
+      titolo.textContent = "Non ho sentito"; titolo.className = "lbl";
+      aiuto.textContent = perche === "not-allowed" || perche === "service-not-allowed"
+        ? "Il microfono è bloccato: dai il permesso nelle impostazioni del browser, oppure chiudi e scrivi."
+        : "Tocca «Riprova» e parla, oppure chiudi e scrivi.";
+      riprova.hidden = false;
+    };
+    RIC.onend = function(){
+      RIC = null;
+      if (FOGLIO.hidden) return;
+      titolo.className = "lbl";
+      if ((FINALE + PARZIALE).trim()) { titolo.textContent = "Ho sentito"; aiuto.textContent = "Se è giusto, tocca «Cerca». Se no, «Riprova»."; }
+      else if (titolo.textContent === "Ti ascolto") { titolo.textContent = "Non ho sentito"; aiuto.textContent = "Tocca «Riprova» e parla, oppure chiudi e scrivi."; }
+      riprova.hidden = false;
+    };
+    try { RIC.start(); } catch (err) { titolo.textContent = "La voce qui non funziona"; aiuto.textContent = "Chiudi e scrivi qui sopra."; }
+  }
+  function chiudiVoce(){ if (RIC) { try { RIC.abort(); } catch (e) {} RIC = null; } if (FOGLIO) FOGLIO.hidden = true; }
   document.addEventListener("click", function(ev){
     var b = ev.target.closest && ev.target.closest("[data-voce]");
-    if (!b || !VOCE) return;
-    var input = b.parentNode.querySelector("input[name=q]");
-    var stato = b.parentNode.parentNode.querySelector("[data-voce-stato]");
-    function di(testo, classe){ if (!stato) return; stato.hidden = false; stato.className = "voce-stato " + (classe || ""); stato.textContent = testo; }
-    var r = new VOCE();
-    r.lang = "it-IT"; r.interimResults = false; r.maxAlternatives = 1;
-    var sentito = false;
-    b.disabled = true; b.classList.add("ascolta"); b.textContent = "● Ti ascolto";
-    di("Parla adesso. Di’ come lo diresti tu, per esempio: «ho ansia», «mio figlio non mi parla più». Se il telefono ti chiede il permesso del microfono, di’ sì.", "attesa");
-    r.onstart = function(){ di("Ti ascolto… parla adesso.", "attesa"); };
-    r.onresult = function(e){
-      var t = (e.results[0][0].transcript || "").trim(); sentito = true; input.value = t;
-      di("Ho sentito: «" + t + "». Cerco.", "ok");
-      if (t) setTimeout(function(){ location.hash = "#q/" + encodeURIComponent(t); }, 400);
-    };
-    r.onerror = function(e){
-      var perche = (e && e.error) || "";
-      di(perche === "not-allowed" || perche === "service-not-allowed"
-        ? "Il microfono è bloccato: dai il permesso nelle impostazioni del browser, oppure scrivi qui sopra."
-        : "Non ho sentito niente. Tocca «Parla» e riprova, oppure scrivi qui sopra.", "errore");
-    };
-    r.onend = function(){ b.disabled = false; b.classList.remove("ascolta"); b.textContent = "🎤 Parla"; if (!sentito && stato && stato.className.indexOf("errore") < 0) di("Non ho sentito niente. Tocca «Parla» e riprova, oppure scrivi qui sopra.", "errore"); };
-    try { r.start(); } catch (err) { b.disabled = false; b.classList.remove("ascolta"); b.textContent = "🎤 Parla"; di("Su questo telefono la voce non funziona: scrivi qui sopra.", "errore"); }
+    if (b && VOCE) { foglioVoce().hidden = false; ascolta(); return; }
+    if (ev.target.closest && ev.target.closest("[data-voce-chiudi]")) { chiudiVoce(); return; }
+    if (ev.target.closest && ev.target.closest("[data-voce-riprova]")) { if (RIC) { try { RIC.abort(); } catch (e) {} } ascolta(); return; }
+    if (ev.target.closest && ev.target.closest("[data-voce-cerca]")) {
+      var testo = (FINALE + " " + PARZIALE).replace(/\s+/g, " ").trim();
+      chiudiVoce();
+      var input = document.querySelector("input[name=q]"); if (input) input.value = testo;
+      if (testo) location.hash = "#q/" + encodeURIComponent(testo);
+    }
   });
   document.addEventListener("submit", function(ev){
     var f = ev.target.closest && ev.target.closest("form[data-cerca]");
