@@ -97,6 +97,72 @@
     return h + '</section>';
   }
 
+  // «Dillo con una parola» (Davide, 13/09/2026, provando con «una persona che ha ansia»: la parola
+  // «ansia» nell'albero c'era una volta sola, e chi ce l'ha doveva indovinare Le emozioni → La paura).
+  // Parole comuni → situazioni. Sempre statico: si tocca, non si scrive.
+  var PAROLE = [
+    ["ansia", ["ansia-corpo", "paura", "ansia-sociale", "sonno", "stress-che-si-vede", "stanchezza"]],
+    ["panico", ["ansia-corpo", "paura", "paura-della-morte"]],
+    ["stress", ["stress-che-si-vede", "lavoro", "tensione", "reggere", "burnout"]],
+    ["tradimento", ["tradimento", "sospetto", "ho-tradito", "fiducia-rotta", "gelosia"]],
+    ["gelosia", ["gelosia", "sospetto", "invidia"]],
+    ["separazione", ["separazione", "voglio-lasciare", "mi-ha-lasciato", "ex", "padre-separato", "madre-separata"]],
+    ["ex", ["ex", "separazione", "padre-separato", "madre-separata", "ricominciare-da-se"]],
+    ["coppia", ["coppia-lunga", "litighiamo", "non-mi-vede", "non-mi-cerca", "sola-in-due", "letti-separati"]],
+    ["figli", ["figli", "adolescente", "figli-via", "figli-in-casa", "casa-vuota", "dirlo-ai-figli", "genitore-inadeguato"]],
+    ["genitori", ["genitori", "accudire", "eredita-padre", "eredita-madre", "famiglia", "lutto"]],
+    ["suocera", ["suoceri", "parenti", "famiglia"]],
+    ["lutto", ["lutto", "pianto", "paura-della-morte", "tristezza"]],
+    ["lavoro", ["lavoro", "capo-colleghi", "burnout", "cambiare-lavoro", "perdere-il-lavoro", "pensione", "fermarsi"]],
+    ["soldi", ["soldi-che-non-bastano", "soldi-in-coppia", "mantenere", "soldi-negati"]],
+    ["solitudine", ["solitudine", "sola-in-due", "non-ho-amici", "amici-persi", "casa-vuota"]],
+    ["amici", ["non-ho-amici", "amici-persi", "fare-amicizia-adulti", "amicizia-di-superficie", "amico-che-sta-male"]],
+    ["vergogna", ["vergogna", "peso-e-vergogna", "paura-del-giudizio", "non-abbastanza", "fallito"]],
+    ["colpa", ["colpa", "non-abbastanza", "genitore-inadeguato", "ho-tradito"]],
+    ["rabbia", ["rabbia", "rabbia-trattenuta", "rabbia-tardi", "rabbia-non-permessa", "litighiamo"]],
+    ["tristezza", ["tristezza", "giu-da-mesi", "vuoto-dentro", "pianto"]],
+    ["vuoto", ["vuoto-dentro", "chi-sono", "burnout", "senso"]],
+    ["sonno", ["sonno", "stanchezza", "ansia-corpo"]],
+    ["stanchezza", ["stanchezza", "reggere", "burnout", "fermarsi", "forza-che-cala"]],
+    ["dolore", ["dolore", "tensione", "dolore-non-creduto", "sesso-doloroso", "ascolto"]],
+    ["schiena", ["tensione", "dolore", "ascolto", "stress-che-si-vede"]],
+    ["malattia", ["malattia", "fragilita", "sesso-dopo-malattia", "aiutare-lui-lei", "accudire"]],
+    ["corpo", ["corpo-cambia", "peso-e-vergogna", "ascolto", "corpo-strumento", "contatto", "abbraccio-mancante"]],
+    ["menopausa", ["ormoni-donna", "desiderio", "sesso-doloroso", "sesso-dopo-i-sessanta"]],
+    ["sesso", ["desiderio", "non-mi-tocca", "rifiuto", "letti-separati", "sessualita", "erezione", "durata", "sesso-dopo-i-sessanta"]],
+    ["erezione", ["erezione", "sessualita", "non-arrivo", "durata"]],
+    ["desiderio", ["desiderio", "desiderio-dopo-parto", "non-mi-cerca", "non-mi-tocca", "fantasie"]],
+    ["porno", ["porno", "masturbazione", "fantasie"]],
+    ["violenza", ["violenza-subita", "violenza-agita", "soldi-negati", "relazione-tossica"]],
+    ["dipendenza", ["dipendenza", "relazione-tossica", "aiutare-lui-lei"]],
+    ["psicologo", ["psicologo", "aiutare-lui-lei", "non-so-chiedere"]],
+    ["invecchiare", ["corpo-cambia", "forza-che-cala", "ricominciare-a-cinquanta", "sesso-dopo-i-sessanta", "pensione", "ormoni-uomo"]],
+    ["abbraccio", ["abbraccio-mancante", "contatto", "non-mi-tocca"]],
+    ["morte", ["paura-della-morte", "lutto", "pianto"]]
+  ];
+  var DOVE = null;   // chiave situazione → {area, nodo, sit}, costruito al primo uso
+  function dove(k){
+    if (!DOVE) { DOVE = {}; D.aree.forEach(function(a){ a.nodi.forEach(function(n){ n.situazioni.forEach(function(s){ DOVE[s.chiave] = {area:a, nodo:n, sit:s}; }); }); }); }
+    return DOVE[k];
+  }
+  function vistaParole(){
+    return '<section class="sez">' + scala([{voce:"Il bibliotecario", href:"#"}, {voce:"Una parola"}]) +
+      '<div class="testata"><p class="lbl">Dillo con una parola</p><h1>Qual è la parola?</h1><p class="sotto">Tocca quella che ti viene prima. Da lì ti faccio vedere le situazioni che ci stanno dietro.</p></div>' +
+      '<div class="scelte scelte-lunghe">' + PAROLE.map(function(p){ return '<a class="btn btn-vuoto" href="#p/' + esc(p[0]) + '" style="flex:0 0 auto">' + esc(p[0]) + '</a>'; }).join("") + '</div>' +
+      '<div class="azioni"><a class="btn btn-linea" href="#">Indietro</a></div></section>' + piede();
+  }
+  function vistaParola(parola){
+    var voce = null; PAROLE.forEach(function(p){ if (p[0] === parola) voce = p[1]; });
+    if (!voce) return nonTrovato();
+    var righe = voce.map(dove).filter(Boolean).map(function(x){
+      var k = capitoliDi(x.sit.chiave).length;
+      return {href:"#s/" + x.area.chiave + "/" + x.nodo.chiave + "/" + x.sit.chiave, titolo:x.sit.voce, sotto:x.area.voce + " › " + x.nodo.voce + (k ? " · " + k + (k === 1 ? " capitolo" : " capitoli") : " · ancora nessun capitolo")};
+    });
+    return '<section class="sez">' + scala([{voce:"Il bibliotecario", href:"#"}, {voce:"Una parola", href:"#parole"}, {voce:parola}]) +
+      '<div class="testata"><p class="lbl">' + esc(parola) + '</p><h1>Qual è la tua?</h1><p class="sotto">Dietro questa parola ci sono situazioni diverse. Scegli quella che ti somiglia adesso.</p></div>' +
+      elenco(righe) + '<div class="azioni"><a class="btn btn-linea" href="#parole">Un\'altra parola</a></div></section>' + piede();
+  }
+
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
   function area(k){ for (var i = 0; i < D.aree.length; i++) if (D.aree[i].chiave === k) return D.aree[i]; return null; }
   function nodo(a, k){ for (var i = 0; i < a.nodi.length; i++) if (a.nodi[i].chiave === k) return a.nodi[i]; return null; }
@@ -145,6 +211,8 @@
     return '<section class="sez"><div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
       '<p class="sotto">Non devi scrivere niente. Tocca la cosa che ti somiglia di più, poi un\'altra, poi un\'altra: in tre o quattro tocchi sei sul capitolo del libro in cui quella cosa è già scritta. Lì mi faccio da parte.</p></div>' +
       elenco(D.aree.map(function(a){ return {href:"#a/" + a.chiave, titolo:a.voce, sotto:a.domanda}; })) +
+      '<div class="testata" style="margin-top:.6rem"><p class="lbl">Oppure con una parola sola</p><p class="sotto">Ansia, tradimento, figli, lavoro, sonno: tocca la parola e ti faccio vedere cosa c\'è dietro.</p></div>' +
+      '<div class="scelte scelte-lunghe">' + PAROLE.slice(0, 10).map(function(p){ return '<a class="btn btn-vuoto" href="#p/' + esc(p[0]) + '" style="flex:0 0 auto">' + esc(p[0]) + '</a>'; }).join("") + '<a class="btn btn-linea" href="#parole" style="flex:0 0 auto">tutte le parole</a></div>' +
       '<div class="testata" style="margin-top:.6rem"><p class="lbl">Oppure parti dal corpo</p><p class="sotto">Se non sai dirlo a parole ma il corpo lo dice: le spalle, lo stomaco, il sonno.</p></div>' +
       '<div class="azioni"><a class="btn btn-vuoto" href="#corpo">Parto da quello che sento nel corpo</a></div>' +
       '<p class="conto">' + D.conto.libri + ' libri · ' + D.conto.capitoli + ' capitoli · ' + D.conto.situazioni + ' situazioni</p>' +
@@ -276,6 +344,8 @@
       case "s": html = vistaSituazione(h[1], h[2], h[3]); break;
       case "r": html = vistaRisultato(h[1], h[2], h[3], h[4]); break;
       case "corpo": html = vistaCorpo(); break;
+      case "parole": html = vistaParole(); break;
+      case "p": html = vistaParola(h[1]); break;
       case "c": html = vistaSegno(h[1]); break;
       default: html = vistaInizio();
     }
