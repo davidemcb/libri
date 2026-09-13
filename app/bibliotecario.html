@@ -34,10 +34,12 @@
   @keyframes pulsa{0%,100%{opacity:1}50%{opacity:.55}}
   .voce-foglio{position:fixed;inset:0;z-index:40}
   .voce-sfondo{position:absolute;inset:0;background:rgba(58,49,40,.45)}
-  .voce-corpo{position:absolute;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);border-radius:12px 12px 0 0;padding:1.4rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom));display:grid;gap:.9rem;min-height:46vh}
+  .voce-corpo{position:absolute;inset:0;background:var(--bg);padding:calc(1.2rem + env(safe-area-inset-top)) 1.3rem calc(1.2rem + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:.9rem}
+  .voce-corpo .voce-testo{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .voce-corpo .azioni{flex:0 0 auto}
   .voce-corpo .lbl.ascolta{color:#C0684B;animation:pulsa 1s ease-in-out infinite}
   .voce-corpo .lbl.ascolta::before{content:"● ";}
-  .voce-testo{font-size:clamp(1.5rem,5.5vw,2.1rem);line-height:1.35;min-height:5.5rem}
+  .voce-testo{font-size:clamp(1.6rem,6vw,2.3rem);line-height:1.35;min-height:5.5rem}
   .voce-aiuto{color:var(--muted);font-size:.98rem;line-height:1.5}
   .voce-stato{margin-top:.7rem;padding:.8rem 1rem;border-radius:3px;background:var(--raise);border-left:3px solid var(--accent);font-size:1.02rem;line-height:1.55}
   .voce-stato.attesa{border-left-color:#C0684B}
@@ -308,7 +310,7 @@
       '<div class="voce-corpo" role="dialog" aria-modal="true" aria-label="Dillo a voce">' +
       '<p class="lbl" data-voce-titolo>Ti ascolto</p>' +
       '<p class="voce-testo" data-voce-testo><span class="muted">Parla adesso. Le parole compaiono qui.</span></p>' +
-      '<p class="voce-aiuto" data-voce-aiuto>Di’ come lo diresti tu: «ho ansia», «mio figlio non mi parla più». Se il telefono chiede il permesso del microfono, di’ sì.</p>' +
+      '<p class="voce-aiuto" data-voce-aiuto>Racconta pure, con calma, quanto vuoi: le parole compaiono qui man mano. Quando hai finito tocca «Cerca». Se il telefono chiede il permesso del microfono, di’ sì.</p>' +
       '<div class="azioni"><button class="btn btn-pieno" type="button" data-voce-cerca disabled>Cerca</button>' +
       '<button class="btn btn-vuoto" type="button" data-voce-riprova hidden>Riprova</button>' +
       '<button class="btn btn-linea" type="button" data-voce-chiudi>Chiudi</button></div></div>';
@@ -322,13 +324,14 @@
     if (!f && !p) { el.innerHTML = '<span class="muted">Parla adesso. Le parole compaiono qui.</span>'; }
     else el.innerHTML = esc(f) + (p ? ' <span class="muted">' + esc(p) + '</span>' : '');
     FOGLIO.querySelector("[data-voce-cerca]").disabled = !(f || p);
+    el.scrollTop = el.scrollHeight;
   }
   function ascolta(){
     if (!VOCE) return;
     var titolo = FOGLIO.querySelector("[data-voce-titolo]"), aiuto = FOGLIO.querySelector("[data-voce-aiuto]"), riprova = FOGLIO.querySelector("[data-voce-riprova]");
     FINALE = ""; PARZIALE = ""; mostraVoce();
     riprova.hidden = true; titolo.textContent = "Ti ascolto"; titolo.className = "lbl ascolta";
-    aiuto.textContent = "Di’ come lo diresti tu: «ho ansia», «mio figlio non mi parla più». Se il telefono chiede il permesso del microfono, di’ sì.";
+    aiuto.textContent = "Racconta pure, con calma, quanto vuoi: le parole compaiono qui man mano. Quando hai finito tocca «Cerca». Se il telefono chiede il permesso del microfono, di’ sì.";
     RIC = new VOCE();
     RIC.lang = "it-IT"; RIC.interimResults = true; RIC.continuous = true; RIC.maxAlternatives = 1;
     RIC.onresult = function(e){
