@@ -606,23 +606,21 @@
     // primo livello: le aree
     if (!a1) {
       // Davanti la conversazione (se la porta è aperta per questa persona), sotto l'albero da toccare.
-      var testata = conversazioneAperta()
-        ? '<div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
-          '<p class="sotto">Scrivilo come viene. Ti fa qualche domanda sui fatti e ti porta alla pagina di un libro in cui quella cosa è già scritta. È un programma, non una persona.</p></div>' +
-          '<div class="azioni"><a class="btn btn-pieno" href="#parla">Raccontamelo</a></div>' +
-          '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Oppure cerca da solo</p><p class="sotto">Tocca l\'argomento: ti accompagno fino alla pagina senza scrivere niente.</p></div>'
-        : '<div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
-          '<p class="sotto">Qui c\'è un bibliotecario che conosce a memoria i libri di Davide. Non dà risposte. Ti accompagna fino alla pagina in cui il tuo problema è già scritto, e lì si fa da parte: la risposta, se c\'è, è tua.</p></div>';
-      // Il bibliotecario a bivi (13/09/2026): dalla frase della persona al capitolo, su tutti i libri, senza scrivere niente.
-      var bivi = '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Per scelte, un tocco alla volta</p>' +
-        '<p class="sotto">Parti da come lo diresti tu e arriva al capitolo, su tutti i libri della casa, anche quelli che escono più avanti.</p></div>' +
+      // Due strade sole (Davide, 13/09/2026: «vedo due cose simili… non è una ripetizione?»): la
+      // conversazione, se la porta è aperta, e il bibliotecario a bivi. L'elenco vecchio delle aree
+      // non c'è più: le sue pagine si raggiungono dal bibliotecario a bivi («Leggi la pagina, adesso»)
+      // e dai vecchi indirizzi #trova/area/situazione, che restano validi.
+      var testata = '<div class="testata"><p class="lbl">Il bibliotecario</p><h1>Cosa ti sta succedendo?</h1>' +
+        '<p class="sotto">Qui c\'è un bibliotecario che conosce a memoria i libri di Davide. Non dà risposte: ti porta al capitolo in cui la tua cosa è già scritta, e lì si fa da parte.</p></div>';
+      var bivi = '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Un tocco alla volta, senza scrivere</p>' +
+        '<p class="sotto">Scegli come lo diresti tu, fra le frasi che la gente dice davvero, e arrivi al capitolo: su tutti i libri della casa, anche quelli che escono più avanti.</p></div>' +
         '<div class="azioni"><a class="btn btn-pieno" href="bibliotecario.html">Dimmi come lo diresti</a></div>';
-      return '<section class="sez">' + testata + bivi +
-        '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Oppure le pagine dell\'app</p></div>' +
-        '<ul class="lista">' + dati.aree.map(function(ar){
-          return '<li><a class="blocco" href="#trova/' + esc(ar.chiave) + '"><p class="titolo">' + esc(ar.voce) + '</p><p class="muted piccolo">' +
-            esc(ar.situazioni.map(voceSituazione).slice(0, 3).join(" · ")) + (ar.situazioni.length > 3 ? " · …" : "") + '</p></a></li>';
-        }).join("") + '</ul></section>' + piede();
+      var parla = conversazioneAperta()
+        ? '<div class="testata" style="margin-top:1.2rem"><p class="lbl">Oppure raccontalo</p>' +
+          '<p class="sotto">Scrivilo come viene. Ti fa qualche domanda sui fatti e ti porta alla pagina. È un programma, non una persona.</p></div>' +
+          '<div class="azioni"><a class="btn btn-vuoto" href="#parla">Raccontamelo</a></div>'
+        : '';
+      return '<section class="sez">' + testata + bivi + parla + '</section>' + piede();
     }
 
     var area = trovaArea(a1);
