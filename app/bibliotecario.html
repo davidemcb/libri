@@ -106,12 +106,12 @@
     segni.forEach(function(k){
       h += '<div class="capitolo"><p class="lbl">' + esc(CORPO_VOCE[k]) + '</p><p class="titolo">«' + esc(PRATICA_MINUTO[k]) + '»</p>' +
         '<p class="muted">Un minuto, con la voce di Davide, gratis.</p>' +
-        '<div class="azioni"><a class="btn btn-vuoto" href="index.html#pratica/' + esc(k) + '">Una mano qui, adesso</a></div></div>';
+        '<div class="azioni"><a class="btn btn-vuoto" href="' + esc(app("pratica/" + k)) + '">Una mano qui, adesso</a></div></div>';
     });
     var intera = PRATICA_INTERA[segni[0]];
     if (intera) h += '<div class="capitolo"><p class="lbl">Se vuoi restarci di più</p><p class="titolo">«' + esc(intera[1]) + '»</p>' +
       '<p class="muted">La pratica intera su questa zona, sei minuti circa, registrata da Davide.</p>' +
-      '<div class="azioni"><a class="btn btn-pieno" href="index.html#negozio?libro=' + esc(intera[0]) + '">La pratica intera · 2,99 €</a></div></div>';
+      '<div class="azioni"><a class="btn btn-pieno" href="' + esc(app("negozio?libro=" + intera[0])) + '">La pratica intera · 2,99 €</a></div></div>';
     return h + '</section>';
   }
 
@@ -194,6 +194,10 @@
       elenco(righe) + '<div class="azioni"><a class="btn btn-linea" href="#parole">Un\'altra parola</a></div></section>' + piede();
   }
 
+  /* I link verso l'app portano la meta due volte: nel frammento (#pagina/…) e nella query (?vai=…).
+     Se il telefono perde il frammento passando da questa pagina a index.html (visto su iPhone,
+     14/09/2026: «Leggi la pagina, adesso» non apriva la pagina), l'app la ritrova dalla query. */
+  function app(meta){ return "index.html?vai=" + encodeURIComponent(meta) + "#" + meta; }
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
   function area(k){ for (var i = 0; i < D.aree.length; i++) if (D.aree[i].chiave === k) return D.aree[i]; return null; }
   function nodo(a, k){ for (var i = 0; i < a.nodi.length; i++) if (a.nodi[i].chiave === k) return a.nodi[i]; return null; }
@@ -455,7 +459,7 @@
       '<div>' + mostra.map(function(c){
         return '<div class="capitolo"><p class="lbl">Capitolo ' + c.n + (sit && c.sit[0] === sit ? ' · è il suo posto' : '') + '</p>' +
           '<p class="titolo">' + esc(c.titolo) + '</p><p class="muted">' + esc(c.di) + '</p><p class="cit">«' + esc(c.cit) + '»</p>' +
-          (c.pagina ? '<p><a class="btn btn-linea" href="index.html#pagina/' + esc(c.pagina) + '">Leggi la pagina, adesso</a></p>' : '') + '</div>';
+          (c.pagina ? '<p><a class="btn btn-linea" href="' + esc(app("pagina/" + c.pagina)) + '">Leggi la pagina, adesso</a></p>' : '') + '</div>';
       }).join("") +
       (caps.length > mostra.length ? '<p class="muted piccolo" style="padding-top:.6rem">' + (caps.length - mostra.length === 1 ? 'E un altro capitolo' : 'E altri ' + (caps.length - mostra.length) + ' capitoli') + ' dello stesso libro.</p>' : '') + '</div>' +
       bottoniLibro(g.chiave, L) + '</section>';
@@ -473,7 +477,7 @@
       return '<section class="sez">' + briciole + (s.delicata ? NUMERI : '') +
         '<div class="testata"><p class="lbl">' + esc(s.voce) + '</p><h1>Per questo non ho ancora un capitolo.</h1>' +
         '<p class="sotto">Non ti do una frase per riempire il vuoto. È una delle cose che Davide deve ancora scrivere, e adesso lo sa.</p></div>' +
-        '<div class="azioni"><a class="btn btn-vuoto" href="index.html#settimana">La pagina della settimana</a><a class="btn btn-vuoto" href="#">Un\'altra cosa</a></div></section>' + piede();
+        '<div class="azioni"><a class="btn btn-vuoto" href="' + esc(app("settimana")) + '">La pagina della settimana</a><a class="btn btn-vuoto" href="#">Un\'altra cosa</a></div></section>' + piede();
     }
     var gruppi = perLibro(caps);
     var testa = '<section class="sez">' + briciole + (s.delicata ? NUMERI : '') +

@@ -45,6 +45,18 @@
   var vista = document.getElementById("vista");
   var dati = null;
 
+  /* La meta arrivata nella query (index.html?vai=pagina/…), scritta dal bibliotecario a bivi insieme
+     al frammento: se il frammento è arrivato vince lui; se il telefono lo ha perso per strada
+     (iPhone, 14/09/2026), la meta si ricostruisce da qui. Poi la query sparisce dall'indirizzo. */
+  try {
+    var mv = /[?&]vai=([^&#]+)/.exec(location.search);
+    if (mv) {
+      var meta = decodeURIComponent(mv[1]);
+      if (!location.hash || location.hash === "#") location.hash = "#" + meta;
+      history.replaceState(null, "", location.pathname + location.hash);
+    }
+  } catch (e) {}
+
   /* ---------- la conversazione (deciso da Davide il 06/09/2026: «mettilo») ----------
      La parola d'invito arriva dal link (…/app/?p=parola) e resta nel telefono, così l'app
      installata la ritrova. Il server non sa chi è la persona: conta la parola, non lei.
@@ -886,9 +898,12 @@
     navigator.serviceWorker.register("sw.js").then(function(reg){
       document.addEventListener("visibilitychange", function(){ if (!document.hidden && reg.update) reg.update().catch(function(){}); });
     }).catch(function(){});
-    var giaRicaricata = false;
+    // Alla prima installazione il worker prende il controllo subito (clients.claim) e «controllerchange»
+    // scatta lo stesso: si ricarica solo se la pagina era già controllata da un worker precedente,
+    // altrimenti la prima apertura si ricaricava a metà caricamento (visto il 14/09/2026).
+    var avevaControllo = !!navigator.serviceWorker.controller, giaRicaricata = false;
     navigator.serviceWorker.addEventListener("controllerchange", function(){
-      if (giaRicaricata || !navigator.serviceWorker.controller) return;   // la prima installazione non ricarica
+      if (giaRicaricata || !avevaControllo || !navigator.serviceWorker.controller) return;
       giaRicaricata = true; location.reload();
     });
   }
