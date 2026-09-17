@@ -73,9 +73,9 @@
 
   // I libri in vendita: dove si comprano, come nell'app.
   var VENDITA = {
-    duau: {cartaceo:C.amazon.duauCartaceo, ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoCartaceo:"19,90 €", prezzoEbook:"5,99 €", cover:"../img/duau.jpg"},
-    sv:   {cartaceo:C.amazon.svCartaceo,   ebook:C.gumroad.svEbook   || C.amazon.svEbook,   prezzoCartaceo:"19,90 €", prezzoEbook:"4,99 €", cover:"../img/senzaveli.jpg"},
-    pac:  {cartaceo:C.amazon.pacCartaceo,  ebook:C.gumroad.pacEbook  || C.amazon.pacEbook,  prezzoCartaceo:"9,90 €",  prezzoEbook:"4,99 €", cover:"../img/prenditi.jpg"}
+    duau: {cartaceo:C.amazon.duauCartaceo, ebook:C.gumroad.duauEbook || C.amazon.duauEbook, audio:C.gumroad.duauAudio, prezzoCartaceo:"19,90 €", prezzoEbook:"5,99 €", prezzoAudio:"9,90 €", cover:"../img/duau.jpg"},
+    sv:   {cartaceo:C.amazon.svCartaceo,   ebook:C.gumroad.svEbook   || C.amazon.svEbook,   audio:C.gumroad.svAudio,   prezzoCartaceo:"19,90 €", prezzoEbook:"4,99 €", prezzoAudio:"9,90 €", cover:"../img/senzaveli.jpg"},
+    pac:  {cartaceo:C.amazon.pacCartaceo,  ebook:C.gumroad.pacEbook  || C.amazon.pacEbook,  audio:C.gumroad.pacAudio,  prezzoCartaceo:"9,90 €",  prezzoEbook:"4,99 €", prezzoAudio:"9,90 €", cover:"../img/prenditi.jpg"}
   };
   var NUMERI = '<div class="numeri"><p class="lbl" style="margin-bottom:.4rem">Prima di tutto</p>' +
     'Se sei in pericolo adesso: <strong>112</strong>.<br>Antiviolenza e stalking: <strong>1522</strong>, gratuito, giorno e notte.<br>' +
@@ -444,6 +444,7 @@
     if (L.vendita && v) {
       return '<div class="azioni">' +
         (v.ebook ? '<a class="btn btn-pieno" href="' + esc(v.ebook) + '" target="_blank" rel="noopener">Ebook · ' + esc(v.prezzoEbook) + '</a>' : '') +
+        (v.audio ? '<a class="btn btn-vuoto" href="' + esc(v.audio) + '" target="_blank" rel="noopener">Audiolibro · ' + esc(v.prezzoAudio) + '</a>' : '') +
         (v.cartaceo ? '<a class="btn btn-vuoto" href="' + esc(v.cartaceo) + '" target="_blank" rel="noopener">Cartaceo · ' + esc(v.prezzoCartaceo) + '</a>' : '') + '</div>';
     }
     if (L.prenotabile) return '<div class="azioni"><a class="btn btn-vuoto" href="../avvisami.html?titolo=' + encodeURIComponent(L.titolo) + '" target="_blank" rel="noopener">Avvisami quando esce</a></div>';

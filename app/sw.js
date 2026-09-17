@@ -1,7 +1,7 @@
 /* Davide Scuderi — service worker. Tiene in cache il guscio dell'app così si apre
    anche senza rete; i contenuti li chiede sempre prima alla rete, e se la rete
    manca mostra l'ultima copia. Per pubblicare un guscio nuovo si alza VERSIONE. */
-var VERSIONE = "davide-scuderi-v26";
+var VERSIONE = "davide-scuderi-v27";
 var GUSCIO = ["./", "./index.html", "./app.css?v=11", "./app.js?v=27", "./manifest.webmanifest",
   "../assets/config.js", "./icona-192.png", "./icona-512.png",
   "../img/duau.jpg", "../img/senzaveli.jpg", "../img/prenditi.jpg", "../img/vestirsi.jpg"];

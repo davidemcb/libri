@@ -36,7 +36,13 @@ window.SITO = {
   gumroad: {
     duauEbook: "https://wellfulnessn1.gumroad.com/l/da-uomo-a-uomo", // Da uomo a uomo — 5,99 €
     svEbook:   "https://wellfulnessn1.gumroad.com/l/senza-veli", // Senza veli — 4,99 €
-    pacEbook:  ""    // Prenditi a carezze — resta vuoto finché è in KDP Select
+    pacEbook:  "",   // Prenditi a carezze — resta vuoto finché è in KDP Select
+    /* Gli audiolibri (Davide, 13/09/2026: «intanto su Gumroad ci sono i libri,
+       gli ebook e gli audiolibri, da vendere»). Caricati l'11/09 via API. */
+    duauAudio: "https://wellfulnessn1.gumroad.com/l/hwdrio", // Da uomo a uomo — audiolibro, 9,90 €
+    svAudio:   "https://wellfulnessn1.gumroad.com/l/ofifj",  // Senza veli — audiolibro, 9,90 €
+    pacAudio:  "https://wellfulnessn1.gumroad.com/l/hklwa",  // Prenditi a carezze — audiolibro, 9,90 €
+    audioTutti:"https://wellfulnessn1.gumroad.com/l/uuhtcv"  // I tre audiolibri insieme, 24,90 €
   },
 
 

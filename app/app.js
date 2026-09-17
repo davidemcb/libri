@@ -15,12 +15,12 @@
            sotto:"Per gli uomini che dicono «tutto a posto» e intanto reggono.",
            cartaceo:C.amazon.duauCartaceo, prezzoCartaceo:"19,90 €",
            ebook:C.gumroad.duauEbook || C.amazon.duauEbook, prezzoEbook:"5,99 €", ebookDalSito:!!C.gumroad.duauEbook,
-           audiolibro:"#negozio?libro=duau_audio", prezzoAudiolibro:"9,90 €"},
+           audiolibro:C.gumroad.duauAudio || "#negozio?libro=duau_audio", prezzoAudiolibro:"9,90 €"},
     sv:   {titolo:"Senza veli", cover:"../img/senzaveli.jpg", pagina:"senza-veli.html",
            sotto:"Per la donna che regge tutto.",
            cartaceo:C.amazon.svCartaceo, prezzoCartaceo:"19,90 €",
            ebook:C.gumroad.svEbook || C.amazon.svEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.svEbook,
-           audiolibro:"#negozio?libro=sv_audio", prezzoAudiolibro:"9,90 €"},
+           audiolibro:C.gumroad.svAudio || "#negozio?libro=sv_audio", prezzoAudiolibro:"9,90 €"},
     vds:  {titolo:"Vestirsi di sé", cover:"../img/vestirsi.jpg", coverL:700, coverA:1052,
            pagina:"vestirsi-di-se.html",
            sotto:"Il primo libro: l'auto-massaggio consapevole, con gli esercizi per tutto il corpo.",
@@ -30,7 +30,7 @@
            sotto:"Una pratica semplice, nessun metodo da imparare.",
            cartaceo:C.amazon.pacCartaceo, prezzoCartaceo:"9,90 €",
            ebook:C.gumroad.pacEbook || C.amazon.pacEbook, prezzoEbook:"4,99 €", ebookDalSito:!!C.gumroad.pacEbook,
-           audiolibro:"#negozio?libro=pac_audio", prezzoAudiolibro:"9,90 €"}
+           audiolibro:C.gumroad.pacAudio || "#negozio?libro=pac_audio", prezzoAudiolibro:"9,90 €"}
   };
   LIBRI.alce = {titolo:"L'Alce", cover:"", sotto:"Un viaggio dentro la perdita di una certezza.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
   LIBRI.exnemico = {titolo:"L'ex non è un nemico", cover:"", sotto:"Quando la separazione finisce, ma la guerra continua.", cartaceo:"", ebook:"", prezzoCartaceo:"", prezzoEbook:"", ebookDalSito:false, inLavorazione:true};
@@ -180,7 +180,7 @@
   function bottoniLibro(L, compatti){
     var out = "";
     if (L.ebook) out += '<a class="btn btn-pieno" href="' + esc(L.ebook) + '" target="_blank" rel="noopener">Ebook' + (L.prezzoEbook ? ", " + L.prezzoEbook : "") + (L.ebookDalSito ? " · subito" : " · Kindle") + '</a>';
-    if (L.audiolibro) out += '<a class="btn btn-vuoto" href="' + esc(L.audiolibro) + '">Audiolibro' + (L.prezzoAudiolibro ? ", " + L.prezzoAudiolibro : "") + '</a>';
+    if (L.audiolibro) out += '<a class="btn btn-vuoto" href="' + esc(L.audiolibro) + '"' + (L.audiolibro.indexOf("http") === 0 ? ' target="_blank" rel="noopener"' : '') + '>Audiolibro' + (L.prezzoAudiolibro ? ", " + L.prezzoAudiolibro : "") + (L.audiolibro.indexOf("http") === 0 ? " · subito" : "") + '</a>';
     if (L.cartaceo) out += '<a class="btn btn-vuoto" href="' + esc(L.cartaceo) + '" target="_blank" rel="noopener">Cartaceo su Amazon' + (L.prezzoCartaceo ? ", " + L.prezzoCartaceo : "") + '</a>';
     else if (!compatti) out += '<span class="btn btn-vuoto muted" aria-disabled="true">Cartaceo in arrivo</span>';
     return '<div class="azioni">' + out + '</div>';

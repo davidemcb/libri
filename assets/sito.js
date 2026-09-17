@@ -21,7 +21,7 @@
   var gumroadUsato = false;
   document.querySelectorAll("[data-link]").forEach(function(a){
     var chiave  = a.getAttribute("data-link");
-    var gumroad = chiave.slice(-5) === "Ebook" ? (C.gumroad || {})[chiave] : "";
+    var gumroad = (chiave.slice(-5) === "Ebook" || chiave.slice(-5) === "Audio") ? (C.gumroad || {})[chiave] : "";
     var url     = (C.amazon || {})[chiave];       // Amazon: nuova scheda
 
     if(gumroad){
