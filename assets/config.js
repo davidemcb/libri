@@ -42,7 +42,10 @@ window.SITO = {
     duauAudio: "https://wellfulnessn1.gumroad.com/l/hwdrio", // Da uomo a uomo — audiolibro, 9,90 €
     svAudio:   "https://wellfulnessn1.gumroad.com/l/ofifj",  // Senza veli — audiolibro, 9,90 €
     pacAudio:  "https://wellfulnessn1.gumroad.com/l/hklwa",  // Prenditi a carezze — audiolibro, 9,90 €
-    audioTutti:"https://wellfulnessn1.gumroad.com/l/uuhtcv"  // I tre audiolibri insieme, 24,90 €
+    audioTutti:"https://wellfulnessn1.gumroad.com/l/uuhtcv", // I tre audiolibri insieme, 24,90 €
+    /* Le pratiche a 49 € (dieci audio con la voce di Davide): pagina le-pratiche.html.
+       Il prodotto Gumroad è in bozza finché Davide non dice «pubblica» (18/09/2026). */
+    praticheAudio: "https://wellfulnessn1.gumroad.com/l/wxomja" // Le pratiche — 49 €
   },
 
 
