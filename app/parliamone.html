@@ -123,6 +123,11 @@
   .righe p { margin: 0; color: var(--quieto); }
   .righe strong { color: var(--testo); font-weight: 500; }
   .eta { font-size: .88rem; font-style: italic; }
+  .spunte { display: flex; flex-direction: column; gap: .7rem; margin: 1.2rem 0 1.4rem; }
+  .spunta { display: flex; gap: .7rem; align-items: flex-start; font-size: .92rem; line-height: 1.5; color: var(--quieto); cursor: pointer; }
+  .spunta input { margin: .3rem 0 0; flex: none; width: 1.1rem; height: 1.1rem; accent-color: var(--teal); }
+  .spunta a { color: inherit; text-decoration: underline; text-decoration-color: var(--teal); text-underline-offset: 3px; }
+  .grande .spunta { font-size: 1rem; }
 
   .numeri {
     display: flex; flex-wrap: wrap; gap: .35rem 1.1rem;
@@ -337,6 +342,13 @@
         <p id="eta-errore" class="eta" style="color: var(--allarme); display: none;"></p>
       </div>
     </div>
+    <!-- La presa visione (studio legale, 01/11/2026): senza le due spunte il bottone resta spento,
+         e il server rifiuta comunque la richiesta che arriva senza (worker.js). -->
+    <div class="spunte">
+      <label class="spunta"><input type="checkbox" id="spunta-condizioni"><span>Ho letto <a href="/libri/condizioni.html" target="_blank" rel="noopener">le condizioni d'uso</a>.</span></label>
+      <label class="spunta"><input type="checkbox" id="spunta-informativa"><span>Ho letto <a href="/libri/privacy.html" target="_blank" rel="noopener">l'informativa privacy</a>: so dove va quello che scrivo, e per quanto.</span></label>
+      <p id="spunte-errore" class="eta" style="color: var(--allarme);" hidden>Prima le due spunte: senza, non si entra.</p>
+    </div>
     <button id="entra" type="button" disabled>Ho capito, cominciamo</button>
   </section>
 
@@ -410,7 +422,7 @@
     .catch(function () { tesseraInVendita = false; });
   (function () {
     var dalLink = new URLSearchParams(location.search).get("t") || "";
-    if (dalLink && !/^T1\.[a-z]+\.\d+\.\d+\.[0-9a-f]+\.[0-9a-f]+$/.test(dalLink)) dalLink = "";
+    if (dalLink && !/^T1\.[a-z-]+\.\d+\.\d+\.[0-9a-f]+\.[0-9a-f]+$/.test(dalLink)) dalLink = "";
     try {
       if (dalLink) localStorage.setItem(CHIAVE_TESSERA, dalLink);
       TESSERA = localStorage.getItem(CHIAVE_TESSERA) || "";
@@ -453,9 +465,13 @@
   var entrata = document.getElementById("entra");
   var dataNascita = document.getElementById("data-nascita");
   var etaErrore = document.getElementById("eta-errore");
+  var spuntaCondizioni = document.getElementById("spunta-condizioni");
+  var spuntaInformativa = document.getElementById("spunta-informativa");
+  var spunteErrore = document.getElementById("spunte-errore");
 
-  function validaEta() {
-    if (!dataNascita.value) { entrata.disabled = true; return; }
+  // L'età: si calcola qui e non parte da nessuna parte.
+  function etaBuona() {
+    if (!dataNascita.value) return false;
     var data = new Date(dataNascita.value);
     var oggi = new Date();
     var eta = oggi.getFullYear() - data.getFullYear();
@@ -465,13 +481,22 @@
     if (eta < 14) {
       etaErrore.textContent = "Devi avere almeno 14 anni per entrare.";
       etaErrore.style.display = "block";
-      entrata.disabled = true;
-    } else {
-      entrata.disabled = false;
+      return false;
     }
+    return true;
   }
-  dataNascita.addEventListener("change", validaEta);
-  dataNascita.addEventListener("input", validaEta);
+  // La presa visione (studio legale, 01/11/2026): condizioni d'uso e informativa, tutte e due.
+  function presaVisione() { return spuntaCondizioni.checked && spuntaInformativa.checked; }
+  function aggiornaEntrata() {
+    var okEta = etaBuona();
+    var okSpunte = presaVisione();
+    if (okSpunte) spunteErrore.hidden = true;
+    entrata.disabled = !(okEta && okSpunte);
+  }
+  dataNascita.addEventListener("change", aggiornaEntrata);
+  dataNascita.addEventListener("input", aggiornaEntrata);
+  spuntaCondizioni.addEventListener("change", aggiornaEntrata);
+  spuntaInformativa.addEventListener("change", aggiornaEntrata);
 
   var turni = [];       // vive solo qui: niente localStorage, niente cronologia, niente server
   var tutti = [];       // la conversazione intera, per il foglio: stessa vita di `turni`, stessa promessa
@@ -498,6 +523,7 @@
   var haCrypto = !!(window.crypto && window.crypto.subtle && window.isSecureContext);
 
   document.getElementById("entra").addEventListener("click", function () {
+    if (!presaVisione() || !etaBuona()) { spunteErrore.hidden = presaVisione(); aggiornaEntrata(); return; }
     soglia.hidden = true;
     conv.hidden = false;
     campo.hidden = false;
@@ -617,7 +643,8 @@
     }
 
     try {
-      var corpo = { parola: PAROLA, turni: turni };
+      // Le due spunte viaggiano con ogni richiesta: il server le pretende (worker.js).
+      var corpo = { parola: PAROLA, turni: turni, condizioni: presaVisione(), informativa: presaVisione() };
       if (colCassetto) corpo.chiave = chiaveBase64;
       if (tesseraValida()) { corpo.tessera = TESSERA; corpo.pagine = pagineDate.map(function (p) { return p.libro + ":" + p.numero; }); }
 
@@ -1407,7 +1434,7 @@
     var a = el("a", null, "la tessera");
     a.href = "tessera.html"; a.target = DENTRO ? "_top" : "_blank"; a.rel = "noopener";
     p.appendChild(a);
-    p.appendChild(document.createTextNode(": a ogni domanda, i capitoli dei libri sulla tua situazione, per intero, da leggere qui. Un giorno a 2,90 €, e poi la settimana, il mese, i sei mesi. Nessuna fretta: la trovi anche domani, e anche senza."));
+    p.appendChild(document.createTextNode(": dal bibliotecario dell'app, i capitoli sulla tua situazione, per intero. Il capitolo a 1,90 €, la tessera a 9,90 €. Nessuna fretta: la trovi anche domani, e anche senza."));
     dove.appendChild(p);
   }
 
@@ -1435,7 +1462,7 @@
              "  Email: " + RISCONTRO.email);
       r.push("", "Se vuoi tornare: domani ci sono di nuovo, gratis, cinque messaggi al giorno.");
       if (tesseraValida()) r.push("Hai una tessera fino al " + dataTessera(scadenzaTessera(TESSERA)) + ".");
-      else r.push("Se vuoi leggere le pagine c'è la tessera (a ogni domanda, i capitoli sulla tua situazione), da 2,90 € un giorno: https://davidemcb.github.io/libri/tessera.html");
+      else r.push("Se vuoi leggere le pagine c'è la tessera del bibliotecario (i capitoli sulla tua situazione, per intero): il capitolo a 1,90 €, la tessera a 9,90 €: https://davidemcb.github.io/libri/tessera.html");
     }
     r.push("", "La conversazione, com'è andata:", "");
     tutti.forEach(function (x) {

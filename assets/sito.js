@@ -150,9 +150,15 @@
       if(errore) errore.classList.remove("visibile");
 
       var campo = f.querySelector("input[type=email]");
-      var ok    = f.querySelector("input[type=checkbox]");
+      // La presa visione dell'informativa (studio legale, 01/11/2026): è la prima spunta,
+      // e senza quella l'indirizzo non parte. La seconda è il consenso a scrivere.
+      var visto = f.querySelector("input[name=PRESA_VISIONE]");
+      var ok    = f.querySelector("input[name=OPT_IN]") || f.querySelector("input[type=checkbox]:not([name=PRESA_VISIONE])");
       if(!campo.value || campo.validity.valid === false){
         dico("Controlla l'indirizzo: manca qualcosa."); return;
+      }
+      if(visto && !visto.checked){
+        dico("Prima la spunta dell'informativa privacy: senza, l'indirizzo non parte."); return;
       }
       if(ok && !ok.checked){
         dico("Serve la spunta: senza il tuo consenso non posso scriverti."); return;
@@ -184,6 +190,7 @@
           // se la richiesta non parte, si lascia fare al browser
           f.setAttribute("action", C.modulo);
           f.setAttribute("method", "POST");
+          if(visto) visto.disabled = true;   // a Brevo non serve: resta un campo della pagina
           f.submit();
         });
     });

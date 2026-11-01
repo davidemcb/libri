@@ -352,12 +352,14 @@
       '<form id="modulo-negozio" class="sez">' +
       '<div class="prosa">' + righe + '</div>' + rigaInArrivo +
       '<div class="modulo-email"><input type="email" name="email" placeholder="La tua email, dove arriva il libro" required>' +
+      '<label class="consenso"><input type="checkbox" name="informativa" required><span>Ho letto <a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">l\'informativa privacy</a>: l\'email serve a consegnare il libro.</span></label>' +
       '<label class="consenso"><input type="checkbox" name="subito" required><span>Voglio il libro subito, e so che così rinuncio al diritto di recesso di 14 giorni (l\'articolo 59 del Codice del Consumo: vale per ogni contenuto digitale che parte prima).</span></label>' +
       '<div class="azioni"><button class="btn btn-pieno" type="submit">Vai al pagamento</button></div>' +
       '<p class="errore piccolo" id="negozio-errore" hidden></p></div>' +
       '</form>' +
       '<div class="carta"><p class="lbl" style="margin-bottom:.5rem">Hai già comprato?</p>' +
       '<form id="modulo-miei-libri" class="modulo-email"><input type="email" name="email" placeholder="La tua email" required>' +
+      '<label class="consenso"><input type="checkbox" name="informativa" required><span>Ho letto <a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">l\'informativa privacy</a>.</span></label>' +
       '<div class="azioni"><button class="btn btn-vuoto" type="submit">Ritrova i miei libri</button></div>' +
       '<p class="piccolo muted" id="miei-libri-esito"></p>' +
       '</form></div>' +
@@ -371,15 +373,18 @@
     var prodotti = Array.prototype.map.call(f.querySelectorAll('input[name="prodotto"]:checked'), function(i){ return i.value; });
     var email = f.querySelector('input[name="email"]').value.trim();
     var subito = f.querySelector('input[name="subito"]').checked;
+    var informativa = f.querySelector('input[name="informativa"]').checked;   // presa visione (studio legale, 01/11/2026)
     var erroreEl = f.querySelector("#negozio-errore");
     erroreEl.hidden = true;
     if (!prodotti.length) { erroreEl.textContent = "Scegli almeno un libro."; erroreEl.hidden = false; return; }
+    if (!informativa) { erroreEl.textContent = "Prima la spunta dell'informativa privacy."; erroreEl.hidden = false; return; }
+    if (!subito) { erroreEl.textContent = "Serve la spunta: il libro arriva subito, e va detto prima di pagare."; erroreEl.hidden = false; return; }
     var bottone = f.querySelector('button[type="submit"]');
     bottone.disabled = true; bottone.textContent = "Un attimo…";
     var rif = (function(){ try { return localStorage.getItem("negozio-rif") || ""; } catch (e) { return ""; } })();
     fetch(SERVIZIO + "/negozio/compra", {
       method: "POST", headers: {"content-type":"application/json"},
-      body: JSON.stringify({prodotti: prodotti, email: email, subito: subito, rif: rif}),
+      body: JSON.stringify({prodotti: prodotti, email: email, subito: subito, informativa: informativa, rif: rif}),
     }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); })
       .then(function(res){
         if (!res.ok || !res.d.url) throw new Error((res.d && res.d.errore) || "Errore");
@@ -397,12 +402,14 @@
     if (!f) return;
     ev.preventDefault();
     var email = f.querySelector('input[name="email"]').value.trim();
+    var informativa = f.querySelector('input[name="informativa"]').checked;   // presa visione (studio legale, 01/11/2026)
     var esitoEl = f.querySelector("#miei-libri-esito");
     var bottone = f.querySelector('button[type="submit"]');
+    if (!informativa) { esitoEl.textContent = "Prima la spunta dell'informativa privacy."; return; }
     bottone.disabled = true;
     fetch(SERVIZIO + "/negozio/richiedi", {
       method: "POST", headers: {"content-type":"application/json"},
-      body: JSON.stringify({email: email}),
+      body: JSON.stringify({email: email, informativa: informativa}),
     }).then(function(r){ return r.json(); })
       .then(function(d){ esitoEl.textContent = d.messaggio || "Controlla la posta."; })
       .catch(function(){ esitoEl.textContent = "Non sono riuscito a mandarlo. Riprova fra poco."; })
@@ -512,6 +519,7 @@
       '<form class="modulo-email" data-da="' + esc(da || "app") + '" novalidate>' +
       '<label class="lbl" style="position:absolute;left:-9999px">Il tuo indirizzo email</label>' +
       '<input name="EMAIL" type="email" required placeholder="la-tua-mail@esempio.it" autocomplete="email" inputmode="email">' +
+      '<label class="consenso"><input type="checkbox" name="PRESA_VISIONE" required><span>Ho letto <a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">l\'informativa privacy</a>.</span></label>' +
       '<label class="consenso"><input type="checkbox" name="OPT_IN" required><span>Sì, una pagina il lunedì. Posso cancellarmi con un clic. <a href="' + esc(BASE_SITO) + 'privacy.html" target="_blank" rel="noopener">Come tratto i dati</a>.</span></label>' +
       '<div class="azioni"><button class="btn btn-pieno" type="submit">Mandamela il lunedì</button></div>' +
       '<p class="esito muted piccolo" hidden>Fatto. La prima pagina arriva lunedì alle sette.</p>' +
@@ -524,11 +532,13 @@
     var f = ev.target.closest(".modulo-email");
     if (!f) return;
     ev.preventDefault();
-    var campo = f.querySelector('input[type="email"]'), ok = f.querySelector('input[type="checkbox"]');
+    var campo = f.querySelector('input[type="email"]'), ok = f.querySelector('input[name="OPT_IN"]');
+    var visto = f.querySelector('input[name="PRESA_VISIONE"]');   // presa visione dell'informativa (studio legale, 01/11/2026)
     var esito = f.querySelector(".esito"), errore = f.querySelector(".errore"), bottone = f.querySelector("button");
     function dico(m){ errore.textContent = m; errore.hidden = false; }
     errore.hidden = true;
     if (!campo.value || campo.validity.valid === false) { dico("Controlla l'indirizzo: manca qualcosa."); return; }
+    if (visto && !visto.checked) { dico("Prima la spunta dell'informativa privacy: senza, l'indirizzo non parte."); return; }
     if (!ok.checked) { dico("Serve la spunta: senza il tuo consenso non posso scriverti."); return; }
     if (!C.modulo) { dico("Il modulo non è ancora collegato al servizio email."); return; }
     var d = new FormData();
@@ -540,13 +550,14 @@
     d.append("UTM_CONTENUTO", f.getAttribute("data-da") || "app");
     bottone.disabled = true; bottone.textContent = "Un attimo…";
     fetch(C.modulo, {method:"POST", body:d, mode:"no-cors"})
-      .then(function(){ campo.value = ""; ok.checked = false; bottone.hidden = true; esito.hidden = false; })
+      .then(function(){ campo.value = ""; ok.checked = false; if (visto) visto.checked = false; bottone.hidden = true; esito.hidden = false; })
       .catch(function(){
         // se la richiesta non parte, si lascia fare al browser: Brevo mostra la sua pagina
         f.setAttribute("action", C.modulo); f.setAttribute("method", "POST");
         var h = function(n, v){ var i = document.createElement("input"); i.type = "hidden"; i.name = n; i.value = v; f.appendChild(i); };
         Object.keys(C.campiExtra || {}).forEach(function(k){ h(k, C.campiExtra[k]); });
         h("ORIGINE", "pagine"); h("UTM_SOURCE", "app"); h("UTM_CONTENUTO", f.getAttribute("data-da") || "app");
+        if (visto) visto.disabled = true;   // a Brevo non serve: resta un campo della pagina
         f.submit();
       });
   });
