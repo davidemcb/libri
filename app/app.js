@@ -293,13 +293,64 @@
           '<div class="azioni-mini"><button class="btn btn-linea" type="button" data-condividi="libro" data-libro="' + esc(k) + '">Passalo a qualcuno</button></div>' +
           '</div></div>';
       }).join("") +
-      '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB. <a href="#negozio">Prova il nuovo modo di comprare</a>, tutto in italiano, dentro l\'app.</p></section>' +
+      // Il rimando al negozio dell'app compare solo quando il negozio è acceso davvero (09/11/2026:
+      // prima mandava a una pagina che rispondeva «non è ancora acceso»).
+      '<p class="muted piccolo prosa">L\'ebook comprato dal sito arriva subito, in PDF ed EPUB.' +
+      (NEGOZIO_ACCESO === true ? ' <a href="#negozio">Prova il nuovo modo di comprare</a>, tutto in italiano, dentro l\'app.' : '') + '</p></section>' +
       sezioneCantiere() + piede();
   }
 
   /* ---------- il negozio (09/09/2026): checkout Stripe in italiano, senza uscire dall'app ---------- */
   var SERVIZIO = "https://conversazione.davidescuderi1981.workers.dev";
   var NEGOZIO_TITOLI = {};   // riempito dal catalogo del worker, mano a mano che lo si legge — così «I miei libri» sa i nomi anche a freddo
+  var NEGOZIO_ACCESO = null; // null = non si sa ancora; true/false lo dice il catalogo del worker (`acceso`)
+
+  /* Si chiede al worker una volta sola, all'apertura, se il negozio è acceso: così «I libri» sa se
+     mostrare il rimando al negozio, e la vista del negozio sa se aprire il modulo o mandare a Gumroad. */
+  function leggiStatoNegozio(){
+    return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); }).then(function(d){
+      NEGOZIO_ACCESO = !!d.acceso;
+      (d.prodotti || []).forEach(function(p){ NEGOZIO_TITOLI[p.chiave] = p.titolo; });
+      return d;
+    }).catch(function(){ NEGOZIO_ACCESO = false; return {acceso:false, prodotti:[]}; });
+  }
+  leggiStatoNegozio();
+
+  /* Finché il negozio dell'app è spento (manca la chiave Stripe su Cloudflare, dal 10/09/2026), chi
+     arriva qui non deve trovare un bottone che risponde «non è ancora acceso»: si compra su Gumroad,
+     dove gli stessi titoli sono già in vendita (Davide, 13/09/2026: «finché il negozio dell'app è
+     spento, si vende su Gumroad»). Il giorno che Stripe si accende questa pagina sparisce da sola,
+     perché il catalogo risponde acceso:true. I link stanno in config.js → gumroad{}. */
+  function scaffaleGumroad(){
+    var G = C.gumroad || {}, A = C.amazon || {};
+    return [
+      {chiavi:["duau"],       titolo:"Da uomo a uomo",     cosa:"Ebook, PDF ed EPUB",          prezzo:"5,99 €",  link:G.duauEbook},
+      {chiavi:["sv"],         titolo:"Senza veli",         cosa:"Ebook, PDF ed EPUB",          prezzo:"4,99 €",  link:G.svEbook},
+      {chiavi:["pac"],        titolo:"Prenditi a carezze", cosa:G.pacEbook ? "Ebook, PDF ed EPUB" : "Ebook Kindle, su Amazon", prezzo:"4,99 €", link:G.pacEbook || A.pacEbook},
+      {chiavi:["duau_audio"], titolo:"Da uomo a uomo",     cosa:"Audiolibro, i capitoli in MP3 e il file unico M4B", prezzo:"9,90 €", link:G.duauAudio},
+      {chiavi:["sv_audio"],   titolo:"Senza veli",         cosa:"Audiolibro, i capitoli in MP3 e il file unico M4B", prezzo:"9,90 €", link:G.svAudio},
+      {chiavi:["pac_audio"],  titolo:"Prenditi a carezze", cosa:"Audiolibro, i capitoli in MP3 e il file unico M4B", prezzo:"9,90 €", link:G.pacAudio},
+      {chiavi:[],             titolo:"I tre audiolibri insieme", cosa:"Da uomo a uomo, Senza veli, Prenditi a carezze", prezzo:"24,90 €", link:G.audioTutti},
+      {chiavi:[], pratiche:true, titolo:"Le pratiche",     cosa:"Dieci audio con la voce di Davide, una zona del corpo alla volta", prezzo:"49 €", link:G.praticheAudio}
+    ].filter(function(v){ return !!v.link; });
+  }
+
+  function vistaNegozioChiuso(preselezionato, avviso){
+    var voci = scaffaleGumroad();
+    function cercata(v){ return !!preselezionato && (v.chiavi.indexOf(preselezionato) >= 0 || (v.pratiche && /^pratica_/.test(preselezionato))); }
+    var prima = voci.filter(cercata), altre = voci.filter(function(v){ return !cercata(v); });
+    function riga(v, inEvidenza){
+      return '<div class="libro senza-cover"><div><h3>' + esc(v.titolo) + '</h3><p class="muted piccolo">' + esc(v.cosa) + '</p>' +
+        '<div class="azioni"><a class="btn ' + (inEvidenza ? 'btn-pieno' : 'btn-vuoto') + '" href="' + esc(v.link) + '" target="_blank" rel="noopener">Compra, ' + esc(v.prezzo) + ' · subito</a></div></div></div>';
+    }
+    return '<section class="sez"><div class="testata"><p class="lbl">Negozio</p><h1>Si compra qui</h1>' +
+      '<p class="sotto">Il negozio dentro l\'app non è ancora aperto. Intanto gli stessi libri si comprano da Gumroad: paghi, e il file arriva subito via email. Nessun account da fare.</p></div>' +
+      (avviso || "") +
+      (prima.length ? '<p class="lbl" style="margin-bottom:.5rem">Quello che cercavi</p><div class="prosa">' + prima.map(function(v){ return riga(v, true); }).join("") + '</div>' : "") +
+      (altre.length ? (prima.length ? '<p class="lbl" style="margin:1.2rem 0 .5rem">Gli altri</p>' : "") + '<div class="prosa">' + altre.map(function(v, i){ return riga(v, !prima.length && i === 0); }).join("") + '</div>' : "") +
+      '<p class="muted piccolo prosa">I cartacei stanno su Amazon: li trovi in «I libri».</p>' +
+      '</section>' + piede();
+  }
 
   /* Il programma ambassador (deciso da Davide il 09/09/2026): un link con ?rif=stefania (o
      morena) dà il 20% di questa vendita a lei. Si legge una volta e si tiene nel telefono come
@@ -324,8 +375,9 @@
     // chiave del catalogo così com'è: non serve elencare le chiavi qui, vale per qualunque prodotto.
     var preselezionato = qs.get("libro") || "";
     return vistaNegozioAttesa(function(){
-      return fetch(SERVIZIO + "/negozio/catalogo").then(function(r){ return r.json(); }).then(function(d){
-        (d.prodotti || []).forEach(function(p){ NEGOZIO_TITOLI[p.chiave] = p.titolo; });
+      // Negozio spento, o worker che non risponde: si manda a Gumroad invece di dare un errore.
+      return leggiStatoNegozio().then(function(d){
+        if (!d.acceso) return vistaNegozioChiuso(preselezionato, avviso);
         return vistaNegozioScelta(d.prodotti || [], avviso, preselezionato);
       });
     }, "Un attimo, apriamo il negozio…");
