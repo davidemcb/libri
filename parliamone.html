@@ -337,7 +337,7 @@
         <span>Telefono Amico <b>02 2327 2327</b></span>
       </p>
       <div class="campo">
-        <label for="data-nascita" class="eta">Quando sei nato/a? (Serve essere maggiorenni, dai 14 anni in su con consenso dei genitori.)</label>
+        <label for="data-nascita" class="eta">Quando sei nato/a? (Serve essere maggiorenni: dai 18 anni in su.)</label>
         <input id="data-nascita" type="date" required>
         <p id="eta-errore" class="eta" style="color: var(--allarme); display: none;"></p>
       </div>
@@ -345,8 +345,8 @@
     <!-- La presa visione (studio legale, 01/11/2026): senza le due spunte il bottone resta spento,
          e il server rifiuta comunque la richiesta che arriva senza (worker.js). -->
     <div class="spunte">
-      <label class="spunta"><input type="checkbox" id="spunta-condizioni"><span>Ho letto <a href="/libri/condizioni.html" target="_blank" rel="noopener">le condizioni d'uso</a>.</span></label>
-      <label class="spunta"><input type="checkbox" id="spunta-informativa"><span>Ho letto <a href="/libri/privacy.html" target="_blank" rel="noopener">l'informativa privacy</a>: so dove va quello che scrivo, e per quanto.</span></label>
+      <label class="spunta"><input type="checkbox" id="spunta-condizioni"><span>Accetto <a href="/libri/condizioni.html" target="_blank" rel="noopener">le condizioni d'uso</a> del sito e dichiaro di essere maggiorenne.</span></label>
+      <label class="spunta"><input type="checkbox" id="spunta-informativa"><span>Acconsento esplicitamente al trattamento delle categorie particolari di dati (informazioni personali, stato d'animo o salute) che deciderò di scrivere qui, al solo fine di ricevere la risposta automatica, come spiegato nell'<a href="/libri/privacy.html" target="_blank" rel="noopener">informativa privacy</a>.</span></label>
       <p id="spunte-errore" class="eta" style="color: var(--allarme);" hidden>Prima le due spunte: senza, non si entra.</p>
     </div>
     <button id="entra" type="button" disabled>Ho capito, cominciamo</button>
@@ -478,8 +478,8 @@
     var mese = oggi.getMonth() - data.getMonth();
     if (mese < 0 || (mese === 0 && oggi.getDate() < data.getDate())) eta--;
     etaErrore.style.display = "none";
-    if (eta < 14) {
-      etaErrore.textContent = "Devi avere almeno 14 anni per entrare.";
+    if (eta < 18) {
+      etaErrore.textContent = "Devi avere almeno 18 anni per entrare.";
       etaErrore.style.display = "block";
       return false;
     }

@@ -10,6 +10,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="assets/stile.css">
+<style>
+  .tabella-scroll { overflow-x: auto; margin: 1rem 0 1.5rem; }
+  table.basi { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .92em; line-height: 1.4; }
+  table.basi th, table.basi td { border: 1px solid rgba(0,0,0,.15); padding: .55rem .7rem; vertical-align: top; text-align: left; }
+  table.basi th { background: rgba(0,0,0,.04); font-weight: 600; }
+</style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%232C6C68'/%3E%3Ctext x='50' y='70' font-family='Georgia,serif' font-size='58' fill='%23F2E7D0' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 </head>
 <body>
@@ -58,8 +64,8 @@
         <h2>Se scrivi nella finestra «Raccontamelo»</h2>
         <p>È l'unica parte del sito in cui puoi darmi qualcosa di delicato, e infatti è quella spiegata più in dettaglio.</p>
         <p><strong>Cosa succede, nell'ordine.</strong> Quello che scrivi parte dal tuo telefono o dal tuo computer, arriva al mio server e da lì va ad <strong>Anthropic PBC</strong> (Stati Uniti), il programma che ti risponde. La risposta torna indietro. <strong>Mentre aspetti la risposta, il server la conserva per dieci minuti — cifrata, e solo per riaprirla se il browser si interrompe. Dopo dieci minuti o quando leggi, è cancellata.</strong> Finita la conversazione, non resta niente: il contenuto non viene salvato in nessun archivio, non finisce nei registri tecnici del server, e non lo leggo io. Se chiudi la pagina e la riapri, ricomincia da capo — non perché si sia rotto qualcosa, ma perché è fatta così.</p>
-        <p><strong>Cosa può esserci dentro, ed è il punto.</strong> Quello che racconti può riguardare la tua salute, il tuo stato d'animo, la tua vita sessuale o affettiva: sono le «categorie particolari» dell'articolo 9 del Regolamento, la parte scritta per le cose che si dicono al medico. Per trattarle serve un <strong>consenso esplicito</strong>, e me lo dai in un modo solo: leggendo le righe che stanno sopra il campo di scrittura e premendo il tasto per mandare. Non c'è altro modo di entrare, e non è nascosto da nessuna parte.</p>
-        <p><strong>Può esserci dentro anche qualcun altro.</strong> Se scrivi di tua moglie, di tuo figlio, del tuo capo, stai dando anche dei dati loro. Ti chiedo di non fare nomi — non ti serve, e la conversazione funziona uguale. Se li fai, seguono la stessa sorte di tutto il resto: nessuno li legge e non restano da nessuna parte.</p>
+        <p><strong>Cosa può esserci dentro, ed è il punto.</strong> Quello che racconti può riguardare la tua salute, il tuo stato d'animo, la tua vita sessuale o affettiva: sono le «categorie particolari» dell'articolo 9 del Regolamento, la parte scritta per le cose che si dicono al medico. Per trattarle serve un <strong>consenso esplicito</strong>, e me lo dai in un modo solo: prima del campo di scrittura ci sono due caselle obbligatorie, non preselezionate — l'accettazione delle condizioni d'uso con la dichiarazione di essere maggiorenne, e il consenso esplicito al trattamento di queste categorie di dati al solo fine di ricevere la risposta automatica. Finché non le spunti tutte e due, il tasto per entrare resta spento, e il server rifiuta comunque qualunque messaggio che arrivi senza. Non c'è altro modo di entrare, e non è nascosto da nessuna parte.</p>
+        <p><strong>Può esserci dentro anche qualcun altro.</strong> Se scrivi di tua moglie, di tuo figlio, del tuo capo, stai dando anche dei dati loro. Ti chiedo tassativamente di non fare nomi e di non inserire dati che permettano di identificare altre persone — non ti serve, e la conversazione funziona uguale. Usando il servizio dichiari, sotto la tua responsabilità, di non trasmettere dati di terzi in violazione della legge. Se li scrivi lo stesso, seguono la stessa sorte di tutto il resto: nessuno li legge e non restano da nessuna parte.</p>
         <p><strong>Quanto tengo.</strong> Il tempo della conversazione. Non ore, non giorni: il tempo che serve a risponderti.</p>
         <p><strong>Cosa tengo davvero, e non ti riguarda.</strong> Dei numeri, e solo numeri: quante persone hanno aperto la finestra, quanti giri ha fatto una conversazione, quanti hanno poi comprato un libro. Da settembre 2026 conto anche quale tipo di situazione hai portato — una fra le tante possibili, scelta da un elenco chiuso, mai dalle tue parole — e se per quella situazione avevo o no una pagina da offrirti: è così che scopro cosa scrivere. <strong>Nessuna frase, nessun pezzo di conversazione, mai.</strong></p>
 
@@ -67,16 +73,25 @@
         <p>Quando scrivi «non so come dirlo a mio figlio che lascio suo padre», il programma sceglie una fra le 131 situazioni della vita che i miei libri coprono — in questo caso, qualcosa come «separazione e figli». Poi controlla se ho un capitolo su quella cosa. Se sì, te lo dà; se no, ti dice di no.</p>
         <p>Io conservo <strong>solo questo numero</strong>: «Un'altra persona ha portato "separazione e figli" oggi, e io non avevo niente». È un conteggio per chiave anonima, scadenza automatica dopo 400 giorni. Non mi dice niente di te, non contiene nessuna frase, non ti identifica in alcun modo.</p>
         <p>Questo numero è l'unico insegnamento che mi serve. Quando vedo che 14 persone a settembre hanno portato «mi vergogno del mio corpo» e 11 volte non avevo la pagina, so che è ora di scrivere quel capitolo — e lo metto in cima alla lista. È come aprire la posta: so cosa la gente ha portato davvero, senza leggere nessuna lettera.</p>
-        <p><strong>Cosa non faccio.</strong> Non ti mando pubblicità in base a quello che hai raccontato. Non collego quella conversazione al tuo indirizzo email, se me l'hai lasciato altrove sul sito. Non do niente a Google né a Meta di quello che ci siamo detti. E il programma non impara da te: ho chiesto per iscritto ad Anthropic che quello che passa di lì non venga usato per addestrare i suoi modelli.</p>
+        <p><strong>Cosa non faccio.</strong> Non ti mando pubblicità in base a quello che hai raccontato. Non collego quella conversazione al tuo indirizzo email, se me l'hai lasciato altrove sul sito. Non do niente a Google né a Meta di quello che ci siamo detti. E il programma non impara da te: l'addestramento è disattivato per contratto con Anthropic — per i servizi commerciali come quello che uso, quello che passa di lì non viene usato per addestrare i suoi modelli.</p>
         <p><strong>Chi risponde non è una persona.</strong> È un programma. Non è Davide, non è un medico, non è uno psicologo, e non è una seduta: c'è scritto anche nelle <a href="condizioni.html">condizioni d'uso</a>, che vale la pena leggere prima.</p>
-        <p><strong>Serve essere maggiorenni.</strong> E oggi ci si entra solo con un invito: non è ancora aperta a tutti.</p>
+        <p><strong>Serve essere maggiorenni</strong>: dai 18 anni in su, e lo dichiari con la prima casella. E oggi ci si entra solo con un invito: non è ancora aperta a tutti.</p>
 
         <h2>Perché li tratto, e con quale base giuridica</h2>
-        <ul>
-          <li><strong>Per mandarti quello che hai chiesto</strong> (le email del percorso, il capitolo in PDF, l'avviso di uscita) e, ogni tanto, notizie sui libri: base giuridica è il <em>tuo consenso</em> (art. 6.1.a GDPR), quello che dai con la spunta nel modulo.</li>
-          <li><strong>Per far funzionare il sito in sicurezza</strong>: legittimo interesse (art. 6.1.f).</li>
-          <li><strong>Per misurare la pubblicità</strong>: di nuovo il tuo consenso, che dai — o non dai — dalla fascetta dei cookie.</li>
-        </ul>
+        <p>Un trattamento per riga, con la sua base giuridica e quanto dura.</p>
+        <div class="tabella-scroll">
+          <table class="basi">
+            <thead><tr><th>Cosa faccio</th><th>Quali dati</th><th>Base giuridica</th><th>Per quanto</th></tr></thead>
+            <tbody>
+              <tr><td>Mandarti quello che hai chiesto (le email del percorso, il capitolo in PDF, l'avviso di uscita) e, ogni tanto, notizie sui libri</td><td>Email, pagina da cui l'hai lasciata</td><td>Il tuo consenso, con la spunta nel modulo (art. 6.1.a GDPR)</td><td>Finché resti iscritto, non oltre 24 mesi dall'ultima apertura</td></tr>
+              <tr><td>Risponderti nella finestra «Raccontamelo»</td><td>Il testo che scrivi, che può contenere dati su salute, stato d'animo, vita affettiva (art. 9)</td><td>Il tuo consenso esplicito, con la casella prima di entrare (art. 9.2.a)</td><td>Il tempo della risposta; al massimo dieci minuti, cifrato, se il browser si interrompe</td></tr>
+              <tr><td>Contare quali situazioni la gente porta e se avevo la pagina</td><td>Un numero per chiave di un elenco chiuso, mai le tue parole</td><td>Legittimo interesse a sapere cosa scrivere (art. 6.1.f); non ti identifica</td><td>400 giorni</td></tr>
+              <tr><td>Far funzionare il sito e il servizio in sicurezza</td><td>Dati tecnici di connessione raccolti da chi ospita il sito (indirizzo IP, tipo di browser)</td><td>Legittimo interesse (art. 6.1.f)</td><td>Il tempo tecnico del servizio di hosting</td></tr>
+              <tr><td>Venderti un ebook, un audiolibro o la tessera, quando saranno in vendita</td><td>Email e dati di pagamento, trattati dal servizio di pagamento (Gumroad o Stripe); a me arriva l'email per la consegna</td><td>Esecuzione del contratto (art. 6.1.b)</td><td>Quanto richiesto dalla legge fiscale per i documenti di vendita</td></tr>
+              <tr><td>Misurare la pubblicità</td><td>Dati di misurazione di Google Ads e Meta</td><td>Il tuo consenso dalla fascetta dei cookie (art. 6.1.a)</td><td>Secondo le regole di quei servizi; non parte senza il tuo sì</td></tr>
+            </tbody>
+          </table>
+        </div>
 
         <h2>Per quanto tempo li tengo</h2>
         <p>Finché resti iscritto, e comunque non oltre <strong>24 mesi</strong> dall'ultima volta che hai aperto o cliccato una mia email. Se ti cancelli, l'indirizzo viene rimosso dalla lista; resta solo, per il tempo necessario, la traccia tecnica che serve a non riscriverti per sbaglio.</p>
@@ -96,7 +111,7 @@
         <p>Se e quando è attiva una campagna pubblicitaria, il sito può caricare il <strong>tag di Google Ads</strong> e/o il <strong>pixel di Meta</strong>, che servono a capire quante persone arrivate da un annuncio lasciano poi la mail. <strong>Non parte prima del tuo assenso</strong>: se scegli «Solo il necessario», non viene caricato affatto. Puoi cambiare idea quando vuoi: <a href="#" data-cookie="rivedi">rivedi le tue scelte sui cookie</a>.</p>
 
         <h2>Che diritti hai</h2>
-        <p>Puoi chiedermi in ogni momento di <strong>vedere</strong> i dati che ho su di te, di <strong>correggerli</strong>, di <strong>cancellarli</strong>, di <strong>limitarne</strong> l'uso, di <strong>portarteli via</strong> in un file, e di <strong>opporti</strong> al trattamento. Puoi revocare il consenso quando vuoi: c'è un link di cancellazione in fondo a ogni email, e funziona subito. Se pensi che qualcosa non vada, puoi rivolgerti al Garante per la protezione dei dati personali (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">garanteprivacy.it</a>).</p>
+        <p>Puoi chiedermi in ogni momento di <strong>vedere</strong> i dati che ho su di te, di <strong>correggerli</strong>, di <strong>cancellarli</strong>, di <strong>limitarne</strong> l'uso, di <strong>portarteli via</strong> in un file, e di <strong>opporti</strong> al trattamento. Puoi revocare il consenso quando vuoi: c'è un link di cancellazione in fondo a ogni email, e funziona subito. Se pensi che qualcosa non vada, hai il diritto di <strong>proporre reclamo all'autorità di controllo</strong>: in Italia è il Garante per la protezione dei dati personali (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">garanteprivacy.it</a>), email <a href="mailto:protocollo@gpdp.it">protocollo@gpdp.it</a>, PEC <a href="mailto:protocollo@pec.gpdp.it">protocollo@pec.gpdp.it</a>.</p>
 
         <h2>Decisioni automatiche</h2>
         <p>Non prendo decisioni automatiche che abbiano effetti su di te. Nell'<a href="app/">app</a> e nella finestra «Raccontamelo» un programma sceglie quale pagina dei libri proporti, e non fa altro: non ti valuta, non ti classifica, non ti assegna nessun punteggio, e niente di quello che fa cambia i tuoi diritti.</p>
@@ -107,7 +122,7 @@
         <h2>Una nota che non è legale</h2>
         <p class="muted">Chi lascia la mail su questo sito lo fa quasi sempre dopo aver letto qualcosa che lo riguarda da vicino. Non è un contatto commerciale: è una persona che si è fidata. Il trattamento più corretto dei tuoi dati, prima ancora delle regole, è quello: scriverti poco, scriverti per dirti qualcosa, e sparire quando me lo chiedi.</p>
 
-        <p class="muted" style="margin-top:2.5rem">Ultimo aggiornamento: settembre 2026.</p>
+        <p class="muted" style="margin-top:2.5rem">Ultimo aggiornamento: 9 novembre 2026, dopo la verifica dello studio legale.</p>
       </div>
     </div>
   </section>
